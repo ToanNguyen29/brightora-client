@@ -1,0 +1,171 @@
+{
+  "title": "Build websites and applications with Web Development",
+  "description": "The world of web development is as wide as the internet itself. Much of our social and vocational lives play out on the internet, which prompts new industries aimed at creating, managing, and debugging the websites and applications that we increasingly rely on.",
+  "courses": [
+    {
+      "title": "Introduction to Web Development",
+      "duration": "4 weeks",
+      "price": "$120",
+      "link": "/web-development/introduction",
+      "rating": 4.5,
+      "buying": 20394,
+      "instructor": "John Doe, My Au, Dr. Angela",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller", "Hottest"]
+    },
+    {
+      "title": "Advanced CSS Techniques",
+      "duration": "6 weeks",
+      "price": "$150",
+      "link": "/web-development/css-advanced",
+      "rating": 4.8,
+      "buying": 15678,
+      "instructor": "Emily Zhao",
+      "image": "/courses/course2.jpg",
+      "tag": ["New", "Featured"]
+    },
+    {
+      "title": "JavaScript: The Complete Guide",
+      "duration": "8 weeks",
+      "price": "$180",
+      "link": "/web-development/javascript-complete",
+      "rating": 4.7,
+      "buying": 18940,
+      "instructor": "Maximilian Schwarzmüller",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller"]
+    },
+    {
+      "title": "React from Scratch",
+      "duration": "5 weeks",
+      "price": "$160",
+      "link": "/web-development/react-beginner",
+      "rating": 4.6,
+      "buying": 20250,
+      "instructor": "Dan Abramov, Andrew Clark",
+      "image": "/courses/course2.jpg",
+      "tag": ["Popular", "Trending"]
+    },
+    {
+      "title": "Full Stack Development with MERN",
+      "duration": "10 weeks",
+      "price": "$250",
+      "link": "/web-development/full-stack-mern",
+      "rating": 4.9,
+      "buying": 14289,
+      "instructor": "Brad Traversy",
+      "image": "/courses/course1.jpg",
+      "tag": ["Recommended", "Best Value"]
+    },
+    {
+      "title": "Introduction to Web Development",
+      "duration": "4 weeks",
+      "price": "$120",
+      "link": "/web-development/introduction",
+      "rating": 4.5,
+      "buying": 20394,
+      "instructor": "John Doe, My Au, Dr. Angela",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller", "Hottest"]
+    },
+    {
+      "title": "Advanced CSS Techniques",
+      "duration": "6 weeks",
+      "price": "$150",
+      "link": "/web-development/css-advanced",
+      "rating": 4.8,
+      "buying": 15678,
+      "instructor": "Emily Zhao",
+      "image": "/courses/course2.jpg",
+      "tag": ["New", "Featured"]
+    },
+    {
+      "title": "JavaScript: The Complete Guide",
+      "duration": "8 weeks",
+      "price": "$180",
+      "link": "/web-development/javascript-complete",
+      "rating": 4.7,
+      "buying": 18940,
+      "instructor": "Maximilian Schwarzmüller",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller"]
+    },
+    {
+      "title": "React from Scratch",
+      "duration": "5 weeks",
+      "price": "$160",
+      "link": "/web-development/react-beginner",
+      "rating": 4.6,
+      "buying": 20250,
+      "instructor": "Dan Abramov, Andrew Clark",
+      "image": "/courses/course2.jpg",
+      "tag": ["Popular", "Trending"]
+    },
+    {
+      "title": "Full Stack Development with MERN",
+      "duration": "10 weeks",
+      "price": "$250",
+      "link": "/web-development/full-stack-mern",
+      "rating": 4.9,
+      "buying": 14289,
+      "instructor": "Brad Traversy",
+      "image": "/courses/course1.jpg",
+      "tag": ["Recommended", "Best Value"]
+    },
+    {
+      "title": "Introduction to Web Development",
+      "duration": "4 weeks",
+      "price": "$120",
+      "link": "/web-development/introduction",
+      "rating": 4.5,
+      "buying": 20394,
+      "instructor": "John Doe, My Au, Dr. Angela",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller", "Hottest"]
+    },
+    {
+      "title": "Advanced CSS Techniques",
+      "duration": "6 weeks",
+      "price": "$150",
+      "link": "/web-development/css-advanced",
+      "rating": 4.8,
+      "buying": 15678,
+      "instructor": "Emily Zhao",
+      "image": "/courses/course2.jpg",
+      "tag": ["New", "Featured"]
+    },
+    {
+      "title": "JavaScript: The Complete Guide",
+      "duration": "8 weeks",
+      "price": "$180",
+      "link": "/web-development/javascript-complete",
+      "rating": 4.7,
+      "buying": 18940,
+      "instructor": "Maximilian Schwarzmüller",
+      "image": "/courses/course1.jpg",
+      "tag": ["Bestseller"]
+    },
+    {
+      "title": "React from Scratch",
+      "duration": "5 weeks",
+      "price": "$160",
+      "link": "/web-development/react-beginner",
+      "rating": 4.6,
+      "buying": 20250,
+      "instructor": "Dan Abramov, Andrew Clark",
+      "image": "/courses/course2.jpg",
+      "tag": ["Popular", "Trending"]
+    },
+    {
+      "title": "Full Stack Development with MERN",
+      "duration": "10 weeks",
+      "price": "$250",
+      "link": "/web-development/full-stack-mern",
+      "rating": 4.9,
+      "buying": 14289,
+      "instructor": "Brad Traversy",
+      "image": "/courses/course1.jpg",
+      "tag": ["Recommended", "Best Value"]
+    }
+  ]
+}

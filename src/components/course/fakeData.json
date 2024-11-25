@@ -1,0 +1,208 @@
+{
+  "sections": 44,
+  "lecturersNumber": 372,
+  "totalLength": 61.44,
+  "contents": [
+    {
+      "title": "Front End Development",
+      "lecturersNumber": 9,
+      "duration": 1.56,
+      "contents": [
+        {
+          "type": "video",
+          "at": 3.08,
+          "title": "What you will get in this course",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 5.08,
+          "title": "Course syllabus",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 7.02,
+          "title": "Download the 12 Rules to Learn to Code eBook [Latest Edition]",
+          "canReview": false
+        },
+        {
+          "type": "video",
+          "at": 10.15,
+          "title": "Introduction to HTML",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 15.3,
+          "title": "CSS Basics and Styling",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 20.45,
+          "title": "JavaScript Fundamentals",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 25.0,
+          "title": "JavaScript Syntax Reference Guide",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 30.2,
+          "title": "Introduction to React",
+          "canReview": false
+        },
+        {
+          "type": "document",
+          "at": 35.15,
+          "title": "React Component Cheatsheet",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 40.1,
+          "title": "Advanced JavaScript Techniques",
+          "canReview": true
+        }
+      ]
+    },
+    {
+      "title": "Front End Development",
+      "lecturersNumber": 9,
+      "duration": 1.56,
+      "contents": [
+        {
+          "type": "video",
+          "at": 3.08,
+          "title": "What you will get in this course",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 5.08,
+          "title": "Course syllabus",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 7.02,
+          "title": "Download the 12 Rules to Learn to Code eBook [Latest Edition]",
+          "canReview": false
+        },
+        {
+          "type": "video",
+          "at": 10.15,
+          "title": "Introduction to HTML",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 15.3,
+          "title": "CSS Basics and Styling",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 20.45,
+          "title": "JavaScript Fundamentals",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 25.0,
+          "title": "JavaScript Syntax Reference Guide",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 30.2,
+          "title": "Introduction to React",
+          "canReview": false
+        },
+        {
+          "type": "document",
+          "at": 35.15,
+          "title": "React Component Cheatsheet",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 40.1,
+          "title": "Advanced JavaScript Techniques",
+          "canReview": true
+        }
+      ]
+    },
+    {
+      "title": "Front End Development",
+      "lecturersNumber": 9,
+      "duration": 1.56,
+      "contents": [
+        {
+          "type": "video",
+          "at": 3.08,
+          "title": "What you will get in this course",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 5.08,
+          "title": "Course syllabus",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 7.02,
+          "title": "Download the 12 Rules to Learn to Code eBook [Latest Edition]",
+          "canReview": false
+        },
+        {
+          "type": "video",
+          "at": 10.15,
+          "title": "Introduction to HTML",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 15.3,
+          "title": "CSS Basics and Styling",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 20.45,
+          "title": "JavaScript Fundamentals",
+          "canReview": true
+        },
+        {
+          "type": "document",
+          "at": 25.0,
+          "title": "JavaScript Syntax Reference Guide",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 30.2,
+          "title": "Introduction to React",
+          "canReview": false
+        },
+        {
+          "type": "document",
+          "at": 35.15,
+          "title": "React Component Cheatsheet",
+          "canReview": true
+        },
+        {
+          "type": "video",
+          "at": 40.1,
+          "title": "Advanced JavaScript Techniques",
+          "canReview": true
+        }
+      ]
+    }
+  ]
+}
