@@ -35,16 +35,18 @@ export interface UserProfile {
 }
 
 // CRUD Users RESPONSE
-export interface GetUserResponse {
-  data: Partial<User>;
-}
-
-export interface UpdateUserResponse {
-  status: string;
-  data: Partial<User>;
-}
-
-export interface DeleteMeResponse {
-  status: string;
-  data: null;
+export interface IGetUserInfo {
+  _id: string;
+  email: string;
+  headline?: string;
+  description?: string;
+  photo: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+  facebook_link?: string;
+  website_link?: string;
+  twitter_link?: string;
+  youtube_link?: string;
+  linkedin_link?: string;
 }

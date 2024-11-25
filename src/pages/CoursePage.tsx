@@ -66,7 +66,7 @@ const CoursePage = () => {
             subtitle={course?.subtitle || ""}
             rating={course?.review.average_rating || 0}
             students={100}
-            created={`${course?.owner.first_name} ${course?.owner.last_name}`}
+            owner={course?.owner || undefined}
             lastUpdated="7/2024"
             lang={course?.language || []}
             sub="Dutch, French, German, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Simplified Chinese, Spanish, Thai, Turkish, Vietnamese"
@@ -74,7 +74,7 @@ const CoursePage = () => {
           <CourseLearn
             learningObjectives={course?.goals.learningObjectives || []}
           />
-          <CourseContent courseId={courseId} />
+          <CourseContent courseId={courseId || ""} />
           <Requiments requirements={course?.goals.requirements || []} />
           <Description description={course?.description || ""} />
           {/* <FeaturedReview /> */}

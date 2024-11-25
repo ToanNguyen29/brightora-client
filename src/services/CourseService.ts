@@ -71,13 +71,13 @@ export const updateCourse = async (
 };
 
 export const getCoursesByOwner = async (
-  owner_id: string,
-  page_number: number,
-  page_size: number
+  id: string,
+  pageNumber: number | undefined,
+  pageSize: number | undefined
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
-      `${course_url}?owner=${owner_id}&page_number=${page_number}&page_size=${page_size}`,
+      `${course_url}?owner=${id}&page_number=${pageNumber}&page_size=${pageSize}`,
       {
         withCredentials: true,
       }

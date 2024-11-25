@@ -37,10 +37,10 @@ const ContentItem: React.FC<ContentItemProps> = ({
         </ListItemIcon>
         <ListItemText
           primary={
-            canReview ? (
+            canReview && lesson.type === "lesson" ? (
               <Link
                 variant="body1"
-                href={`${lesson.video_url}`}
+                href={`${(lesson as ILessonLearn).video_url}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{
