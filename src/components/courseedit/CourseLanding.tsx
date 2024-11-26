@@ -20,7 +20,7 @@ import ImageUploadSection from "./courselanding/ImageUploadSection";
 import VideoUploadSection from "./courselanding/VideoUploadSection";
 import { categories, language, level } from "../data";
 import RichTextBox from "../reused/RichTextBoxComponent";
-import testUploadFile from "../../services/AwsServices";
+import UploadFile from "../../services/AwsServices";
 
 const CourseLanding: React.FC = () => {
   const token = localStorage.getItem("token");
@@ -121,18 +121,18 @@ const CourseLanding: React.FC = () => {
           const name = Date.now();
           const s3_key = `thumbnail/${name}.png`;
           const url = `https://brightora.s3.amazonaws.com/thumbnail/${name}.png`;
-          testUploadFile(s3_key, img, setProgress, async () => {
+          UploadFile(s3_key, img, setProgress, async () => {
             await updateCourseImage(token, id, url);
           });
         }
       }
       if (video) {
-        let name = Date.now();
+        const name = Date.now();
 
         const s3_key2 = `promotional/${name}.mp4`;
         const url2 = `https://brightora.s3.amazonaws.com/promotional/${name}.mp4`;
 
-        testUploadFile(s3_key2, video, setProgress, async () => {
+        UploadFile(s3_key2, video, setProgress, async () => {
           await updatePromotionalVideo(token, id, url2);
         });
       }

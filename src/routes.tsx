@@ -7,8 +7,6 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import LoadingPage from "./pages/LoadingPage";
-// import MyLearningPage from "./pages/MyLearningPage";
-// import CourseList from "./components/mylearning/CourseList";
 import UserAccountPage from "./pages/UserAccountPage";
 import Quiz from "./components/quiz/Quiz";
 import { QuizProvider } from "./context/QuizContext";
@@ -16,11 +14,9 @@ import LearningPage from "./pages/LearningPage";
 import LessonComponent from "./components/learning/LessonComponent";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
-// import PaypalPage from "./components/payment/paypal/PaypalPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import ChatPage from "./pages/ChatPage";
 
-// const AuthProvider = React.lazy(() => import("./context/AuthContext"));
-// const CartProvider = React.lazy(() => import("./context/CartContext"));
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseList = React.lazy(
   () => import("./components/mylearning/CourseList")
@@ -86,19 +82,25 @@ const AppRoutes: React.FC = () => {
                 />
                 <Route path="/about" element={<About />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
-
-                {/* <Route
-                           path="/quiz"
-                           element={
-                              <QuizProvider>
-                                 <Quiz />
-                              </QuizProvider>
-                           }
-                        /> */}
-
                 <Route path="*" element={<NotFound />} />
-                <Route path="cart" element={<CartPage />} />
                 <Route path="/user/:id" element={<UserAccountPage />} />
+                <Route
+                  path="/messages"
+                  element={
+                    <ProtectedRoute>
+                      <ChatPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="cart"
+                  element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  }
+                />
+
                 <Route
                   path="/user"
                   element={
@@ -126,8 +128,12 @@ const AppRoutes: React.FC = () => {
                   <Route path="close-account" element={<CloseAccountPage />} />
                 </Route>
               </Route>
+
               <Route element={<LayoutFullWidth />}>
-                {" "}
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+
                 <Route
                   path="course/:courseId/learn/"
                   element={<LearningPage />}
@@ -145,7 +151,7 @@ const AppRoutes: React.FC = () => {
                     }
                   />
                 </Route>
-                {/* <Route path="/course_type/:type"></Route> */}
+
                 <Route path="/course_type/:type" element={<CourseTypePage />} />
                 <Route
                   path="/my-course"
@@ -158,14 +164,11 @@ const AppRoutes: React.FC = () => {
                   <Route index element={<Navigate replace to="learning" />} />
                   <Route path="learning" element={<CourseList />} />
                   <Route path="lists" element={<div>toan</div>} />
-
                   <Route path="wishlist" element={<div>toan</div>} />
                   <Route path="archived" element={<div>toan</div>} />
                   <Route path="learning-tools" element={<div>toan</div>} />
                 </Route>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
+
                 <Route
                   path="/forgotpassword"
                   element={<ForgotPassWordPage />}

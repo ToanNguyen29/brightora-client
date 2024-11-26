@@ -5,47 +5,46 @@ import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
 
 interface CourseListPaymentProps {
-   courses: any[];
+  courses: any[];
 }
 
 const CourseListPayment: React.FC<CourseListPaymentProps> = ({ courses }) => {
-   const { t } = useTranslation();
-   const { mode } = useThemeContext();
+  const { t } = useTranslation();
+  const { mode } = useThemeContext();
 
-   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
-   const textColor = mode === "light" ? "#000000" : "#ffffff";
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
 
-   const course = {};
+  return (
+    <>
+      <Typography
+        variant="h6"
+        sx={{
+          //  ml: 1.5,
+          mb: 1,
+          color: textColor,
+          borderBottom: "1px solid",
+          fontWeight: "bold",
+        }}
+      >
+        {`Course in Order`}
+      </Typography>
 
-   return (
-      <>
-         <Typography
-            variant="h6"
-            sx={{
-               ml: 1.5,
-               mb: 1,
-               color: textColor,
-               borderBottom: "1px solid",
-               fontWeight: "bold",
-            }}
-         >
-            {`Course in Order`}
-         </Typography>
-         {courses.map((course: any) => (
-            <CourseCardPayment
-               key={course._id}
-               _id={course._id}
-               title={course.title}
-               duration={course.duration}
-               price={course.price}
-               rating={course.rating}
-               buying={course.buying}
-               thumbnail={course.thumbnail}
-               owner_name={course.owner_name}
-            />
-         ))}
-      </>
-   );
+      {courses.map((course: any) => (
+        <CourseCardPayment
+          key={course._id}
+          _id={course._id}
+          title={course.title}
+          duration={course.duration}
+          price={course.price}
+          rating={course.rating}
+          buying={course.buying}
+          thumbnail={course.thumbnail}
+          owner_name={`${course.owner.first_name} ${course.owner.last_name}`}
+        />
+      ))}
+    </>
+  );
 };
 
 export default CourseListPayment;

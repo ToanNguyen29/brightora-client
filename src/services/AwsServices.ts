@@ -1,5 +1,9 @@
 import AWS from "aws-sdk";
 
+// if (typeof (window as any).global === "undefined") {
+//   (window as any).global = window;
+// }
+
 const S3_BUCKET = import.meta.env.VITE_S3_BUCKET || "";
 const REGION = import.meta.env.VITE_REGION || "";
 const ACCESS_KEY_S3 = import.meta.env.VITE_ACCESS_KEY_S3 || "";

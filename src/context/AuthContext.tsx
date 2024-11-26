@@ -40,7 +40,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
               console.log(data);
             }
           })
-          .catch((err) => {
+          .catch(() => {
             setIsAuthenticated(false);
           });
       } catch (error) {

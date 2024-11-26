@@ -20,18 +20,15 @@ const Footer: React.FC = () => {
 
   return (
     <Box sx={{ mt: 6, py: 6, px: 4, backgroundColor, color: textColor }}>
-      {/* Logo Section */}
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <img
           src={`/bt_logo2.png`}
           alt="Course Shop Logo"
           style={{ width: 150 }}
         />{" "}
-        {/* Replace with actual logo path */}
       </Box>
 
       <Grid container spacing={4}>
-        {/* About Us Section */}
         <Grid item xs={12} md={4}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
             {t("about_us")}
@@ -39,7 +36,6 @@ const Footer: React.FC = () => {
           <Typography variant="body2">{t("about_us_description")}</Typography>
         </Grid>
 
-        {/* Quick Links Section */}
         <Grid item xs={12} md={4}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
             {t("quick_links")}
@@ -72,7 +68,6 @@ const Footer: React.FC = () => {
           </Box>
         </Grid>
 
-        {/* Contact Info Section */}
         <Grid item xs={12} md={4}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
             {t("contact_info")}
@@ -91,7 +86,6 @@ const Footer: React.FC = () => {
 
       <Divider sx={{ my: 4 }} />
 
-      {/* Social Media Icons */}
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
           {t("follow_us")}
@@ -130,17 +124,14 @@ const Footer: React.FC = () => {
         </IconButton>
       </Box>
 
-      {/* Payment Methods Section */}
       <Box sx={{ textAlign: "center", mb: 4 }}>
         <img
           src={`/paymentmethod.jpg`}
           alt="Payment Methods"
           style={{ width: 300 }}
         />{" "}
-        {/* Replace with actual image path */}
       </Box>
 
-      {/* Copyright Section */}
       <Box sx={{ mt: 4, textAlign: "center", pt: 2 }}>
         <Typography variant="body2" color="textSecondary">
           &copy; {new Date().getFullYear()} Course Shop.{" "}
