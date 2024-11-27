@@ -66,6 +66,7 @@ const CoursePage = () => {
             title={course?.title || ""}
             subtitle={course?.subtitle || ""}
             rating={course?.review.average_rating || 0}
+            numberRating={course?.review.total_reviews || 0}
             students={100}
             owner={course?.owner || undefined}
             lastUpdated={course?.updated_at || ""}
@@ -80,7 +81,7 @@ const CoursePage = () => {
           <Description description={course?.description || ""} />
           {/* <FeaturedReview /> */}
           <Intructor owner_id={course?.owner._id || ""} />
-          <Rating />
+          <Rating courseId={courseId} />
         </Grid>
         <Grid item xs={12} md={4}>
           <Box

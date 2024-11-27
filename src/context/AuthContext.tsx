@@ -34,6 +34,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         await getMe(token)
           .then((data) => {
             if (data.status <= 304) {
+              console.log("Authen COntext:", data.data);
               setUserInfo(data.data);
               setIsAuthenticated(true);
             } else {

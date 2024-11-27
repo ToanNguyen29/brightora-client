@@ -17,6 +17,7 @@ import { CartProvider } from "./context/CartContext";
 import CheckoutPage from "./pages/CheckoutPage";
 import ChatPage from "./pages/ChatPage";
 import WishList from "./components/mylearning/WishList";
+import PublicProfilePage from "./pages/user/PublicProfile";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
@@ -52,7 +53,7 @@ const CoursePricing = React.lazy(
 const Home = React.lazy(() => import("./pages/Home"));
 const About = React.lazy(() => import("./pages/About"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
-const Layout = React.lazy(() => import("./components/Layout"));
+// const Layout = React.lazy(() => import("./components/Layout"));
 const VerticalTabs = React.lazy(() => import("./pages/VerticalTabs"));
 const EditProfilePage = React.lazy(() => import("./pages/user/EditProfile"));
 const EditPhotoPage = React.lazy(() => import("./pages/user/EditPhoto"));
@@ -115,18 +116,13 @@ const AppRoutes: React.FC = () => {
                     index
                     element={<Navigate replace to="public-profile" />}
                   />
-                  <Route path="public-profile" element={<div></div>} />
+                  <Route
+                    path="public-profile"
+                    element={<PublicProfilePage />}
+                  />
                   <Route path="edit-profile" element={<EditProfilePage />} />
                   <Route path="edit-photo" element={<EditPhotoPage />} />
                   <Route path="edit-account" element={<EditAccountPage />} />
-                  <Route path="manage-subscriptions" element={<div></div>} />
-                  <Route path="edit-payment-methods" element={<div></div>} />
-                  <Route path="edit-privacy" element={<EditPrivacyPage />} />
-                  <Route
-                    path="edit-notifications"
-                    element={<EditNotificationsPage />}
-                  />
-                  <Route path="edit-api-clients" element={<div></div>} />
                   <Route path="close-account" element={<CloseAccountPage />} />
                 </Route>
               </Route>

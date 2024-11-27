@@ -35,6 +35,7 @@ const CourseCard: React.FC<CourseProps> = ({
 
   const handleDelete = async (event: React.MouseEvent) => {
     event.stopPropagation(); // Ngừng sự kiện lan truyền, tránh kích hoạt handleCardClick
+    if (!fetchWishList) return;
     console.log("Delete clicked");
     try {
       await deleteItemFromWishlistMe(token, course._id).then((data) => {

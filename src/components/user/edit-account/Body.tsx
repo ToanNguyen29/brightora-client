@@ -25,22 +25,23 @@ const EditAccountBody: React.FC = () => {
   const handleSave = async () => {
     console.log("Form values saved:", formValues);
 
-    try {
-      const res = await updatePassword(formValues);
-      if ((res.status = 200)) {
-        alert(t("password_updated_successfully"));
-        // setFormValues({
-        //   passwordCurrent: "",
-        //   password: "",
-        //   passwordConfirm: "",
-        // });
-      } else {
-        alert(`Error: ${res.detail}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const res = await updatePassword(formValues);
+    //   if ((res.status = 200)) {
+    //     alert(t("password_updated_successfully"));
+    //     // setFormValues({
+    //     //   passwordCurrent: "",
+    //     //   password: "",
+    //     //   passwordConfirm: "",
+    //     // });
+    //   } else {
+    //     alert(`Error: ${res.detail}`);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
+
   return (
     <>
       <Box

@@ -20,8 +20,6 @@ const UserAccountPage = () => {
   const { mode } = useThemeContext();
 
   const [user, setUser] = useState<Partial<IGetUserInfo> | undefined>();
-  // const [courseOfUser, setCourseOfUser] = useState();
-  // const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (!id) return;

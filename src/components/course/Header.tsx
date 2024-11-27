@@ -15,6 +15,7 @@ interface HeaderProps {
   owner: IOwner | undefined;
   lastUpdated: string;
   lang: string[];
+  numberRating: number;
   // sub: string;
   // additionalContent: string;
 }
@@ -27,6 +28,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
   owner,
   lastUpdated,
   lang,
+  numberRating,
   // sub,
   // additionalContent,
 }) => {
@@ -48,7 +50,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
       }}
     >
       <CourseTitle title={title} subtitle={subtitle} />
-      <CourseRating rating={rating} numberRating={rating} />
+      <CourseRating rating={rating} numberRating={numberRating} />
       <CourseCreator owner={owner} />
       <CourseDetails
         students={students}

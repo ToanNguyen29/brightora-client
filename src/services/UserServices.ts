@@ -23,14 +23,18 @@ export const getMe = async (token: string | null): Promise<AxiosResponse> => {
 };
 
 export const updateMe = async (
+  token: string | null,
   userProfile: Partial<UserProfile>
 ): Promise<AxiosResponse> => {
   return await axios
-    .patch(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/updateMe`,
+    .put(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/users/me`,
       userProfile,
       {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((res) => {
