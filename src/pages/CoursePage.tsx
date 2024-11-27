@@ -53,6 +53,7 @@ const CoursePage = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
+        minHeight: "90vh",
         //   gap: 3,
         px: "20%",
         width: "100%",
@@ -67,9 +68,9 @@ const CoursePage = () => {
             rating={course?.review.average_rating || 0}
             students={100}
             owner={course?.owner || undefined}
-            lastUpdated="7/2024"
+            lastUpdated={course?.updated_at || ""}
             lang={course?.language || []}
-            sub="Dutch, French, German, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Simplified Chinese, Spanish, Thai, Turkish, Vietnamese"
+            // sub="Dutch, French, German, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Simplified Chinese, Spanish, Thai, Turkish, Vietnamese"
           />
           <CourseLearn
             learningObjectives={course?.goals.learningObjectives || []}

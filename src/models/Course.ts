@@ -45,6 +45,20 @@ export interface ICourseInfoPage {
   review: IReview;
   sections: any[];
   price: number;
+  created_at: string;
+  updated_at: string;
+}
+
+// Card này là nhưng card hiện course mà mình chưa mua
+export interface ICourseCard {
+  _id: string;
+  owner: IOwner;
+  review: IReview;
+  price: number;
+  thumbnail: string;
+  title: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface IUpdateCourse {

@@ -87,3 +87,25 @@ export const getUser = async (id: String): Promise<AxiosResponse> => {
 
   return response;
 };
+
+export const getInstructorStatistics = async (
+  id: String
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .get(
+      `${
+        import.meta.env.VITE_SERVER_URL
+      }/api/v1/courses/instructor_statistics/${id}`,
+      {
+        withCredentials: true,
+      }
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};

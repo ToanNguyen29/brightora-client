@@ -5,23 +5,19 @@ import Footer from "./Footer";
 import { Box } from "@mui/material";
 
 interface LayoutProps {
-   children?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = () => {
-   return (
-      <div>
-         <Navbar />
-         <Box
-            style={{ width: "100%", height: "100%" }}
-            display={"flex"}
-            flexDirection={"column"}
-         >
-            <Outlet />
-            <Footer />
-         </Box>
-      </div>
-   );
+  return (
+    <div style={{ height: "100vh" }}>
+      <Navbar />
+      <Box style={{ width: "100%" }} display={"flex"} flexDirection={"column"}>
+        <Outlet />
+      </Box>
+      <Footer />
+    </div>
+  );
 };
 
 export default Layout;

@@ -28,7 +28,7 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     try {
       const data = await getCartMe(token);
       if (data.status <= 305) {
-        console.log("toan Nguyen", data.data.cart);
+        console.log("Cart Me", data.data.cart);
         setCart(data.data.cart);
         setQuantity(data.data.cart.cart.length);
       } else {

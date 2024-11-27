@@ -16,12 +16,13 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import CheckoutPage from "./pages/CheckoutPage";
 import ChatPage from "./pages/ChatPage";
+import WishList from "./components/mylearning/WishList";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
-const CourseList = React.lazy(
-  () => import("./components/mylearning/CourseList")
+const CourseEnrollmentList = React.lazy(
+  () => import("./components/mylearning/CourseEnrollmentList")
 );
-const GoogleDriveViewer = React.lazy(() => import("./pages/ViewFile"));
+// const GoogleDriveViewer = React.lazy(() => import("./pages/ViewFile"));
 const CartPage = React.lazy(() => import("./pages/Cart"));
 const CourseTypePage = React.lazy(() => import("./pages/CourseTypePage"));
 const ForgotPassWordPage = React.lazy(
@@ -75,11 +76,12 @@ const AppRoutes: React.FC = () => {
         <CartProvider>
           <Router>
             <Routes>
-              <Route element={<Layout />}>
-                <Route
+              <Route element={<LayoutFullWidth />}>
+                {/* <Route
                   path="/drive-viewer/:itemId/:fileType"
                   element={<GoogleDriveViewer />}
-                />
+                /> */}
+                <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="*" element={<NotFound />} />
@@ -130,7 +132,6 @@ const AppRoutes: React.FC = () => {
               </Route>
 
               <Route element={<LayoutFullWidth />}>
-                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
 
@@ -153,6 +154,7 @@ const AppRoutes: React.FC = () => {
                 </Route>
 
                 <Route path="/course_type/:type" element={<CourseTypePage />} />
+
                 <Route
                   path="/my-course"
                   element={
@@ -162,11 +164,8 @@ const AppRoutes: React.FC = () => {
                   }
                 >
                   <Route index element={<Navigate replace to="learning" />} />
-                  <Route path="learning" element={<CourseList />} />
-                  <Route path="lists" element={<div>toan</div>} />
-                  <Route path="wishlist" element={<div>toan</div>} />
-                  <Route path="archived" element={<div>toan</div>} />
-                  <Route path="learning-tools" element={<div>toan</div>} />
+                  <Route path="learning" element={<CourseEnrollmentList />} />
+                  <Route path="wishlist" element={<WishList />} />
                 </Route>
 
                 <Route
@@ -179,9 +178,11 @@ const AppRoutes: React.FC = () => {
                 />
                 <Route path="/course/:courseId" element={<CoursePage />} />
               </Route>
+
               <Route path="/instructor" element={<InstructorLayout />}>
                 <Route path="course" element={<InstructorCoursePage />} />
               </Route>
+
               <Route
                 path="/instructor/course/create"
                 element={<CreateCoursePage />}

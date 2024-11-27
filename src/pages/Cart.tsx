@@ -33,7 +33,7 @@ const CartPage: React.FC = () => {
     cart?.cart.reduce((sum, item) => sum + item.course.price, 0) || 0;
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", px: "10%" }}>
+    <Box sx={{ width: "80%", mx: "auto", px: "10%", minHeight: "90vh" }}>
       <Typography
         variant="h3"
         fontWeight={"bold"}
@@ -67,11 +67,11 @@ const CartPage: React.FC = () => {
               <CartItem
                 key={item.course._id}
                 id={item.course._id}
+                updated_at={item.course.updated_at}
                 title={item.course.title}
-                duration={item.course.time_spend}
                 price={item.course.price}
                 rating={item.course.review.average_rating}
-                buying={1000}
+                numberRating={item.course.review.total_reviews}
                 thumbnail={item.course.thumbnail}
                 owner_name={`${item.course.owner.first_name} ${item.course.owner.last_name}`}
               />

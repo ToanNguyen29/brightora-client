@@ -15,7 +15,7 @@ interface HeaderProps {
   owner: IOwner | undefined;
   lastUpdated: string;
   lang: string[];
-  sub: string;
+  // sub: string;
   // additionalContent: string;
 }
 
@@ -27,7 +27,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
   owner,
   lastUpdated,
   lang,
-  sub,
+  // sub,
   // additionalContent,
 }) => {
   const { mode } = useThemeContext();
@@ -54,7 +54,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
         students={students}
         lastUpdated={lastUpdated}
         lang={lang}
-        sub={sub}
+        // sub={sub}
       />
     </Paper>
   );

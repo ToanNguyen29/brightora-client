@@ -18,6 +18,8 @@ const Home: React.FC = () => {
       sx={{
         bgcolor: textColor === "white" ? "black" : "white",
         color: textColor,
+        mb: 5,
+        minHeight: "90vh",
       }}
     >
       <ImageSlider images={images} />

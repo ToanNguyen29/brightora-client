@@ -8,8 +8,9 @@ import {
   Divider,
 } from "@mui/material";
 import { Facebook, Twitter, Instagram, LinkedIn } from "@mui/icons-material";
-import { useTranslation } from "react-i18next"; // Adjust import path if needed
+import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
+import LanguageSwitcher from "./navbar/languageSwitcher/LanguageSwitcher";
 
 const Footer: React.FC = () => {
   const { mode } = useThemeContext();
@@ -19,125 +20,124 @@ const Footer: React.FC = () => {
   const textColor = mode === "dark" ? "#000000" : "#ffffff";
 
   return (
-    <Box sx={{ mt: 6, py: 6, px: 4, backgroundColor, color: textColor }}>
-      <Box sx={{ textAlign: "center", mb: 4 }}>
-        <img
-          src={`/bt_logo2.png`}
-          alt="Course Shop Logo"
-          style={{ width: 150 }}
-        />{" "}
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        py: 4,
+        px: { xs: 1, sm: 2 },
+        backgroundColor,
+        color: textColor,
+      }}
+    >
+      {/* Phần Follow Us */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+          {t("follow_us")}
+        </Typography>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <IconButton href="#" color="inherit" aria-label="Facebook">
+            <Facebook sx={{ fontSize: 36 }} /> {/* Tăng kích thước icon */}
+          </IconButton>
+          <IconButton href="#" color="inherit" aria-label="Twitter">
+            <Twitter sx={{ fontSize: 36 }} />
+          </IconButton>
+          <IconButton href="#" color="inherit" aria-label="Instagram">
+            <Instagram sx={{ fontSize: 36 }} />
+          </IconButton>
+          <IconButton href="#" color="inherit" aria-label="LinkedIn">
+            <LinkedIn sx={{ fontSize: 36 }} />
+          </IconButton>
+        </Box>
       </Box>
 
+      <Divider sx={{ borderColor: "#333333", my: 4 }} />
+
+      {/* Phần nội dung chính */}
       <Grid container spacing={4}>
-        <Grid item xs={12} md={4}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            {t("about_us")}
-          </Typography>
-          <Typography variant="body2">{t("about_us_description")}</Typography>
+        {/* Cột bên trái: 3 phần nội dung chính */}
+        <Grid item xs={12} md={8}>
+          <Grid container>
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                {t("about_us")}
+              </Typography>
+              <Typography variant="body2" sx={{ lineHeight: 1.8 }}>
+                {t("about_us_description")}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                {t("quick_links")}
+              </Typography>
+              <Box>
+                <Link
+                  href="#"
+                  color="inherit"
+                  underline="hover"
+                  sx={{ display: "block", mb: 1 }}
+                >
+                  {t("home")}
+                </Link>
+                <Link
+                  href="#"
+                  color="inherit"
+                  underline="hover"
+                  sx={{ display: "block", mb: 1 }}
+                >
+                  {t("courses")}
+                </Link>
+                <Link href="#" color="inherit" underline="hover">
+                  {t("contact_us")}
+                </Link>
+              </Box>
+            </Grid>
+
+            <Grid item xs={12} sm={4}>
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                {t("contact_info")}
+              </Typography>
+              <Typography variant="body2" sx={{ lineHeight: 1.8, mb: 1 }}>
+                {t("address")}: 1234 Course Lane, Education City, USA
+              </Typography>
+              <Typography variant="body2" sx={{ lineHeight: 1.8, mb: 1 }}>
+                {t("phone")}: +1 234 567 890
+              </Typography>
+              <Typography variant="body2" sx={{ lineHeight: 1.8 }}>
+                {t("email")}: info@courseshop.com
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
 
+        {/* Cột bên phải: LanguageSwitcher */}
         <Grid item xs={12} md={4}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            {t("quick_links")}
-          </Typography>
-          <Box>
-            <Link
-              href="#"
-              color="inherit"
-              underline="hover"
-              sx={{ display: "block", mb: 1 }}
-            >
-              {t("home")}
-            </Link>
-            <Link
-              href="#"
-              color="inherit"
-              underline="hover"
-              sx={{ display: "block", mb: 1 }}
-            >
-              {t("courses")}
-            </Link>
-            <Link
-              href="#"
-              color="inherit"
-              underline="hover"
-              sx={{ display: "block" }}
-            >
-              {t("contact_us")}
-            </Link>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <LanguageSwitcher mode={mode} />
           </Box>
-        </Grid>
-
-        <Grid item xs={12} md={4}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            {t("contact_info")}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            {t("address")}: 1234 Course Lane, Education City, USA
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            {t("phone")}: +1 234 567 890
-          </Typography>
-          <Typography variant="body2">
-            {t("email")}: info@courseshop.com
-          </Typography>
         </Grid>
       </Grid>
 
-      <Divider sx={{ my: 4 }} />
-
-      <Box sx={{ textAlign: "center", mb: 4 }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-          {t("follow_us")}
-        </Typography>
-        <IconButton
-          href="#"
-          color="inherit"
-          aria-label="Facebook"
-          sx={{ mx: 1 }}
-        >
-          <Facebook />
-        </IconButton>
-        <IconButton
-          href="#"
-          color="inherit"
-          aria-label="Twitter"
-          sx={{ mx: 1 }}
-        >
-          <Twitter />
-        </IconButton>
-        <IconButton
-          href="#"
-          color="inherit"
-          aria-label="Instagram"
-          sx={{ mx: 1 }}
-        >
-          <Instagram />
-        </IconButton>
-        <IconButton
-          href="#"
-          color="inherit"
-          aria-label="LinkedIn"
-          sx={{ mx: 1 }}
-        >
-          <LinkedIn />
-        </IconButton>
-      </Box>
-
-      <Box sx={{ textAlign: "center", mb: 4 }}>
-        <img
-          src={`/paymentmethod.jpg`}
-          alt="Payment Methods"
-          style={{ width: 300 }}
-        />{" "}
-      </Box>
-
-      <Box sx={{ mt: 4, textAlign: "center", pt: 2 }}>
-        <Typography variant="body2" color="textSecondary">
-          &copy; {new Date().getFullYear()} Course Shop.{" "}
-          {t("all_rights_reserved")}
-        </Typography>
-      </Box>
+      <Typography
+        variant="body2"
+        sx={{
+          textAlign: "center",
+          fontSize: 14,
+          mt: 2,
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        © {new Date().getFullYear()} CourseShop. {t("all_rights_reserved")}.
+      </Typography>
     </Box>
   );
 };

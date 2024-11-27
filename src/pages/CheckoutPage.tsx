@@ -24,7 +24,7 @@ const CheckoutPage: React.FC = () => {
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", px: "10%" }}>
+    <Box sx={{ width: "80%", mx: "auto", px: "10%", minHeight: "90vh" }}>
       <Typography
         variant="h3"
         fontWeight={"bold"}

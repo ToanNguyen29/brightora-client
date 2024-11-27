@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../../theme/ThemeContext";
 import CourseCardMyCourse from "./CourseCardMyCourse";
 import { getCoursesByOwner } from "../../../services/CourseService";
+import CourseCard from "../../home/tabview/CourseCard";
 
 interface CourseListProps {
   id: string | undefined;
@@ -70,7 +71,7 @@ const CourseList: React.FC<CourseListProps> = ({ id }) => {
       >
         {courses.map((course, index) => (
           <Grid item xs={12} sm={4} md={4} lg={4} key={index} padding={2}>
-            <CourseCardMyCourse course={course} />
+            <CourseCard course={course} />
           </Grid>
         ))}
       </Grid>

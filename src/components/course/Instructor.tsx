@@ -4,7 +4,10 @@ import { useThemeContext } from "../../theme/ThemeContext";
 import InstructorHeader from "./instructor/InstructorHeader";
 import InstructorInfo from "./instructor/InstructorInfo.tsx";
 import MarkdownContent from "./instructor/MarkdownContent";
-import { getUser } from "../../services/UserServices.ts";
+import {
+  getInstructorStatistics,
+  getUser,
+} from "../../services/UserServices.ts";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useTranslation } from "react-i18next";
@@ -39,6 +42,7 @@ const Instructor: React.FC<InstructorProps> = ({ owner_id }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const [instructor, setInstructor] = useState<InstructorInfo | undefined>();
+  const [instructorStat, setInstructorStat] = useState<any>({});
   //   const [courseOfInstructor, setCourseOfInstructor] = useState();
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
@@ -56,6 +60,19 @@ const Instructor: React.FC<InstructorProps> = ({ owner_id }) => {
   const handleShowMore = () => {
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    if (!owner_id) return;
+    const fetchInstructorStatistics = async () => {
+      await getInstructorStatistics(owner_id).then((data) => {
+        console.log("Stats Ins", data);
+        if (data.status <= 305) {
+          setInstructorStat(data.data);
+        }
+      });
+    };
+    fetchInstructorStatistics();
+  }, [owner_id]);
 
   useEffect(() => {
     if (!owner_id) return;
@@ -101,17 +118,19 @@ const Instructor: React.FC<InstructorProps> = ({ owner_id }) => {
           backgroundColor={headerBackgroundColor}
           textColor={textColor}
         />
-        <InstructorInfo
-          name={`${instructor?.first_name} ${instructor?.last_name}`}
-          headline={instructor?.headline || ""}
-          secondaryTextColor={secondaryTextColor}
-          iconBackgroundColor={iconBackgroundColor}
-          rating={5}
-          reviews={5000}
-          students={5000}
-          courses={7}
-          avt={instructor?.photo || ""}
-        />
+        {instructor && instructorStat && (
+          <InstructorInfo
+            name={`${instructor?.first_name} ${instructor?.last_name}`}
+            headline={instructor?.headline || ""}
+            secondaryTextColor={secondaryTextColor}
+            iconBackgroundColor={iconBackgroundColor}
+            rating={instructorStat?.average_rating || 0}
+            reviews={instructorStat?.total_reviews || 0}
+            students={instructorStat?.total_students.total_students || 0}
+            courses={instructorStat?.total || 0}
+            avt={instructor?.photo || ""}
+          />
+        )}
         <Box
           sx={{
             position: "relative",
