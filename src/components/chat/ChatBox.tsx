@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import MessageItem from "./MessageItem";
 import { getConversation } from "../../services/MessageService";
 import ListMessage from "./ListMessage";
+import { useAuth } from "../../context/AuthContext";
 
 interface Message {
   _id: string;
@@ -32,33 +33,20 @@ interface ChatBoxProps {
 
 const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage }) => {
   const token = localStorage.getItem("token");
+  const { userInfo } = useAuth();
   // const [messages, setMessages] = useState<Message[] | undefined>();
 
   const [textMessage, setTextMessage] = useState<string>("");
-
-  // const fetchConversation = useCallback(async () => {
-  //   if (!currentConversation) return;
-  //   try {
-  //     const data = await getConversation(token, currentConversation);
-  //     if (data.status <= 305) {
-  //       console.log("oooooooooooo:", data.data.messages);
-  //       setMessages(data.data.messages);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [token, currentConversation]);
-
-  // useEffect(() => {
-  //   fetchConversation();
-  // }, [fetchConversation]);
 
   const handleSend = () => {
     console.log(textMessage);
     if (!messages || !textMessage) return;
     const input = {
       content: textMessage,
-      recipient: messages[0].sender,
+      recipient:
+        userInfo._id === messages[0].sender
+          ? messages[0].recipient
+          : messages[0].sender,
     };
     console.log("input", input);
     sendMessage(input);

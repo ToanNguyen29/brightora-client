@@ -33,20 +33,20 @@ const BasicTabs: React.FC = () => {
   const { t } = useTranslation();
 
   const tabData = [
-    { key: CategoryType.PROGRAMMING, label: t(CategoryType.PROGRAMMING) },
-    { key: CategoryType.DATA_SCIENCE, label: t(CategoryType.DATA_SCIENCE) },
+    { key: CategoryType.PROGRAMMING, label: t("programming") },
+    { key: CategoryType.DATA_SCIENCE, label: t("data_science") },
     {
       key: CategoryType.WEB_DEVELOPMENT,
-      label: t(CategoryType.WEB_DEVELOPMENT),
+      label: t("web_development"),
     },
-    { key: CategoryType.CYBER_SECURITY, label: t(CategoryType.CYBER_SECURITY) },
+    { key: CategoryType.CYBER_SECURITY, label: t("cyber_security") },
     {
       key: CategoryType.CLOUD_COMPUTING,
-      label: t(CategoryType.CLOUD_COMPUTING),
+      label: t("cloud_computing"),
     },
     {
       key: CategoryType.MACHINE_LEARNING,
-      label: t(CategoryType.MACHINE_LEARNING),
+      label: t("machine_learning"),
     },
   ];
 
@@ -79,7 +79,7 @@ const BasicTabs: React.FC = () => {
 
       {tabData.map((tab, index) => (
         <TabPanel key={tab.key} value={tabIndex} index={index}>
-          <RecomendCourseBox tabName={tab.key} />
+          <RecomendCourseBox tabName={tab.label} />
         </TabPanel>
       ))}
     </Box>

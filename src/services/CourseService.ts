@@ -287,3 +287,26 @@ export const generateDescription = async (title: string) => {
 
   return response;
 };
+
+export const searchCourse = async (
+  query: string,
+  pageNumber: number | undefined,
+  pageSize: number | undefined
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .get(
+      `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`,
+      {
+        withCredentials: true,
+      }
+    )
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      return err.response;
+    });
+  return response;
+};

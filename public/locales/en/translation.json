@@ -244,5 +244,11 @@
   "checkout_page": "Checkout page",
   "what_you_will_learn": "What you'll learn?",
   "show_less": "Show less",
-  "updated_at": "Updated at"
+  "updated_at": "Updated at",
+  "high_rating": "High rating",
+  "new": "New",
+  "add_new_course": "Add new course",
+  "question_and_answer": "Q&A",
+  "course_stats": "Course Stats",
+  "discount_coupon": "Discount"
 }

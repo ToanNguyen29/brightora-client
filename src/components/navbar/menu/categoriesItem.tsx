@@ -39,65 +39,65 @@ interface MenuItemType {
 export const categoriesItem: MenuItemType[] = [
   {
     icon: <School fontSize="small" />,
-    textKey: t(CategoryType.PROGRAMMING),
+    textKey: "programming",
     url: `/course_type/${CategoryType.PROGRAMMING}`,
   },
   {
     icon: <DataUsage fontSize="small" />,
-    textKey: t(CategoryType.DATA_SCIENCE),
+    textKey: "data_science",
     url: `/course_type/${CategoryType.DATA_SCIENCE}`,
   },
   {
     icon: <Computer fontSize="small" />,
-    textKey: t(CategoryType.WEB_DEVELOPMENT),
+    textKey: "web_development",
     url: `/course_type/${CategoryType.WEB_DEVELOPMENT}`,
   },
   {
     icon: <Security fontSize="small" />,
-    textKey: t(CategoryType.CYBER_SECURITY),
+    textKey: "cyber_security",
     url: `/course_type/${CategoryType.CYBER_SECURITY}`,
   },
   { divider: true },
   {
     icon: <Cloud fontSize="small" />,
-    textKey: t(CategoryType.CLOUD_COMPUTING),
+    textKey: "cloud_computing",
     url: `/course_type/${CategoryType.CLOUD_COMPUTING}`,
   },
   {
     icon: <Devices fontSize="small" />,
-    textKey: t(CategoryType.MACHINE_LEARNING),
+    textKey: "machine_learning",
     url: `/course_type/${CategoryType.MACHINE_LEARNING}`,
   },
   { divider: true },
   {
     icon: <Storage fontSize="small" />,
-    textKey: t(CategoryType.DATABASE_ADMINISTRATION),
+    textKey: "database_administration",
     url: `/course_type/${CategoryType.DATABASE_ADMINISTRATION}`,
   },
   {
     icon: <Build fontSize="small" />,
-    textKey: t(CategoryType.DEVOPS),
+    textKey: "devops",
     url: `/course_type/${CategoryType.DEVOPS}`,
   },
   {
     icon: <Engineering fontSize="small" />,
-    textKey: t(CategoryType.IT_SUPPORT),
+    textKey: "it_support",
     url: `/course_type/${CategoryType.IT_SUPPORT}`,
   },
   {
     icon: <Wifi fontSize="small" />,
-    textKey: t(CategoryType.NETWORKING),
+    textKey: "networking",
     url: `/course_type/${CategoryType.NETWORKING}`,
   },
   {
     icon: <DeveloperBoard fontSize="small" />,
-    textKey: t(CategoryType.SOFTWARE_ENGINEERING),
+    textKey: "software_engineering",
     url: `/course_type/${CategoryType.SOFTWARE_ENGINEERING}`,
   },
   { divider: true },
   {
     icon: <Psychology fontSize="small" />,
-    textKey: t(CategoryType.ARTIFICIAL_INTELLIGENCE),
+    textKey: "artificial_intelligence",
     url: `/course_type/${CategoryType.ARTIFICIAL_INTELLIGENCE}`,
   },
 ];

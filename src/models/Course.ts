@@ -24,6 +24,7 @@ export interface IOwner {
   _id: string;
   first_name: string;
   last_name: string;
+  photo?: string;
 }
 
 export interface IReview {
@@ -36,14 +37,16 @@ export interface IReview {
 export interface ICourseInfoPage {
   _id: string;
   title: string;
+  thumbnail?: string;
+  level?: string[];
   subtitle: string;
   language: string[];
   description: string;
-  goals: IGoal;
+  goals?: IGoal;
   promotional_video: string;
   owner: IOwner;
   review: IReview;
-  sections: any[];
+  sections?: any[];
   price: number;
   created_at: string;
   updated_at: string;
@@ -77,18 +80,14 @@ export interface IUpdateCourse {
   type?: string;
   category?: string[];
   time_spend?: number;
-
   goals?: IGoal;
-
   subtitle?: string;
   description?: string;
   language?: string[];
   level?: string[];
   objectives?: string;
-
   thumbnail?: string;
   promotional_video?: string;
-
   price?: IPrice;
 }
 

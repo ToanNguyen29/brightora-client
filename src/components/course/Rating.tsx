@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { Box, Paper, Typography, Button } from "@mui/material";
 import RatingList from "./rating/RatingList";
 import RatingModal from "./rating/RatingModal";
+import { getReviewByCourse } from "../../services/ReviewService";
 
 const fakeData = {
   ratingStar: 4.7,
@@ -69,10 +70,27 @@ const Rating: React.FC<RatingProps> = ({ courseId }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const page_size = 4;
+  const page_number = 1;
+  // const sort_by = "rating";
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const headerBackgroundColor = mode === "light" ? "#f0f0f0" : "#333333";
+
+  useEffect(() => {
+    if (!courseId) return;
+    const fetchReview = async () => {
+      try {
+        await getReviewByCourse(courseId, page_number, page_size).then(
+          (data) => {
+            console.log("getReviewByCourse", data);
+          }
+        );
+      } catch (error) {}
+    };
+    fetchReview();
+  }, [courseId]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

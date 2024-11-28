@@ -80,7 +80,7 @@ const Instructor: React.FC<InstructorProps> = ({ owner_id }) => {
       await getUser(owner_id)
         .then((data) => {
           if (data.status <= 305) {
-            console.log("toan", data.data);
+            console.log("toan Stats instructor", data.data);
             setInstructor(data.data.data);
           } else {
             console.log();

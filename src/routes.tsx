@@ -18,6 +18,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ChatPage from "./pages/ChatPage";
 import WishList from "./components/mylearning/WishList";
 import PublicProfilePage from "./pages/user/PublicProfile";
+import SearchCoursePage from "./pages/SearchCoursePage";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
@@ -130,7 +131,10 @@ const AppRoutes: React.FC = () => {
               <Route element={<LayoutFullWidth />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
-
+                <Route
+                  path="/courses/search/:querySearch"
+                  element={<SearchCoursePage />}
+                />
                 <Route
                   path="course/:courseId/learn/"
                   element={<LearningPage />}
@@ -177,6 +181,9 @@ const AppRoutes: React.FC = () => {
 
               <Route path="/instructor" element={<InstructorLayout />}>
                 <Route path="course" element={<InstructorCoursePage />} />
+                <Route path="question-and-answer" element={<></>} />
+                <Route path="course-stats" element={<></>} />
+                <Route path="discount-coupon" element={<></>} />
               </Route>
 
               <Route

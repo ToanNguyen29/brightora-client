@@ -5,12 +5,12 @@ import { Box, Grid, Pagination } from "@mui/material";
 
 import { getEnrollmentMe } from "../../services/Enrollment";
 import { ICourseCard } from "../../models/Course";
-// import CourseGrid from "../home/tabview/CourseGrid";
 import MyCourseCard from "./MyCourseCard";
 
 const CourseEnrollmentList: React.FC = () => {
   const token = localStorage.getItem("token");
   const [myCourses, setMyCourses] = useState<ICourseCard[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<ICourseCard[]>([]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +18,10 @@ const CourseEnrollmentList: React.FC = () => {
 
   const indexOfLastCourse = currentPage * coursesPerPage;
   const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-  const currentCourses = myCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+  const currentCourses = filteredCourses.slice(
+    indexOfFirstCourse,
+    indexOfLastCourse
+  );
 
   // Hàm xử lý khi thay đổi trang
   const handlePageChange = (
@@ -32,6 +35,18 @@ const CourseEnrollmentList: React.FC = () => {
     setSearchQuery(event.target.value);
 
   useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredCourses(myCourses);
+    } else {
+      const filtered = myCourses.filter((course) =>
+        course.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredCourses(filtered);
+    }
+    setCurrentPage(1);
+  }, [searchQuery, myCourses]);
+
+  useEffect(() => {
     if (!token) return;
     const fetchMyLearning = async () => {
       try {
@@ -41,6 +56,7 @@ const CourseEnrollmentList: React.FC = () => {
             const courses = data.data.map((item) => item.course);
             console.log("Course", courses);
             setMyCourses(courses);
+            setFilteredCourses(courses); // Cập nhật filteredCourses ban đầu
           }
         });
       } catch (error) {
@@ -78,7 +94,7 @@ const CourseEnrollmentList: React.FC = () => {
           }}
         >
           <Pagination
-            count={Math.ceil(myCourses.length / coursesPerPage)} // Tổng số trang
+            count={Math.ceil(filteredCourses.length / coursesPerPage)} // Tổng số trang
             page={currentPage} // Trang hiện tại
             onChange={handlePageChange}
             color="primary"

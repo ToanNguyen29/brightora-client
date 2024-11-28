@@ -81,19 +81,19 @@ export const getReviewMeOfCourse = async (
 };
 
 export const getReviewByCourse = async (
-  token: string | null,
-  courseId: string
+  // token: string | null,
+  courseId: string,
+  page_number: number | undefined,
+  page_size: number | undefined
+  // sort_by: string
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
       `${
         import.meta.env.VITE_SERVER_URL
-      }/api/v1/review/get_by_course/${courseId}`,
+      }/api/v1/review/get_by_course?course=${courseId}&page_number=${page_number}&page_size=${page_size}`,
       {
         withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       }
     )
     .then((res) => {

@@ -24,7 +24,7 @@ const RecomendCourseBox: React.FC<RecomendCourseBoxProps> = ({ tabName }) => {
           margin: 2,
         }}
       >
-        {t("explore") + " " + t(tabName)}
+        {t("explore") + " " + tabName}
       </Button>{" "}
       {/* <CourseGrid courses={fakeData.courses} /> */}
     </Box>

@@ -19,11 +19,11 @@ function a11yProps(index: number) {
 }
 
 const tabPaths = [
-  "/instructor/course/",
-  "/instructor/communication/qa/",
-  "/instructor/performance/",
-  "/instructor/tools/",
-  "/instructor/help/",
+  "/instructor/course",
+  "/instructor/question-and-answer",
+  "/instructor/course-stats",
+  "/instructor/discount-coupon",
+  // "/instructor/help",
 ];
 
 const InstructorLayout: React.FC = () => {
@@ -97,26 +97,20 @@ const InstructorLayout: React.FC = () => {
           />
           <Tab
             icon={<CommunicationIcon sx={{ fontSize: 40, mr: 2 }} />}
-            label={<Box sx={labelBoxStyles}>{t("communication")}</Box>}
+            label={<Box sx={labelBoxStyles}>{t("question_and_answer")}</Box>}
             {...a11yProps(2)}
             sx={tabStyles}
           />
           <Tab
             icon={<PerformanceIcon sx={{ fontSize: 40, mr: 2 }} />}
-            label={<Box sx={labelBoxStyles}>{t("performance")}</Box>}
+            label={<Box sx={labelBoxStyles}>{t("course_stats")}</Box>}
             {...a11yProps(3)}
             sx={tabStyles}
           />
           <Tab
             icon={<ToolsIcon sx={{ fontSize: 40, mr: 2 }} />}
-            label={<Box sx={labelBoxStyles}>{t("tools")}</Box>}
+            label={<Box sx={labelBoxStyles}>{t("discount_coupon")}</Box>}
             {...a11yProps(4)}
-            sx={tabStyles}
-          />
-          <Tab
-            icon={<ResourceIcon sx={{ fontSize: 40, mr: 2 }} />}
-            label={<Box sx={labelBoxStyles}>{t("resource")}</Box>}
-            {...a11yProps(5)}
             sx={tabStyles}
           />
         </Tabs>
