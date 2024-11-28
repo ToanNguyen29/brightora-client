@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { IDocument } from "../models/Course";
 
-let lesson_url = `${import.meta.env.VITE_SERVER_URL}/api/v1/courses/lessons`;
+const lesson_url = `${import.meta.env.VITE_SERVER_URL}/api/v1/courses/lessons`;
 
 export const getLessonInfo = async (id: string) => {
   try {
@@ -20,6 +20,30 @@ export const getLessonInfo = async (id: string) => {
       return new Error(error.message); // Return generic error if no response
     }
   }
+};
+
+export const updateLesson = async (
+  token: string | null,
+  id: string,
+  title: string
+): Promise<AxiosResponse> => {
+  return await axios
+    .put(
+      `${lesson_url}/${id}`,
+      { title },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
 };
 
 export const updateDocuments = async (

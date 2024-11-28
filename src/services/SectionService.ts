@@ -1,7 +1,9 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { CurriculumMap } from "../models/Course";
 
-let section_url = `${import.meta.env.VITE_SERVER_URL}/api/v1/courses/sections`;
+const section_url = `${
+  import.meta.env.VITE_SERVER_URL
+}/api/v1/courses/sections`;
 
 export const getSectionInfo = async (id: string) => {
   try {
@@ -105,4 +107,28 @@ export const createNewSection = async (
       return new Error(error.message); // Return generic error if no response
     }
   }
+};
+
+export const updateSection = async (
+  token: string | null,
+  id: string,
+  title: string
+): Promise<AxiosResponse> => {
+  return await axios
+    .put(
+      `${section_url}/${id}`,
+      { title },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
 };

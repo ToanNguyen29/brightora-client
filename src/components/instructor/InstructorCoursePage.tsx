@@ -3,6 +3,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import CourseOfInstructor from "./CoursesOfInstructor";
 
 const InstructorCoursePage = () => {
   const { t } = useTranslation();
@@ -14,41 +15,9 @@ const InstructorCoursePage = () => {
   return (
     <Box ml={4}>
       <Typography variant="h3" fontFamily={"monospace"}>
-        Courses
+        {t("course")}
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mt: 2,
-        }}
-      >
-        <TextField
-          sx={{
-            height: "40px", // Set height
-            "& .MuiInputBase-root": {
-              height: "100%",
-            },
-            fontSize: "16px",
-          }}
-        />
-        <Button
-          sx={{
-            height: "40px", // Matches the height of the TextField
-            fontSize: "16px",
-            backgroundColor: backgroundColor,
-            color: textColor,
-            fontWeight: "bold",
-            ":hover": {
-              backgroundColor: backgroundColor,
-            },
-            width: "100px",
-          }}
-        >
-          {" "}
-          <SearchIcon />
-        </Button>
-      </Box>
+
       <Button
         component={Link}
         to="/instructor/course/create"
@@ -68,6 +37,8 @@ const InstructorCoursePage = () => {
       >
         {t("add_new_course")}
       </Button>
+      <CourseOfInstructor />
+      <CourseOfInstructor />
     </Box>
   );
 };

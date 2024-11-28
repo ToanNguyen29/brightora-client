@@ -118,7 +118,7 @@ const Curriculum: React.FC = () => {
         mx={"20px"}
         display={"flex"}
         flexDirection={"column"}
-        mt={5}
+        mt={0}
         maxWidth={"90%"}
         justifyContent="space-between"
       >

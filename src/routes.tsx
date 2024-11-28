@@ -19,6 +19,7 @@ import ChatPage from "./pages/ChatPage";
 import WishList from "./components/mylearning/WishList";
 import PublicProfilePage from "./pages/user/PublicProfile";
 import SearchCoursePage from "./pages/SearchCoursePage";
+import CourseMessages from "./components/courseedit/CourseMessages";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
@@ -59,10 +60,7 @@ const VerticalTabs = React.lazy(() => import("./pages/VerticalTabs"));
 const EditProfilePage = React.lazy(() => import("./pages/user/EditProfile"));
 const EditPhotoPage = React.lazy(() => import("./pages/user/EditPhoto"));
 const EditAccountPage = React.lazy(() => import("./pages/user/EditAccount"));
-const EditPrivacyPage = React.lazy(() => import("./pages/user/EditPrivacy"));
-const EditNotificationsPage = React.lazy(
-  () => import("./pages/user/EditNotifications")
-);
+
 const CloseAccountPage = React.lazy(() => import("./pages/user/CloseAccount"));
 const LoginPage = React.lazy(() => import("./pages/auth/Login"));
 const LayoutFullWidth = React.lazy(
@@ -200,7 +198,10 @@ const AppRoutes: React.FC = () => {
                 <Route path="basics" element={<CourseLanding />} />
                 <Route path="pricing" element={<CoursePricing />} />
                 <Route path="promotions" element={<div></div>} />
-                <Route path="communications/messages" element={<div></div>} />
+                <Route
+                  path="communications/messages"
+                  element={<CourseMessages />}
+                />
               </Route>
             </Routes>
           </Router>

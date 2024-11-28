@@ -310,3 +310,59 @@ export const searchCourse = async (
     });
   return response;
 };
+
+export const getCoursesMe = async (
+  token: string | null
+): Promise<AxiosResponse> => {
+  console.log(course_url);
+  const response = await axios
+    .get(`${course_url}/get_me`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};
+
+export const updateMessagesCourse = async (
+  token: string | null,
+  id: string,
+  welcome_message: string | null,
+  congratulation_message: string | null
+): Promise<AxiosResponse> => {
+  console.log(course_url);
+  const message = { welcome_message, congratulation_message };
+  console.log("messageupdate", message);
+  const response = await axios
+    .put(
+      `${course_url}/${id}`,
+      {
+        welcome_message,
+        congratulation_message,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};

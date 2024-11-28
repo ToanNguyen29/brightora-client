@@ -88,7 +88,7 @@ export interface IUpdateCourse {
   objectives?: string;
   thumbnail?: string;
   promotional_video?: string;
-  price?: IPrice;
+  price?: number;
 }
 
 export interface CurriculumMap {
