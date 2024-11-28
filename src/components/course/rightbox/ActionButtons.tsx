@@ -10,16 +10,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addItemToWishListMe } from "../../../services/WishListService";
 
 interface ActionButtonsProps {
+  is_cart: boolean | undefined;
+  is_review: any;
+  in_wishlist: boolean | undefined;
+  is_enroll: boolean | undefined;
   textColor: string;
   backgroundColor: string;
   handleCheckout: any;
 }
 
-interface item {
-  courseId: string;
-}
-
 const ActionButtons: React.FC<ActionButtonsProps> = ({
+  is_cart,
+  is_review,
+  is_enroll,
+  in_wishlist,
   textColor,
   backgroundColor,
   handleCheckout,
@@ -62,56 +66,83 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     }
   };
 
+  const handleLearn = () => {
+    navigate(`learn`, { replace: true });
+  };
+
   return (
     <Stack spacing={2} sx={{ mt: 3 }}>
-      <Button
-        onClick={handleAddItemToCart}
-        variant="contained"
-        sx={{
-          backgroundColor: textColor,
-          color: backgroundColor,
-          "&:hover": {
-            backgroundColor: backgroundColor,
-            color: textColor,
-          },
-        }}
-        startIcon={<ShoppingCartIcon />}
-        fullWidth
-      >
-        {t("add_to_cart")}
-      </Button>
-      <Button
-        variant="outlined"
-        onClick={handleAddItemToWishList}
-        sx={{
-          backgroundColor: textColor,
-          color: backgroundColor,
-          "&:hover": {
-            backgroundColor: backgroundColor,
-            color: textColor,
-          },
-        }}
-        startIcon={<FavoriteIcon />}
-        fullWidth
-      >
-        {t("add_to_favorite")}
-      </Button>
-      <Button
-        variant="contained"
-        onClick={handleCheckout}
-        sx={{
-          backgroundColor: textColor,
-          color: backgroundColor,
-          "&:hover": {
-            backgroundColor: backgroundColor,
-            color: textColor,
-          },
-        }}
-        startIcon={<PaymentIcon />}
-        fullWidth
-      >
-        {t("buy_now")}
-      </Button>
+      {!is_cart && !is_enroll && (
+        <Button
+          onClick={handleAddItemToCart}
+          variant="contained"
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<ShoppingCartIcon />}
+          fullWidth
+        >
+          {t("add_to_cart")}
+        </Button>
+      )}
+      {!in_wishlist && !is_enroll && (
+        <Button
+          variant="outlined"
+          onClick={handleAddItemToWishList}
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<FavoriteIcon />}
+          fullWidth
+        >
+          {t("add_to_favorite")}
+        </Button>
+      )}
+      {!is_enroll ? (
+        <Button
+          variant="contained"
+          onClick={handleCheckout}
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<PaymentIcon />}
+          fullWidth
+        >
+          {t("buy_now")}
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleLearn}
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<PaymentIcon />}
+          fullWidth
+        >
+          {t("go_to_learn")}
+        </Button>
+      )}
     </Stack>
   );
 };

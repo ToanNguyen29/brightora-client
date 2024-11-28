@@ -93,9 +93,13 @@ export const getCoursesByOwner = async (
   return response;
 };
 
-export const getCourse = async (id: string): Promise<AxiosResponse> => {
+export const getCourse = async (
+  id: string,
+  userId: string | undefined
+): Promise<AxiosResponse> => {
+  console.log("url:", `${course_url}/get_by_id/${id}?user_id=${userId}`);
   const response = await axios
-    .get(`${course_url}/get_by_id/${id}`, {
+    .get(`${course_url}/get_by_id/${id}?user_id=${userId}`, {
       withCredentials: true,
     })
     .then((res) => {
@@ -356,6 +360,29 @@ export const updateMessagesCourse = async (
         },
       }
     )
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};
+
+export const getInformationMe = async (
+  token: string | null,
+  userId: string
+): Promise<AxiosResponse> => {
+  console.log(`${course_url}/?user_id=${userId}`);
+  const response = await axios
+    .get(`${course_url}/?user_id=${userId}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((res) => {
       console.log("res", res);
       return res;

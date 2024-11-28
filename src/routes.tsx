@@ -14,6 +14,7 @@ import LearningPage from "./pages/LearningPage";
 import LessonComponent from "./components/learning/LessonComponent";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+
 import CheckoutPage from "./pages/CheckoutPage";
 import ChatPage from "./pages/ChatPage";
 import WishList from "./components/mylearning/WishList";

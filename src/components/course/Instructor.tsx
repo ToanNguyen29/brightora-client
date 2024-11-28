@@ -42,7 +42,12 @@ const Instructor: React.FC<InstructorProps> = ({ owner_id }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const [instructor, setInstructor] = useState<InstructorInfo | undefined>();
-  const [instructorStat, setInstructorStat] = useState<any>({});
+  const [instructorStat, setInstructorStat] = useState<any>({
+    average_rating: 0,
+    total: 0,
+    total_reviews: 0,
+    total_students: { total_students: 0 },
+  });
   //   const [courseOfInstructor, setCourseOfInstructor] = useState();
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";

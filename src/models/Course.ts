@@ -34,6 +34,13 @@ export interface IReview {
   total_reviews: number;
 }
 
+interface IRelation {
+  in_cart: boolean;
+  in_wishlist: boolean;
+  is_enroll: boolean;
+  is_review: any;
+}
+
 export interface ICourseInfoPage {
   _id: string;
   title: string;
@@ -48,6 +55,7 @@ export interface ICourseInfoPage {
   review: IReview;
   sections?: any[];
   price: number;
+  relation?: IRelation;
   created_at: string;
   updated_at: string;
 }

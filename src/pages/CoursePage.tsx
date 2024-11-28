@@ -13,8 +13,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCourse } from "../services/CourseService";
 import { ICourseInfoPage } from "../models/Course";
+import { useAuth } from "../context/AuthContext";
 
 const CoursePage = () => {
+  const { userInfo } = useAuth();
   // const token = localStorage.getItem("token");
   const [course, setCourse] = useState<ICourseInfoPage | undefined>();
   // const [section, setSection] = useState();
@@ -24,7 +26,7 @@ const CoursePage = () => {
   useEffect(() => {
     if (!courseId) return;
     const fetchCourse = async () => {
-      await getCourse(courseId)
+      await getCourse(courseId, userInfo._id)
         .then((data) => {
           if (data.status <= 305) {
             console.log("course info page: ", data.data);
@@ -38,7 +40,7 @@ const CoursePage = () => {
         });
     };
     fetchCourse();
-  }, [courseId]);
+  }, [courseId, userInfo._id]);
 
   const handleCheckout = async () => {
     if (courseId) {
@@ -91,6 +93,10 @@ const CoursePage = () => {
             }}
           >
             <RightBox
+              is_cart={course?.relation?.in_cart}
+              is_enroll={course?.relation?.is_enroll}
+              in_wishlist={course?.relation?.in_wishlist}
+              is_review={course?.relation?.is_review}
               price={course?.price || 0}
               handleCheckout={handleCheckout}
               promotional_video={course?.promotional_video || ""}
