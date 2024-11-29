@@ -216,3 +216,16 @@ export interface GenerateThumbnailForm {
   description: string;
   style: string;
 }
+
+export interface Conversation {
+  message: string;
+  isAiSent?: boolean; // Optional, defaults to false if not provided
+  createdAt?: Date; // Optional, defaults to current date if not provided
+}
+
+export interface Scheduler {
+  type: string;
+  id: string;
+  is_done: boolean;
+  conversation?: Conversation[]; // Optional array of Conversation
+}

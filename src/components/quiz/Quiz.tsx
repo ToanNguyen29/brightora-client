@@ -34,7 +34,6 @@ const Quiz: React.FC = () => {
         >
           <ProgressQuiz />
           <QuestionQuiz />
-          <NextButtonQuiz />
         </Box>
       )}
       {status === "finished" && <FinishScreenQuiz />}
