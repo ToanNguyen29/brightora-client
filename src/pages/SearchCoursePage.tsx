@@ -27,6 +27,7 @@ const SearchCoursePage: React.FC = () => {
     const fetchCourse = async () => {
       try {
         await searchCourse(querySearch, pageNumber, pageSize).then((data) => {
+          console.log(data);
           if (data.status <= 305) {
             setTotalItem(data.data.total_items);
             setCourses(data.data.data);

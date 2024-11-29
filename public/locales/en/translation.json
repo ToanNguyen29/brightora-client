@@ -252,5 +252,9 @@
   "course_stats": "Course Stats",
   "discount_coupon": "Discount",
   "course_messages_page": "Course Messages Page",
-  "go_to_learn": "Go to learn"
+  "go_to_learn": "Go to learn",
+  "go_to_cart": "go to cart",
+  "course_content": "Course content",
+  "please_select_lesson": "Please select a lesson for learning",
+  "no_resources_available": "No resources available"
 }

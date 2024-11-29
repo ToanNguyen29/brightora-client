@@ -8,20 +8,11 @@ import {
   ListItem,
   ListItemText,
   Collapse,
-  ListItemIcon,
   Divider,
-  Rating,
 } from "@mui/material";
-import {
-  ExpandLess,
-  ExpandMore,
-  PlayCircleOutline,
-  CheckCircleOutline,
-} from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import Overview from "../components/learning/Overview";
-import Notes from "../components/learning/Notes";
 import Reviews from "../components/learning/Review";
-import { initialNotes, initialReviews } from "./mockData";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
@@ -33,160 +24,49 @@ import {
   ISectionLearn,
 } from "../models/Course";
 import { getSectionByCourseId } from "../services/SectionService";
-
-// Data Interfaces
-interface Lesson {
-  id: string;
-  title: string;
-  duration: string;
-  completed: boolean;
-}
-
-interface Exercise {
-  id: string;
-  title: string | null;
-  description: string | null;
-  completed: boolean;
-  questions: any;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-  exercises: Exercise[];
-  duration: string;
-}
-
-const courseSections: Section[] = [
-  {
-    id: "1",
-    title: "Introduction to React",
-    duration: "45 min",
-    lessons: [
-      {
-        id: "1.1",
-        title: "What is React?",
-        duration: "15 min",
-        completed: true,
-      },
-      {
-        id: "1.2",
-        title: "Environment Setup",
-        duration: "30 min",
-        completed: false,
-      },
-    ],
-    exercises: [
-      {
-        id: "2.1",
-        title: "Quiz 1",
-        description: "Basic Nodejs",
-        completed: true,
-        questions: [
-          {
-            question: "Which is the most popular JavaScript framework?",
-            options: ["Angular", "React", "Svelte", "Vue"],
-            correctOption: 1,
-          },
-          {
-            question: "Which company invented React?",
-            options: ["Google", "Apple", "Netflix", "Facebook"],
-            correctOption: 3,
-          },
-          {
-            question: "What's the fundamental building block of React apps?",
-            options: ["Components", "Blocks", "Elements", "Effects"],
-            correctOption: 0,
-          },
-          {
-            question:
-              "What's the name of the syntax we use to describe the UI in React components?",
-            options: ["FBJ", "Babel", "JSX", "ES2015"],
-            correctOption: 2,
-          },
-        ],
-      },
-      {
-        id: "2.2",
-        title: "Quiz 2",
-        description: "Basic react",
-        completed: true,
-        questions: [
-          {
-            question: "Which is the most popular JavaScript framework?",
-            options: ["Angular", "React", "Svelte", "Vue"],
-            correctOption: 1,
-          },
-          {
-            question: "Which company invented React?",
-            options: ["Google", "Apple", "Netflix", "Facebook"],
-            correctOption: 3,
-          },
-          {
-            question: "What's the fundamental building block of React apps?",
-            options: ["Components", "Blocks", "Elements", "Effects"],
-            correctOption: 0,
-          },
-          {
-            question:
-              "What's the name of the syntax we use to describe the UI in React components?",
-            options: ["FBJ", "Babel", "JSX", "ES2015"],
-            correctOption: 2,
-          },
-        ],
-      },
-    ],
-  },
-];
+import { useAuth } from "../context/AuthContext";
+import LoadingPage from "./LoadingPage";
+import QuesAndAns from "../components/learning/Notes";
+import ListItemLesson from "../components/learning/ListItemLesson";
 
 const LearningPage: React.FC = () => {
-  // const token = localStorage.getItem("token");
+  const { userInfo } = useAuth();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { courseId, lessonId, exerciseId } = useParams();
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const navigate = useNavigate();
-
   const [course, setCourse] = useState<ICourseInfoPage | undefined>();
   const [sections, setSections] = useState<ISectionLearn[] | undefined>();
-
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
-  // const [selectedExercise, setSelectedExercise] = useState<string | null>(
-  //    null,
-  // );
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
 
-  // const [courseData] = useState(courseSections);
-  const [reviews, setReviews] = useState(initialReviews);
-  const [notes, setNotes] = useState(initialNotes);
-  const [newReview, setNewReview] = useState({
-    name: "",
-    rating: 0,
-    content: "",
-  });
-  const [newNote, setNewNote] = useState("");
-
   useEffect(() => {
-    if (!courseId) return;
+    if (!courseId || !userInfo._id) return;
     const fetchCourse = async () => {
-      await getCourse(courseId)
-        .then((data) => {
-          if (data.status <= 305) {
+      try {
+        await getCourse(courseId, userInfo._id)
+          .then((data) => {
             console.log("course In learning", data.data);
-            setCourse(data.data);
-          } else {
-            console.log();
-          }
-        })
-        .catch((err) => {
-          alert("Error: " + err.detail);
-        });
+            if (data.status <= 305) {
+              setIsLoading(true);
+              setCourse(data.data);
+            }
+          })
+          .catch((err) => {
+            alert("Error: " + err.detail);
+          });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchCourse();
-  }, [courseId]);
+  }, [courseId, userInfo._id]);
 
   useEffect(() => {
     if (!courseId) return;
@@ -208,6 +88,12 @@ const LearningPage: React.FC = () => {
     fetchSectionByCourse();
   }, [courseId]);
 
+  useEffect(() => {
+    console.log("navigate course", course);
+    if (!isLoading && course?.relation && course.relation.is_enroll === false)
+      navigate(`/course/${courseId}`);
+  }, [course, navigate, courseId, isLoading]);
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) =>
     setTabIndex(newValue);
 
@@ -217,19 +103,6 @@ const LearningPage: React.FC = () => {
         ? expandedSections.filter((x) => x !== id)
         : [...expandedSections, id]
     );
-  };
-
-  const handleAddReview = () => {
-    if (newReview.name && newReview.rating && newReview.content) {
-      const newReviewData = {
-        id: (reviews.length + 1).toString(),
-        name: newReview.name,
-        rating: newReview.rating,
-        content: newReview.content,
-      };
-      setReviews([...reviews, newReviewData]);
-      setNewReview({ name: "", rating: 0, content: "" });
-    }
   };
 
   const handleClickLesson = (
@@ -244,24 +117,13 @@ const LearningPage: React.FC = () => {
       navigate(`exercise/${id}`, { replace: true });
   };
 
-  // Handle add note
-  const handleAddNote = () => {
-    if (newNote) {
-      const newNoteData = {
-        id: (notes.length + 1).toString(),
-        text: newNote,
-      };
-      setNotes([...notes, newNoteData]);
-      setNewNote("");
-    }
-  };
+  if (isLoading) return <LoadingPage />;
   // maxWidth = "xl";
   return (
     <Box>
       <Box
         display="flex"
         flexDirection="column"
-        // mb={3}
         sx={{ backgroundColor: textColor, border: backgroundColor }}
       >
         <Typography
@@ -276,7 +138,6 @@ const LearningPage: React.FC = () => {
 
       <Box sx={{}}>
         <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={2}>
-          {/* Video Player Section */}
           <Box
             flex={3}
             sx={{
@@ -284,7 +145,6 @@ const LearningPage: React.FC = () => {
               height: "auto",
               aspectRatio: "16/9",
               border: "1px solid #ddd",
-              // mb: 1,
             }}
           >
             <Box
@@ -314,7 +174,7 @@ const LearningPage: React.FC = () => {
                     textAlign: "center",
                   }}
                 >
-                  Please select a lesson for learning
+                  {t("please_select_lesson")}
                 </Typography>
               )}
             </Box>
@@ -328,56 +188,61 @@ const LearningPage: React.FC = () => {
                 variant="fullWidth"
               >
                 <Tab label="Overview" />
-                <Tab label="Notes" />
+                <Tab label="Q&A" />
                 <Tab label="Reviews" />
               </Tabs>
             </AppBar>
 
             <Box mt={2}>
-              {tabIndex === 0 && (
-                <Overview />
-                // <Overview
-                //    notes={notes}
-                //    newNote={newNote}
-                //    setNewNote={setNewNote}
-                //    handleAddNote={handleAddNote}
-                // ></Overview>
-              )}
-              {tabIndex === 1 && (
-                <Notes
-                  notes={notes}
-                  newNote={newNote}
-                  setNewNote={setNewNote}
-                  handleAddNote={handleAddNote}
-                />
-              )}
-              {tabIndex === 2 && (
-                <Reviews
-                  reviews={reviews}
-                  newReview={newReview}
-                  setNewReview={setNewReview}
-                  handleAddReview={handleAddReview}
-                />
-              )}
+              {tabIndex === 0 && <Overview />}
+              {tabIndex === 1 && <QuesAndAns />}
+              {tabIndex === 2 && <Reviews />}
             </Box>
           </Box>
 
-          {/* Course Content Section */}
-          <Box flex={1} maxHeight="75vh" overflow="auto">
+          <Box
+            flex={1}
+            maxHeight="100vh"
+            overflow="auto"
+            sx={{
+              position: "sticky",
+              top: 20,
+            }}
+          >
             <Typography variant="h5" fontWeight="bold" sx={{ p: 1.5 }}>
-              Course Content
+              {t("course_content")}
             </Typography>
+
             <Divider sx={{ mb: 2 }} />
+
             {sections?.map((section) => (
               <Box key={section.id} mb={2}>
                 <ListItem onClick={() => toggleSection(section.id)}>
                   <ListItemText
                     primary={
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: "bold",
+                          "&:hover": {
+                            cursor: "pointer",
+                          },
+                        }}
+                      >
                         {`Section ${section.ordinal_number}: ${section.title}`}
                       </Typography>
                     }
-                    secondary={`${section?.lessons.length} lessons + exercises`}
+                    secondary={
+                      <Typography
+                        sx={{
+                          "&:hover": {
+                            cursor: "pointer",
+                          },
+                        }}
+                      >
+                        {`${section?.lessons.length} lessons + exercises`}
+                      </Typography>
+                    }
                   />
                   {expandedSections.includes(section.id) ? (
                     <ExpandLess />
@@ -392,36 +257,11 @@ const LearningPage: React.FC = () => {
                 >
                   {section.lessons.map(
                     (lesson: ILessonLearn | IExerciseLearn) => (
-                      <ListItem
-                        sx={{
-                          backgroundColor:
-                            selectedLesson === lesson.id
-                              ? "rgba(0, 0, 0, 0.08)"
-                              : "transparent",
-                          "&:hover": {
-                            backgroundColor: "rgba(0, 0, 0, 0.08)",
-                            cursor: "pointer",
-                          },
-                          "&:active": {
-                            backgroundColor: "rgba(0, 0, 0, 0.16)", // Màu nền khi click
-                          },
-                        }}
-                        key={lesson.id}
-                        onClick={(e) =>
-                          handleClickLesson(e, lesson.id, lesson.type)
-                        }
-                      >
-                        <ListItemText
-                          primary={
-                            <Typography sx={{}}>
-                              {lesson.type === "lesson"
-                                ? `${lesson.ordinal_number}. ${lesson.title}`
-                                : `Exercise. ${lesson.title}`}
-                            </Typography>
-                          }
-                          // secondary={lesson.duration}
-                        />
-                      </ListItem>
+                      <ListItemLesson
+                        lesson={lesson}
+                        selectedLesson={selectedLesson}
+                        onSelectLesson={handleClickLesson}
+                      />
                     )
                   )}
                 </Collapse>
@@ -429,13 +269,9 @@ const LearningPage: React.FC = () => {
             ))}
           </Box>
         </Box>
-
-        {/* Tabs Section */}
       </Box>
     </Box>
   );
 };
-
-// Overview Component
 
 export default LearningPage;

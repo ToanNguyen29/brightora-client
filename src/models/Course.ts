@@ -34,6 +34,16 @@ export interface IReview {
   total_reviews: number;
 }
 
+export interface IReviewDetail {
+  _id: number;
+  course: string;
+  rating: number;
+  comment: string;
+  created_at: string;
+  updated_at: string;
+  owner: string;
+}
+
 interface IRelation {
   in_cart: boolean;
   in_wishlist: boolean;

@@ -233,6 +233,7 @@ export const getCourseByType = async (filter: CourseFilterType) => {
         withCredentials: true,
       }
     );
+    console.log("toan", response.data);
     return response.data;
   } catch (error: any) {
     if (error.response) {
