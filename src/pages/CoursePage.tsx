@@ -17,9 +17,7 @@ import { useAuth } from "../context/AuthContext";
 
 const CoursePage = () => {
   const { userInfo } = useAuth();
-  // const token = localStorage.getItem("token");
-  const [course, setCourse] = useState<ICourseInfoPage | undefined>();
-  // const [section, setSection] = useState();
+  const [course, setCourse] = useState<ICourseInfoPage | undefined>(undefined);
   const navigate = useNavigate();
   const { courseId } = useParams();
 
@@ -83,7 +81,11 @@ const CoursePage = () => {
           <Description description={course?.description || ""} />
           {/* <FeaturedReview /> */}
           <Intructor owner_id={course?.owner._id || ""} />
-          <Rating courseId={courseId} />
+          <Rating
+            courseId={courseId}
+            total_reviews={course?.review.total_reviews || 0}
+            average_rating={course?.review.average_rating || 0}
+          />
         </Grid>
         <Grid item xs={12} md={4}>
           <Box
