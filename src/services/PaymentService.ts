@@ -32,3 +32,30 @@ export const createPayment = async (
 
   return response;
 };
+
+export const getStats = async (
+  token: string | null,
+  queryParams: string
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .get(
+      `${
+        import.meta.env.VITE_SERVER_URL
+      }/api/v1/enrollment/payment/statistics?${queryParams}`,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      return err.response;
+    });
+  return response;
+};
