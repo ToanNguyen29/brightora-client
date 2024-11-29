@@ -12,8 +12,6 @@ import { Box } from "@mui/material";
 
 const LessonComponent: React.FC = () => {
   const { mode } = useThemeContext();
-  const { t } = useTranslation();
-  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
   const { lessonId } = useParams();

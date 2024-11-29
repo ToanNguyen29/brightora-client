@@ -22,17 +22,20 @@ import {
   IExerciseLearn,
   ILessonLearn,
   ISectionLearn,
+  Scheduler,
 } from "../models/Course";
 import { getSectionByCourseId } from "../services/SectionService";
 import { useAuth } from "../context/AuthContext";
 import LoadingPage from "./LoadingPage";
 import QuesAndAns from "../components/learning/Notes";
 import ListItemLesson from "../components/learning/ListItemLesson";
+import { getEnrollByCourse, updateScheduler } from "../services/Enrollment";
 
 const LearningPage: React.FC = () => {
   const { userInfo } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { courseId, lessonId, exerciseId } = useParams();
+  const [erollId, setErollId] = useState<string>();
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
@@ -43,6 +46,8 @@ const LearningPage: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [scheduler, setScheduler] = useState<Scheduler[]>([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (!courseId || !userInfo._id) return;
@@ -89,6 +94,26 @@ const LearningPage: React.FC = () => {
   }, [courseId]);
 
   useEffect(() => {
+    if (!courseId) return;
+    const fetchEnrollByCourse = async () => {
+      await getEnrollByCourse(courseId, token)
+        .then((data) => {
+          if (data.status <= 305) {
+            console.log("setScheduler ", data.data);
+            setScheduler(data.data.schedule);
+            setErollId(data.data._id);
+          } else {
+            console.log();
+          }
+        })
+        .catch((err) => {
+          alert("Error: " + err);
+        });
+    };
+    fetchEnrollByCourse();
+  }, [courseId, token]);
+
+  useEffect(() => {
     console.log("navigate course", course);
     if (!isLoading && course?.relation && course.relation.is_enroll === false)
       navigate(`/course/${courseId}`);
@@ -116,6 +141,28 @@ const LearningPage: React.FC = () => {
     else if (type === "excercise")
       navigate(`exercise/${id}`, { replace: true });
   };
+
+  const handleUpdateScheduler = (updatedScheduler: Scheduler) => {
+    console.log("Updating schedule: ", updatedScheduler);
+
+    setScheduler((prev) => {
+      const exists = prev.find((x) => x.id === updatedScheduler.id);
+      if (exists) {
+        // Update the existing scheduler in the state
+        return prev.map((x) =>
+          x.id === updatedScheduler.id ? updatedScheduler : x
+        );
+      } else {
+        // If not found, add it to the list
+        return [...prev, updatedScheduler];
+      }
+    });
+  };
+  useEffect(() => {
+    if (erollId && scheduler.length > 0) {
+      updateScheduler(token, erollId, scheduler);
+    }
+  }, [scheduler, erollId, token]);
 
   if (isLoading) return <LoadingPage />;
   // maxWidth = "xl";
@@ -245,9 +292,21 @@ const LearningPage: React.FC = () => {
                     }
                   />
                   {expandedSections.includes(section.id) ? (
-                    <ExpandLess />
+                    <ExpandLess
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                        },
+                      }}
+                    />
                   ) : (
-                    <ExpandMore />
+                    <ExpandMore
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                        },
+                      }}
+                    />
                   )}
                 </ListItem>
                 <Collapse
@@ -261,6 +320,10 @@ const LearningPage: React.FC = () => {
                         lesson={lesson}
                         selectedLesson={selectedLesson}
                         onSelectLesson={handleClickLesson}
+                        handleUpdateScheduler={handleUpdateScheduler}
+                        schedular={
+                          scheduler.find((x) => x.id === lesson._id) || null
+                        }
                       />
                     )
                   )}
