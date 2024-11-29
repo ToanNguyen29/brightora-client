@@ -1,12 +1,14 @@
 // VideoPlayer.tsx
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
-import { Typography } from "@mui/material";
+// import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
 import { getLessonInfo } from "../../services/LessonService";
 import { ILessonLearn } from "../../models/Course";
+import ReactMarkdown from "react-markdown";
+import { Box } from "@mui/material";
 
 const LessonComponent: React.FC = () => {
   const { mode } = useThemeContext();
@@ -69,20 +71,17 @@ const LessonComponent: React.FC = () => {
           }}
         />
       ) : (
-        <Typography
-          variant="h6"
-          // color="white"
+        <Box
           sx={{
-            color: textColor,
+            display: "flex",
             position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
+            p: "5%",
+            top: "0",
+            left: "0",
           }}
         >
-          No video
-        </Typography>
+          <ReactMarkdown>{lesson?.description}</ReactMarkdown>
+        </Box>
       )}
     </>
   );

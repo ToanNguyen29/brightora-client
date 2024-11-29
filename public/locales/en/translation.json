@@ -256,5 +256,6 @@
   "go_to_cart": "go to cart",
   "course_content": "Course content",
   "please_select_lesson": "Please select a lesson for learning",
-  "no_resources_available": "No resources available"
+  "no_resources_available": "No resources available",
+  "q_and_a": "Question and Answer"
 }

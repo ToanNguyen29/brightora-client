@@ -1,5 +1,4 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
