@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Avatar,
   Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
   Typography,
   Stack,
   List,
@@ -16,11 +11,13 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Divider,
 } from "@mui/material";
 import { getCoursesMe } from "../services/CourseService";
 import { getQAndAByCourse } from "../services/QuesAndAnsService";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
+import QAItem from "../components/qanda/QAndAItem";
 
 interface ICourseQA {
   _id: string;
@@ -46,10 +43,10 @@ const QAndAPage: React.FC = () => {
   const [filteredQAndAList, setFilteredQAndAList] = useState<
     IQAndA[] | undefined
   >();
-  const [reply, setReply] = useState<string>("");
-  const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(
-    null
-  );
+  // const [reply, setReply] = useState<string>("");
+  // const [currentQuestionId, setCurrentQuestionId] = useState<string | null>(
+  //   null
+  // );
   const [filter, setFilter] = useState<string>("all"); // Trạng thái filter: "all", "answered", "unanswered"
 
   const { t } = useTranslation();
@@ -57,12 +54,6 @@ const QAndAPage: React.FC = () => {
 
   const backgroundColor = mode === "dark" ? "#ffffff" : "#000000";
   const textColor = mode === "dark" ? "#000000" : "#ffffff";
-
-  // Fake thông tin instructor
-  const instructor = {
-    name: "John Doe",
-    photo: "https://via.placeholder.com/40",
-  };
 
   // Lấy danh sách khóa học của lecturer
   useEffect(() => {
@@ -103,19 +94,7 @@ const QAndAPage: React.FC = () => {
     }
   }, [filter, qAndAList]);
 
-  const handleReply = async (questionId: string) => {
-    // if (!reply.trim()) return;
-    // await replyToQuestion(token, questionId, reply).then((data) => {
-    //   console.log("Reply submitted:", data);
-    //   if (data.status <= 305) {
-    //     setQAndAList((prev) =>
-    //       prev?.map((q) => (q._id === questionId ? { ...q, answer: reply } : q))
-    //     );
-    //     setReply("");
-    //     setCurrentQuestionId(null);
-    //   }
-    // });
-  };
+  const handleReply = async (questionId: string) => {};
 
   return (
     <>
@@ -165,10 +144,6 @@ const QAndAPage: React.FC = () => {
             overflowY: "auto",
           }}
         >
-          {/* <Typography variant="h6" gutterBottom>
-            Q&A
-          </Typography> */}
-
           <Box
             sx={{
               display: "flex",
@@ -196,95 +171,7 @@ const QAndAPage: React.FC = () => {
 
           {filteredQAndAList && filteredQAndAList.length > 0 ? (
             filteredQAndAList.map((q) => (
-              <Card key={q._id} sx={{ mb: 2 }}>
-                <CardContent>
-                  {/* Thông tin sinh viên */}
-                  <Box display="flex" alignItems="center" mb={2}>
-                    <Avatar src={q.student.photo} alt={q.student.first_name} />
-                    <Box ml={2}>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        {q.student.first_name} {q.student.last_name}
-                      </Typography>
-                    </Box>
-                  </Box>
-
-                  <Typography variant="body1" mb={2}>
-                    {q.question}
-                  </Typography>
-
-                  {q.answer ? (
-                    <Box display="flex" mt={3}>
-                      <Avatar
-                        src={instructor.photo}
-                        alt={instructor.name}
-                        sx={{ mr: 2 }}
-                      />
-                      <Box>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                          {instructor.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            mt: 1,
-                            pl: 2,
-                            borderLeft: "4px solid",
-                            borderColor: "primary.main",
-                          }}
-                        >
-                          {q.answer}
-                        </Typography>
-                        <Button
-                          variant="text"
-                          size="small"
-                          sx={{ mt: 1 }}
-                          onClick={() => {
-                            setCurrentQuestionId(q._id);
-                            setReply(q.answer || "");
-                          }}
-                        >
-                          Edit
-                        </Button>
-                      </Box>
-                    </Box>
-                  ) : currentQuestionId === q._id ? (
-                    <Box mt={2}>
-                      <TextField
-                        fullWidth
-                        label="Your Reply"
-                        value={reply}
-                        onChange={(e) => setReply(e.target.value)}
-                        multiline
-                        rows={2}
-                        sx={{ mb: 2 }}
-                      />
-                      <Stack direction="row" spacing={1}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleReply(q._id)}
-                        >
-                          Submit
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          onClick={() => setCurrentQuestionId(null)}
-                        >
-                          Cancel
-                        </Button>
-                      </Stack>
-                    </Box>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={() => setCurrentQuestionId(q._id)}
-                    >
-                      Reply
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
+              <QAItem key={q._id} qAndA={q} onReplySubmit={handleReply} />
             ))
           ) : (
             <Typography variant="body1">

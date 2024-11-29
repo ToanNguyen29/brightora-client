@@ -21,10 +21,13 @@ const Navbar: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchQuery(event.target.value);
 
+  const handleSearch = () => {};
+
   return (
     <AppBar position="static">
       <Toolbar
         sx={{
+          p: 4,
           height: 60,
           backgroundColor: mode === "light" ? "white" : "black",
         }}
