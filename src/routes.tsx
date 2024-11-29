@@ -20,11 +20,8 @@ import WishList from "./components/mylearning/WishList";
 import PublicProfilePage from "./pages/user/PublicProfile";
 import SearchCoursePage from "./pages/SearchCoursePage";
 import CourseMessages from "./components/courseedit/CourseMessages";
-<<<<<<<<< Temporary merge branch 1
 import PaymentStatistics from "./pages/CourseStats";
-=========
 import CoursePage from "./pages/CoursePage";
->>>>>>>>> Temporary merge branch 2
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
