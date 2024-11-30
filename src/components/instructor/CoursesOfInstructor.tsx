@@ -29,36 +29,6 @@ type Course = {
   created_at: string;
 };
 
-const fakeCourses: Course[] = [
-  {
-    _id: "1",
-    title: "The Complete 2024 Web Development Bootcamp",
-    subtitle:
-      "Become a Full-Stack Web Developer with just ONE course. HTML, CSS, Javascript, Node, React, PostgreSQL, Web3 and DApps",
-    price: 100,
-    category: ["Programming"],
-    level: ["Beginner Level"],
-    language: ["English"],
-    sections: ["1", "2"],
-    thumbnail:
-      "https://brightora.s3.amazonaws.com/thumbnail/6741769c79dd2e1e2c6b11a0.png",
-    created_at: "2024-11-23T06:20:06.478000",
-  },
-  {
-    _id: "2",
-    title: "Mastering Data Science with Python",
-    subtitle:
-      "Learn Python, Data Analysis, Visualization, and Machine Learning.",
-    price: 120,
-    category: ["Data Science"],
-    level: ["Intermediate Level"],
-    language: ["English"],
-    sections: ["1", "2"],
-    thumbnail: "https://via.placeholder.com/150",
-    created_at: "2024-11-20T10:15:00.000000",
-  },
-];
-
 interface CourseOfInstructorProps {
   status?: string;
 }
@@ -68,8 +38,8 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
 }) => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [coursesDraft, setCoursesDraft] = useState<Course[]>(fakeCourses);
-  const [courses, setCourses] = useState<Course[]>(fakeCourses);
+  const [coursesDraft, setCoursesDraft] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   const handleEdit = (id: string) => {
     console.log(`Edit course with ID: ${id}`);
@@ -109,7 +79,14 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
           </TableHead>
           <TableBody>
             {coursesDraft.map((course) => (
-              <TableRow key={course._id}>
+              <TableRow
+                key={course._id}
+                onClick={() => handleEdit(course._id)}
+                sx={{
+                  cursor: "pointer", // Change cursor to pointer
+                }}
+              >
+                {" "}
                 <TableCell>
                   <Avatar
                     variant="square"
@@ -134,14 +111,9 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
                     : ["English"].join(", ")}
                 </TableCell>
                 <TableCell>${course.price.toFixed(2)}</TableCell>
-                {/* <TableCell>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <Typography>{course.sections.length} sections</Typography>
-                  </Box>
-                </TableCell> */}
                 <TableCell>
                   <IconButton
-                    color="primary"
+                    color="default" // 'default' for black; 'inherit' to inherit parent color
                     onClick={() => handleEdit(course._id)}
                   >
                     <Edit />

@@ -1,15 +1,18 @@
 import axios, { AxiosResponse } from "axios";
 
 export const createQuestion = async (
-  token: string | null,
-  course: string,
-  rating: number,
-  comment: string
+  token: string,
+  question: string,
+  courseId: string
 ): Promise<AxiosResponse> => {
+  const formData = {
+    question: question,
+    course: courseId,
+  };
   const response = await axios
     .post(
       `${import.meta.env.VITE_SERVER_URL}/api/v1/courses/qa/`,
-      { course, rating, comment },
+      { ...formData },
       {
         withCredentials: true,
         headers: {

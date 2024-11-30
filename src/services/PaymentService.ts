@@ -59,3 +59,27 @@ export const getStats = async (
     });
   return response;
 };
+
+export const getPurchaseHistory = async (
+  token: string | null
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .get(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/enrollment/payment/get_me`,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      console.log("res", res);
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      return err.response;
+    });
+  return response;
+};

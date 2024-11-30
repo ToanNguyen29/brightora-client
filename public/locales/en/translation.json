@@ -259,5 +259,7 @@
   "no_resources_available": "No resources available",
   "q_and_a": "Question and Answer",
   "your_review": "Your review",
-  "student_feedback": "Student feedback"
+  "student_feedback": "Student feedback",
+  "congratulation_message": "Congratulation Message",
+  "welcome_message": "Welcome Message"
 }

@@ -3,17 +3,12 @@ import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 // import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useThemeContext } from "../../theme/ThemeContext";
-import { useTranslation } from "react-i18next";
 import { getLessonInfo } from "../../services/LessonService";
 import { ILessonLearn } from "../../models/Course";
 import ReactMarkdown from "react-markdown";
 import { Box } from "@mui/material";
 
 const LessonComponent: React.FC = () => {
-  const { mode } = useThemeContext();
-  const textColor = mode === "light" ? "#000000" : "#ffffff";
-
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState<ILessonLearn | undefined>();
   useEffect(() => {

@@ -5,9 +5,13 @@ import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-const tabPaths = ["/my-course/learning/", "/my-course/wishlist/"];
+const tabPaths = [
+  "/my-course/learning/",
+  "/my-course/wishlist/",
+  "/my-course/purchase_history",
+];
 
-const tabNames = ["all_course", "wishlist"];
+const tabNames = ["all_course", "wishlist", "purchase_history"];
 
 function a11yProps(index: number) {
   return {
@@ -81,6 +85,14 @@ const MyLearningPage: React.FC = () => {
               </Typography>
             }
             {...a11yProps(1)}
+          />
+          <Tab
+            icon={
+              <Typography fontWeight={"bold"} sx={{ color: textColor }}>
+                {t(`${tabNames[2]}`)}
+              </Typography>
+            }
+            {...a11yProps(2)}
           />
         </Tabs>
       </Box>

@@ -1,9 +1,10 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useNavigate, useLocation, Outlet, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
 import { StepSection } from "../components/courseedit/StepSection";
+import SendIcon from "@mui/icons-material/Send"; // Example icon
 
 export default function CourseEditLayout() {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +78,22 @@ export default function CourseEditLayout() {
           labelBoxStyles={labelBoxStyles}
           isStepDone={isStepDone}
         />
+        <Button
+          sx={{
+            fontSize: "16px",
+            my: "45px",
+            backgroundColor: mode === "dark" ? "white" : "grey",
+            color: mode === "dark" ? "grey" : "white",
+            padding: "10px 20px",
+            fontWeight: "bold",
+            ":hover": {
+              backgroundColor: mode === "dark" ? "white" : "grey",
+            },
+          }}
+          startIcon={<SendIcon />}
+        >
+          Send for Review
+        </Button>
       </Box>
       <Box sx={{ p: 3, margin: "10px", borderRadius: "8px", flexGrow: 1 }}>
         <Outlet />

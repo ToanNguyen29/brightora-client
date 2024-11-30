@@ -27,7 +27,7 @@ import {
 import { getSectionByCourseId } from "../services/SectionService";
 import { useAuth } from "../context/AuthContext";
 import LoadingPage from "./LoadingPage";
-import QuesAndAns from "../components/learning/Notes";
+import QuesAndAns from "../components/learning/QuesAndAns";
 import ListItemLesson from "../components/learning/ListItemLesson";
 import { getEnrollByCourse, updateScheduler } from "../services/Enrollment";
 
@@ -242,7 +242,7 @@ const LearningPage: React.FC = () => {
 
             <Box mt={2}>
               {tabIndex === 0 && <Overview course={course} />}
-              {tabIndex === 1 && <QuesAndAns />}
+              {tabIndex === 1 && <QuesAndAns courseId={courseId} />}
               {tabIndex === 2 && <Reviews />}
             </Box>
           </Box>

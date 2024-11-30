@@ -103,9 +103,9 @@ const CourseMessages: React.FC = () => {
       }}
     >
       <Head title={"course_messages_page"} />
-      <Box mx={"20px"} sx={{ display: "flex", flexDirection: "column" }}>
+      <Box mx={"20px"} sx={{ display: "flex", flexDirection: "column", mb: 1 }}>
         <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-          {t("course_description")}
+          {t("congratulation_message")}
         </Typography>
         <Box
           sx={{
@@ -116,7 +116,7 @@ const CourseMessages: React.FC = () => {
             flexDirection: "column",
             borderBottom: "0.5px groove",
             width: "100%",
-            mb: 6,
+            mb: 1,
           }}
         >
           <RichTextBox
@@ -125,13 +125,12 @@ const CourseMessages: React.FC = () => {
           />
         </Box>
 
-        <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-          {t("course_description")}
+        <Typography variant="h6" fontWeight="bold">
+          {t("welcome_message")}
         </Typography>
         <Box
           sx={{
             backgroundColor: "transparent",
-
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-start",
