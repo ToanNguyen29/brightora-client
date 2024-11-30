@@ -243,7 +243,9 @@ const LearningPage: React.FC = () => {
             <Box mt={2}>
               {tabIndex === 0 && <Overview course={course} />}
               {tabIndex === 1 && <QuesAndAns courseId={courseId} />}
-              {tabIndex === 2 && <Reviews />}
+              {tabIndex === 2 && (
+                <Reviews reviewStat={course?.review} courseId={courseId} />
+              )}
             </Box>
           </Box>
 

@@ -41,7 +41,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
   const [reviewText, setReviewText] = useState("");
 
   const handleSubmitRating = async () => {
-    console.log("submit rating");
+    console.log("submit rating", selectedRating);
     try {
       await createReview(token, courseId, selectedRating, reviewText).then(
         (data) => {
@@ -54,7 +54,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
   };
 
   const handleUpdateRating = async () => {
-    console.log("Update rating");
+    console.log("Update rating", selectedRating);
 
     try {
       await updateReview(token, reviewId, selectedRating, reviewText).then(

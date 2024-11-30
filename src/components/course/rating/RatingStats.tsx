@@ -4,18 +4,18 @@ import { Star, StarHalf, StarBorder } from "@mui/icons-material";
 import { IReview } from "../../../models/Course";
 
 interface RatingData {
-  data: IReview;
+  data: IReview | undefined;
 }
 
 const RatingStats: React.FC<RatingData> = ({ data }) => {
   const stars = [5, 4, 3, 2, 1]; // Star rating levels in descending order
-  const totalReviews = data.total_reviews;
+  const totalReviews = data?.total_reviews;
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }).map((_, index) => {
       if (index < rating)
         return <Star key={index} fontSize="small" color="warning" />;
-      if (index < rating + 0.5)
+      if (index < rating)
         return <StarHalf key={index} fontSize="small" color="warning" />;
       return <StarBorder key={index} fontSize="small" color="warning" />;
     });
@@ -28,15 +28,16 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
         alignItems: "flex-start",
         gap: 5,
         mx: "auto",
-        width: "80%",
+        width: "100%",
+        mb: 2,
       }}
     >
       {/* Left Section: Average Rating */}
       <Box sx={{ textAlign: "center", width: "20%" }}>
         <Typography variant="h4" color="warning.main">
-          {data.average_rating.toFixed(1)}
+          {data?.average_rating.toFixed(1)}
         </Typography>
-        <Box>{renderStars(data.average_rating)}</Box>
+        <Box>{renderStars(data?.average_rating || 0)}</Box>
         <Typography variant="subtitle2" color="text.secondary">
           Course Rating
         </Typography>
@@ -45,7 +46,9 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
       {/* Right Section: Star Distribution */}
       <Box sx={{ flex: 1 }}>
         {stars.map((star) => {
-          const starCount = data.star[`${star}_star`];
+          const starCount = data?.star[`${star}_star`];
+          console.log("startData", data);
+          console.log("starCount", `${star}_star`, starCount);
           const percentage = totalReviews
             ? (starCount / totalReviews) * 100
             : 0;
