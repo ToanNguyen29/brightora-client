@@ -16,21 +16,6 @@ import RatingStats from "../course/rating/RatingStats";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
 
-// interface Review {
-//   id: string;
-//   name: string;
-//   rating: number;
-//   content: string;
-// }
-
-// interface ReviewsProps {
-//   reviews: Review[];
-//   newReview: { name: string; rating: number; content: string };
-//   setNewReview: React.Dispatch<
-//     React.SetStateAction<{ name: string; rating: number; content: string }>
-//   >;
-//   handleAddReview: () => void;
-// }
 const data = {
   average_rating: 5,
   course: "2",
