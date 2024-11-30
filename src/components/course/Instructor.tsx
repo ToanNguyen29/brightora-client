@@ -11,18 +11,6 @@ import {
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useTranslation } from "react-i18next";
-// import { getCoursesByOwner } from "../../services/CourseService.ts";
-
-// const fakeData = {
-//   name: "Dr. Angela Yu",
-//   avt: "https://t3.ftcdn.net/jpg/06/57/85/22/360_F_657852299_5py03y6oH4mrUDyZnf9XxFSFfrjcqAzP.jpg",
-//   position: "Developer and Lead Instructor",
-//   rating: 4.7,
-//   reviews: 870289,
-//   students: 2878773,
-//   courses: 7,
-//   introduction: "/instructordes.md",
-// };
 
 interface InstructorProps {
   owner_id: string;
