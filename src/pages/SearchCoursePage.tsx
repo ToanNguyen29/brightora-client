@@ -70,7 +70,7 @@ const SearchCoursePage: React.FC = () => {
         {/* Filter Bar Section */}
         <Box
           sx={{
-            flex: "1",
+            flex: "1.5",
             pr: 2,
             mt: 1.5,
           }}

@@ -74,7 +74,7 @@ const FilterSidebar = () => {
                       ))}
                     <Typography
                       sx={{ ml: 1, fontSize: "0.9rem" }}
-                    >{`${rating} & up (10,000)`}</Typography>
+                    >{`${rating} to ${rating + 0.5}`}</Typography>
                   </Box>
                 }
               />
@@ -107,7 +107,7 @@ const FilterSidebar = () => {
                     onChange={handleLevelChange}
                   />
                 }
-                label={`${level.label} (10,000)`}
+                label={`${level.label}`}
               />
             ))}
           </FormGroup>
@@ -136,7 +136,7 @@ const FilterSidebar = () => {
                     onChange={handlePriceChange}
                   />
                 }
-                label={`${priceOption.label} (10,000)`}
+                label={`${priceOption.label}`}
               />
             ))}
           </FormGroup>

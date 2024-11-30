@@ -257,5 +257,7 @@
   "course_content": "Course content",
   "please_select_lesson": "Please select a lesson for learning",
   "no_resources_available": "No resources available",
-  "q_and_a": "Question and Answer"
+  "q_and_a": "Question and Answer",
+  "your_review": "Your review",
+  "student_feedback": "Student feedback"
 }

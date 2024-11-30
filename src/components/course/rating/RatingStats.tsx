@@ -22,7 +22,15 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 5,
+        mx: "auto",
+        width: "80%",
+      }}
+    >
       {/* Left Section: Average Rating */}
       <Box sx={{ textAlign: "center", width: "20%" }}>
         <Typography variant="h4" color="warning.main">
@@ -43,11 +51,7 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
             : 0;
 
           return (
-            <Grid container alignItems="center" spacing={1} key={star}>
-              <Grid item xs={1}>
-                {/* Star Icon */}
-                <Typography>{star}</Typography>
-              </Grid>
+            <Grid container alignItems="center" spacing={3} key={star}>
               <Grid item xs={7}>
                 {/* Progress Bar */}
                 <LinearProgress
