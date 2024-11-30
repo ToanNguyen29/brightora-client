@@ -10,8 +10,6 @@ import CourseGrid from "../home/tabview/CourseGrid";
 
 const WishList: React.FC = () => {
   const token = localStorage.getItem("token");
-  // const { mode } = useThemeContext();
-  // const { t } = useTranslation();
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [courseInWishList, setCourseInWishList] = useState<ICourseCard[]>([]);
@@ -20,7 +18,6 @@ const WishList: React.FC = () => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchQuery(event.target.value);
 
-  // Hàm fetch danh sách wishlist
   const fetchWishList = useCallback(async () => {
     try {
       await getWishlistMe(token).then((data) => {
@@ -35,10 +32,9 @@ const WishList: React.FC = () => {
     }
   }, [token]);
 
-  // Lọc danh sách wishlist khi searchQuery thay đổi
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      setFilteredCourses(courseInWishList); // Nếu không có searchQuery, hiển thị tất cả
+      setFilteredCourses(courseInWishList);
     } else {
       const filtered = courseInWishList.filter((course) =>
         course.title.toLowerCase().includes(searchQuery.toLowerCase())

@@ -17,9 +17,10 @@ interface Message {
 
 interface ListMessageProps {
   messages: Message[] | undefined;
+  senderInfo: any;
 }
 
-const ListMessage: React.FC<ListMessageProps> = ({ messages }) => {
+const ListMessage: React.FC<ListMessageProps> = ({ messages, senderInfo }) => {
   const { userInfo } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // Tham chiếu đến phần tử cuối cùng
   const messageContainerRef = useRef<HTMLDivElement | null>(null); // Tham chiếu đến container của tin nhắn
@@ -41,6 +42,7 @@ const ListMessage: React.FC<ListMessageProps> = ({ messages }) => {
         <List>
           {messages?.map((msg, index) => (
             <MessageItem
+              senderInfo={senderInfo}
               key={index}
               message={msg}
               type={msg.sender === userInfo._id ? "sent" : "received"}

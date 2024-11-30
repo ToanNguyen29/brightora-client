@@ -68,6 +68,7 @@ export interface ICourseInfoPage {
   relation?: IRelation;
   created_at: string;
   updated_at: string;
+  discount?: number;
 }
 
 // Card này là nhưng card hiện course mà mình chưa mua
@@ -80,6 +81,7 @@ export interface ICourseCard {
   title: string;
   created_at: string;
   updated_at: string;
+  discount?: number;
 }
 
 export interface IMyCourseCard {

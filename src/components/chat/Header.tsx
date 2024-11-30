@@ -1,28 +1,35 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../../theme/ThemeContext";
 
 const ChatHeader: React.FC = () => {
+  const { mode } = useThemeContext();
+  const { t } = useTranslation();
+
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
   return (
     <Box
       sx={{
-        // display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         padding: 3,
         px: "5%",
-        backgroundColor: "#f4f5f7",
-        borderBottom: "1px solid #ddd",
+        backgroundColor: textColor,
+        borderBottom: `1px solid ${textColor}`,
       }}
     >
       <Typography
         variant="h4"
         sx={{
           fontWeight: "bold",
+          color: backgroundColor,
         }}
       >
         Message
       </Typography>
-      <Typography
+      {/* <Typography
         variant="h6"
         sx={
           {
@@ -31,7 +38,7 @@ const ChatHeader: React.FC = () => {
         }
       >
         You have 0 unread messages.
-      </Typography>
+      </Typography> */}
       {/* Notification Icon and User Info */}
     </Box>
   );

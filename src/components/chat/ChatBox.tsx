@@ -1,16 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   IconButton,
   Avatar,
   Typography,
   OutlinedInput,
-  Paper,
-  List,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import MessageItem from "./MessageItem";
-import { getConversation } from "../../services/MessageService";
+
 import ListMessage from "./ListMessage";
 import { useAuth } from "../../context/AuthContext";
 
@@ -29,10 +26,15 @@ interface Message {
 interface ChatBoxProps {
   messages: Message[] | undefined;
   sendMessage: (input: any) => void;
+  senderInfo: any;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage }) => {
-  const token = localStorage.getItem("token");
+const ChatBox: React.FC<ChatBoxProps> = ({
+  messages,
+  sendMessage,
+  senderInfo,
+}) => {
+  // const token = localStorage.getItem("token");
   const { userInfo } = useAuth();
   // const [messages, setMessages] = useState<Message[] | undefined>();
 
@@ -70,16 +72,16 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage }) => {
         }}
       >
         <Avatar
-          alt="User Avatar"
-          src="https://scontent.fsgn5-12.fna.fbcdn.net/v/t39.30808-6/393267985_1049519332854327_845050284432035188_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEhlx38jkVKbJgfeUeKn2e0v2o89jzcEBW_ajz2PNwQFYDQkGZgCDrEXGEPAyYHjXnFrqmvBnqrG9JvpOYu6pZU&_nc_ohc=TW-Oy2INWKYQ7kNvgF3N06W&_nc_zt=23&_nc_ht=scontent.fsgn5-12.fna&_nc_gid=ABR63vL8GnPOvMWSfUZj-lr&oh=00_AYBq0wPJTCyHQwXVmIlbI0--YLsxyamAZ_SXfher8GAcRA&oe=673D775A"
+          alt={senderInfo?._id}
+          src={senderInfo?.photo || ""}
           sx={{ marginRight: 2, marginLeft: 2 }}
         />
         <Typography variant="body1" sx={{ fontWeight: "bold", marginRight: 1 }}>
-          Minh Phương
+          {`${senderInfo?.first_name} ${senderInfo?.last_name}`}
         </Typography>
       </Box>
 
-      <ListMessage messages={messages} />
+      <ListMessage messages={messages} senderInfo={senderInfo} />
 
       <Box
         component="form"
@@ -96,9 +98,15 @@ const ChatBox: React.FC<ChatBoxProps> = ({ messages, sendMessage }) => {
           placeholder="Type a message..."
           value={textMessage}
           onChange={(e) => setTextMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // Ngăn chặn hành động mặc định của Enter (nếu là form submit)
+              handleSend();
+            }
+          }}
           sx={{
-            borderRadius: "100px", // Rounded corners for the TextField
-            marginRight: 1, // Space between TextField and IconButton
+            borderRadius: "100px",
+            marginRight: 1,
             marginX: 4,
             backgroundColor: "#FFFCFF",
             maxHeight: 44,

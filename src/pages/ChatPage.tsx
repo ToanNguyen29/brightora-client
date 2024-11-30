@@ -32,6 +32,7 @@ const ChatPage: React.FC = () => {
   const [chats, setChats] = useState();
   const [messages, setMessages] = useState<Message[] | undefined>();
   const [currentConversation, setCurrentConversation] = useState<string>();
+  const [senderInfo, setSenderInfo] = useState();
 
   const fetchChats = useCallback(async () => {
     try {
@@ -41,6 +42,11 @@ const ChatPage: React.FC = () => {
         setChats(data.data.conversations);
         if (data.data.conversations.length > 0 && !currentConversation) {
           setCurrentConversation(data.data.conversations[0].conversation_id);
+          setSenderInfo(
+            userInfo._id === data.data.conversations[0].recipient_info._id
+              ? data.data.conversations[0].sender_info
+              : data.data.conversations[0].recipient_info
+          );
         }
       } else {
         console.log(data.data.detail);
@@ -48,7 +54,7 @@ const ChatPage: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [token, currentConversation]);
+  }, [token, currentConversation, userInfo._id]);
 
   const fetchConversation = useCallback(async () => {
     if (!currentConversation) return;
@@ -102,9 +108,11 @@ const ChatPage: React.FC = () => {
     fetchConversation();
   }, [fetchConversation]);
 
-  const handleGetConversation = (id: string) => {
+  const handleGetConversation = (id: string, senderInfo: any) => {
+    setSenderInfo(senderInfo);
     setCurrentConversation(id);
     console.log("idCurrent", id);
+    console.log("senderIno", senderInfo);
   };
 
   const sendMessage = (input: any) => {
@@ -133,7 +141,11 @@ const ChatPage: React.FC = () => {
             chats={chats}
             handleGetConversation={handleGetConversation}
           />
-          <ChatBox messages={messages} sendMessage={sendMessage} />
+          <ChatBox
+            messages={messages}
+            sendMessage={sendMessage}
+            senderInfo={senderInfo}
+          />
         </Box>
       </Box>
     </Box>

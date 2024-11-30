@@ -117,6 +117,8 @@ const MyCourseCard: React.FC<CourseProps> = ({ course }) => {
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 2,
+              height: "2.8em", // Đặt chiều cao tối đa bằng 2 dòng
+              lineHeight: "1.4em",
               fontSize: "1.1rem",
             }}
           >

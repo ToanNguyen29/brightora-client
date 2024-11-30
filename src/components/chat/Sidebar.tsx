@@ -10,24 +10,18 @@ import {
   // Badge,
   OutlinedInput,
   InputAdornment,
+  Badge,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../context/AuthContext";
 
 interface SidebarProps {
   chats: any[] | undefined;
-  handleGetConversation: (id: string) => void;
+  handleGetConversation: (id: string, senderInfo: any) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
-  // const token = localStorage.getItem("token");
-  // const [chats, setChats] = useState();
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    console.log("alllChat", chats);
-  }, [chats]);
-
   function formatDate(dateStr: string): string {
     const now = new Date();
     const date = new Date(dateStr);
@@ -46,35 +40,32 @@ const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
     const formattedTime = `${hours}:${minutes < 10 ? "0" : ""}${minutes}`;
 
     if (isSameDay) {
-      return `${formattedTime}`; // Chỉ hiển thị giờ nếu là hôm nay
+      return `${formattedTime}`;
     }
 
     if (isYesterday) {
-      return `${formattedTime} hôm qua`; // Hiển thị giờ và "hôm qua" nếu là ngày hôm qua
+      return `${formattedTime} hôm qua`;
     }
 
-    // Định dạng ngày tháng năm nếu là ngày khác
     return `${formattedTime} ngày ${day}/${month}/${year}`;
   }
+  const { t } = useTranslation();
+  const { userInfo } = useAuth();
 
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       await getAllConversations(token).then((data) => {
-  //         if (data.status <= 305) {
-  //           setChats(data.data.conversations);
-  //           // handleGetConversation(data.data.conversations[0].conversation_id);
-  //         } else {
-  //           console.log(data.data.detail);
-  //         }
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  //   fetchChats();
-  // }, [token]);
+  // Lọc danh sách dựa trên searchQuery
+  const filteredChats = chats?.filter((chat) => {
+    const name =
+      chat.recipient_info._id === userInfo._id
+        ? `${chat.sender_info.first_name} ${chat.sender_info.last_name}`
+        : `${chat.recipient_info.first_name} ${chat.recipient_info.last_name}`;
+    return name.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  useEffect(() => {
+    console.log("Filtered chats:", filteredChats);
+  }, [filteredChats]);
 
   return (
     <Box
@@ -86,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
         height: "100%",
       }}
     >
-      {/* Online Now Section */}
+      {/* Thanh tìm kiếm */}
       <Box sx={{ padding: 2, borderBottom: "1px solid #ddd" }}>
         <OutlinedInput
           placeholder="Search"
@@ -95,6 +86,8 @@ const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
               <SearchIcon sx={{ color: "grey.600" }} />
             </InputAdornment>
           }
+          value={searchQuery} // Liên kết với state searchQuery
+          onChange={(e) => setSearchQuery(e.target.value)} // Cập nhật giá trị searchQuery
           sx={{
             width: "100%",
             display: "flex",
@@ -104,31 +97,43 @@ const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
         />
       </Box>
 
-      {/* Contacts List */}
+      {/* Danh sách liên hệ */}
       <List>
-        {chats?.map((chat, index) => (
+        {filteredChats?.map((chat, index) => (
           <ListItem
             onClick={() => {
-              handleGetConversation(chat.conversation_id);
+              handleGetConversation(
+                chat.conversation_id,
+                chat.recipient_info._id === userInfo._id
+                  ? chat.sender_info
+                  : chat.recipient_info
+              );
             }}
-            button
             key={index}
             sx={{
               cursor: "pointer",
             }}
           >
             <ListItemAvatar>
-              {/* <Badge
+              <Badge
                 variant="dot"
                 color="success"
                 overlap="circular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                invisible={!user.active}
-              > */}
-              {/* <Avatar sx={{}} alt={user.name} src={user.avatar}>
-                {user.avatar}
-              </Avatar> */}
-              {/* </Badge> */}
+              >
+                <Avatar
+                  alt={
+                    chat.recipient_info._id === userInfo._id
+                      ? chat.sender_info._id
+                      : chat.recipient_info._id
+                  }
+                  src={
+                    chat.recipient_info._id === userInfo._id
+                      ? chat.sender_info.photo
+                      : chat.recipient_info.photo
+                  }
+                />
+              </Badge>
             </ListItemAvatar>
             <ListItemText
               primary={
@@ -138,7 +143,9 @@ const Sidebar: React.FC<SidebarProps> = ({ chats, handleGetConversation }) => {
                   color="textSecondary"
                   fontWeight={"bold"}
                 >
-                  {/* {chat.name} */}
+                  {chat.recipient_info._id === userInfo._id
+                    ? `${chat.sender_info.first_name} ${chat.sender_info.last_name}`
+                    : `${chat.recipient_info.first_name} ${chat.recipient_info.last_name}`}
                 </Typography>
               }
               secondary={

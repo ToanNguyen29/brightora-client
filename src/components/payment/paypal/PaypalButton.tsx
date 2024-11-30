@@ -1,34 +1,52 @@
 import React from "react";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { createPayment } from "../../../services/PaymentService";
+import { useCart } from "../../../context/CartContext";
 
 interface PayPalButtonComponentProps {
   courses: any[];
+  setIsDone: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
   courses,
+  setIsDone,
 }) => {
+  const { fetchCartMe } = useCart();
   const token = localStorage.getItem("token");
   const calculateTotalAmount = () => {
     return courses
-      .reduce((total, course) => total + course.price, 0)
+      .reduce(
+        (total, course) =>
+          total + (course.price * (100 - (course?.discount | 0))) / 100,
+        0
+      )
       .toFixed(2);
   };
 
-  const handleApprove = async (orderId: string) => {
-    console.log("Order Approved:", orderId);
+  const handleApprove = async (orderId: string, courses: any) => {
+    console.log("Order Approved:", orderId, courses);
 
     try {
-      const courseList = courses.map((x) => x._id);
+      const courseList = courses.map((item: any) => {
+        return {
+          course_id: item._id,
+          price: item.price,
+          discount: item.discount | 0,
+          payment_price: (item.price * (100 - (item.discount | 0))) / 100,
+        };
+      });
       await createPayment(
         token,
         courseList,
-        calculateTotalAmount(),
+        // calculateTotalAmount(),
         orderId
       ).then((data) => {
         console.log(data);
         if (data.status <= 305) {
+          console.log("Payment created", data.data);
+          fetchCartMe();
+          setIsDone(true);
         }
       });
     } catch (error) {}
@@ -55,7 +73,10 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
               name: course.title,
               unit_amount: {
                 currency_code: "USD",
-                value: course.price.toFixed(2),
+                value: (
+                  (course.price * ((100 - course.discount) | 0)) /
+                  100
+                ).toFixed(2),
               },
               quantity: "1",
               category: "DIGITAL_GOODS",
@@ -69,8 +90,8 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
     },
     onApprove: (data: any, actions: any) => {
       return actions.order.capture().then(async (details: any) => {
-        console.log("Transaction completed:", details);
-        await handleApprove(details.id);
+        console.log("Transaction completed:", details, courses);
+        await handleApprove(details.id, courses);
       });
     },
     onError: (err: any) => {
