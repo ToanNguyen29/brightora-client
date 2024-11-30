@@ -57,6 +57,7 @@
   "edit_account_description": "Edit your account settings and change your password here.",
   "email": "Email",
   "password": "Password",
+  "password_confirm": "Password confirm",
   "your_email_address_is": "Your email address is",
   "enter_current_password": "Enter current password",
   "enter_new_password": "Enter new password",

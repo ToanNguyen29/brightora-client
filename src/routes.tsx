@@ -84,7 +84,14 @@ const AppRoutes: React.FC = () => {
                 /> */}
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/user/:id" element={<UserAccountPage />} />
                 <Route
@@ -170,7 +177,7 @@ const AppRoutes: React.FC = () => {
                   <Route path="learning" element={<CourseEnrollmentList />} />
                   <Route path="wishlist" element={<WishList />} />
                   <Route
-                    path="purchase_history"
+                    path="purchase-history"
                     element={<PurchaseHistory />}
                   />
                 </Route>

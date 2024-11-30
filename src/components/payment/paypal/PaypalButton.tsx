@@ -74,7 +74,7 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
               unit_amount: {
                 currency_code: "USD",
                 value: (
-                  (course.price * ((100 - course.discount) | 0)) /
+                  (course.price * (100 - (course?.discount | 0))) /
                   100
                 ).toFixed(2),
               },

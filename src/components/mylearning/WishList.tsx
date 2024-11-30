@@ -50,7 +50,16 @@ const WishList: React.FC = () => {
   return (
     <>
       <Box display="flex" justifyContent="flex-end" alignItems="center" mb={5}>
-        <Box>
+        <Box
+          sx={{
+            mb: 2,
+            width: "200px",
+            backgroundColor: "white",
+            borderRadius: 1,
+            ml: "auto",
+            display: "block",
+          }}
+        >
           <SearchBar
             searchQuery={searchQuery}
             onSearchChange={handleSearchChange}

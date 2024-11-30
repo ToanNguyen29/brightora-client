@@ -21,7 +21,7 @@ const InstructorCoursePage = () => {
         component={Link}
         to="/instructor/course/create"
         sx={{
-          height: "40px", // Matches the height of the TextField
+          height: "40px",
           fontSize: "16px",
           backgroundColor: backgroundColor,
           color: textColor,
