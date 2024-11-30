@@ -4,7 +4,6 @@ import LoaderQuiz from "./LoaderQuiz";
 import StartScreenQuiz from "./StartScreenQuiz";
 import ProgressQuiz from "./ProgressQuiz";
 import QuestionQuiz from "./QuestionQuiz";
-import NextButtonQuiz from "./NextButtonQuiz";
 import FinishScreenQuiz from "./FinishScreenQuiz";
 
 const Quiz: React.FC = () => {

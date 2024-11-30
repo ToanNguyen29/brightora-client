@@ -25,12 +25,25 @@ function QuestionQuiz() {
         marginBottom: 2,
       }}
     >
-      <Typography variant="h5" component="h4" sx={{ marginBottom: 2 }}>
+      <Typography
+        variant="h5"
+        component="h4"
+        sx={{
+          marginBottom: 2,
+          padding: 2,
+          textAlign: "center",
+          borderRadius: "8px",
+          backgroundColor: "rgba(0, 0, 0, 0.1)", // Light translucent background
+          color: "primary.main", // Use theme's primary color
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+          fontWeight: "bold", // Bold for emphasis
+          width: "700px",
+        }}
+      >
         {question.question_text}
       </Typography>
       <OptionsQuiz question={question} handleChoise={handleChoise} />
-      {show && <QAQuiz />}
-      <NextButtonQuiz />
+      {show && <QAQuiz handleHide={() => setShow(false)} />}
     </Box>
   );
 }

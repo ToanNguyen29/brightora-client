@@ -2,13 +2,16 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useQuiz } from "../../context/QuizContext";
 import { getAnswer } from "../../services/Enrollment";
+import NextButtonQuiz from "./NextButtonQuiz";
 
 export interface Message {
   text: string;
   sender: "user" | "system";
 }
-
-function QAQuiz() {
+interface QAQuizProps {
+  handleHide: () => void;
+}
+function QAQuiz({ handleHide }: QAQuizProps) {
   const { questions, index, answer } = useQuiz();
   const question = questions.at(index);
 
@@ -76,12 +79,36 @@ function QAQuiz() {
         display: "flex",
         flexDirection: "column",
         margin: "0 auto",
-        padding: 2,
-        border: "1px solid #ddd",
+        paddingY: 2,
         borderRadius: "8px",
-        maxWidth: "550px",
+        width: "700px",
       }}
     >
+      <Box sx={{ display: "flex", mb: 2 }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          placeholder="Type a message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          size="small"
+        />
+        <Button
+          variant="contained"
+          onClick={handleSend}
+          sx={{
+            marginLeft: 1,
+            bgcolor: "black",
+            color: "white",
+            fontWeight: "bold",
+            mr: 1,
+          }}
+        >
+          Ask
+        </Button>{" "}
+        <NextButtonQuiz handleHide={handleHide} />
+      </Box>
       <Box
         sx={{
           flex: 1,
@@ -113,20 +140,6 @@ function QAQuiz() {
             </Typography>
           </Box>
         ))}
-      </Box>
-      <Box sx={{ display: "flex" }}>
-        <TextField
-          fullWidth
-          variant="outlined"
-          placeholder="Type a message..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          size="small"
-        />
-        <Button variant="contained" onClick={handleSend} sx={{ marginLeft: 1 }}>
-          Ask
-        </Button>
       </Box>
     </Box>
   );

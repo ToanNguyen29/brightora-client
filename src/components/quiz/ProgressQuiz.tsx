@@ -21,9 +21,6 @@ function ProgressQuiz() {
       <Typography variant="subtitle1" component="p">
         Question <strong>{index + 1}</strong> / {numQuestions}
       </Typography>
-      <Typography variant="subtitle1" component="p">
-        Point <strong>{points}</strong> / {maxPossiblePoints}
-      </Typography>
     </Box>
   );
 }
