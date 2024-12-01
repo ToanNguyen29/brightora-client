@@ -27,7 +27,7 @@ const CoursePage = () => {
       await getCourse(courseId, userInfo._id)
         .then((data) => {
           if (data.status <= 305) {
-            console.log("course info page: ", data.data);
+            console.log("course info page1: ", data.data);
             setCourse(data.data);
           } else {
             console.log();

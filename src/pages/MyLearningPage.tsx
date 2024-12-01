@@ -8,7 +8,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 const tabPaths = [
   "/my-course/learning/",
   "/my-course/wishlist/",
-  "/my-course/purchase_history",
+  "/my-course/purchase-history",
 ];
 
 const tabNames = ["all_course", "wishlist", "purchase_history"];

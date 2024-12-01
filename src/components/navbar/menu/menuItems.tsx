@@ -46,11 +46,7 @@ export const menuItems: MenuItemType[] = [
     url: "/instructor/course",
   },
   { divider: true },
-  //   {
-  //     icon: <Notifications fontSize="small" />,
-  //     textKey: "notifications",
-  //     url: "/notifications",
-  //   },
+
   {
     icon: <Message fontSize="small" />,
     textKey: "messages",
@@ -62,33 +58,12 @@ export const menuItems: MenuItemType[] = [
     textKey: "account_settings",
     url: "/user/edit-account/",
   },
-  //   {
-  //     icon: <Payment fontSize="small" />,
-  //     textKey: "payment_methods",
-  //     url: "/user/edit-payment-methods/",
-  //   },
-  //   {
-  //     icon: <Subscriptions fontSize="small" />,
-  //     textKey: "subscriptions",
-  //     url: "/user/manage-subscriptions/",
-  //   },
-  //   {
-  //     icon: <CreditCard fontSize="small" />,
-  //     textKey: "udemy_credits",
-  //     url: "/udemy-credits",
-  //   },
   {
     icon: <History fontSize="small" />,
     textKey: "purchase_history",
-    url: "/purchase-history",
+    url: "/my-course/purchase-history",
   },
-  { divider: true },
-  {
-    icon: <Language fontSize="small" />,
-    textKey: "language",
-    url: "/language",
-  },
-  { divider: true },
+
   {
     icon: <AccountCircle fontSize="small" />,
     textKey: "public_profile",
@@ -100,11 +75,11 @@ export const menuItems: MenuItemType[] = [
     url: "/user/edit-profile/",
   },
   { divider: true },
-  {
-    icon: <Help fontSize="small" />,
-    textKey: "help_and_support",
-    url: "/help-support",
-  },
+  // {
+  //   icon: <Help fontSize="small" />,
+  //   textKey: "help_and_support",
+  //   url: "/help-support",
+  // },
   {
     icon: <Logout fontSize="small" />,
     textKey: "logout",

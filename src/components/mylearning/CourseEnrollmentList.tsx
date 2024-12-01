@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FilterBar from "./FilterBar";
+
 import SearchBar from "../navbar/SearchBar";
 import { Box, Grid, Pagination } from "@mui/material";
 
@@ -68,11 +68,18 @@ const CourseEnrollmentList: React.FC = () => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap={2} mb={5}>
-        <Box flex={7}>
-          <FilterBar flex={7} />
-        </Box>
-
+      <Box
+        alignItems="center"
+        gap={2}
+        mb={5}
+        sx={{
+          width: "200px",
+          backgroundColor: "white",
+          borderRadius: 1,
+          ml: "auto",
+          display: "block",
+        }}
+      >
         <SearchBar
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}

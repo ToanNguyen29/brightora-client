@@ -7,38 +7,42 @@ import FacebookLogin from "./facebookAuth/FacebookLogin";
 import GithubLogin from "./githubAuth/GithubLogin";
 
 interface SocialLoginButtonsProps {
-   textColor: string;
+  textColor: string;
 }
 
 const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
-   textColor,
+  textColor,
 }) => {
-   const { t } = useTranslation();
+  const { t } = useTranslation();
 
-   return (
-      <>
-         <Typography
-            variant="body2"
-            align="center"
-            sx={{ mt: 2, fontSize: "18px", color: textColor }}
-         >
-            {t("or_login_with")}
-         </Typography>
-         <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid item xs={4}>
-               <GoogleAuthWrapper>
-                  <GoogleLogin textColor={textColor}></GoogleLogin>
-               </GoogleAuthWrapper>
-            </Grid>
-            <Grid item xs={4}>
-               <FacebookLogin textColor={textColor} />
-            </Grid>
-            <Grid item xs={4}>
-               <GithubLogin textColor={textColor} />
-            </Grid>
-         </Grid>
-      </>
-   );
+  return (
+    <>
+      <Typography
+        variant="body2"
+        align="center"
+        sx={{ mt: 2, fontSize: "18px", color: textColor }}
+      >
+        {t("or_login_with")}
+      </Typography>
+
+      {/* Căn giữa các nút Google và Github */}
+      <Grid container spacing={2} sx={{ mt: 1, justifyContent: "center" }}>
+        <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
+          <GoogleAuthWrapper>
+            <GoogleLogin textColor={textColor} />
+          </GoogleAuthWrapper>
+        </Grid>
+
+        {/* <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
+       <FacebookLogin textColor={textColor} />
+     </Grid> */}
+
+        <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
+          <GithubLogin textColor={textColor} />
+        </Grid>
+      </Grid>
+    </>
+  );
 };
 
 export default SocialLoginButtons;

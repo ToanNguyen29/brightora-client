@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom"; // Import useNavigate từ React Router
 
 interface SearchBarProps {
   searchQuery: string;
@@ -12,6 +13,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearchChange,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate(); // Khởi tạo hook navigate
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      if (!searchQuery) return;
+      // Nếu nhấn Enter, chuyển hướng đến trang search với query string
+      navigate(`/courses/search/${searchQuery}`);
+    }
+  };
 
   return (
     <TextField
@@ -26,6 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         backgroundColor: "white",
         borderRadius: 1,
       }}
+      onKeyDown={handleKeyDown} // Thêm sự kiện onKeyDown
     />
   );
 };

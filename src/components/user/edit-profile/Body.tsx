@@ -15,7 +15,6 @@ const EditProfileBody: React.FC = () => {
   const { userInfo, setUserInfo } = useAuth();
 
   const { t } = useTranslation();
-  // const [lang, setLang] = React.useState("");
 
   const [formValues, setFormValues] = React.useState<Partial<UserProfile>>({});
 
@@ -64,7 +63,6 @@ const EditProfileBody: React.FC = () => {
     <Box
       sx={{
         backgroundColor: "transparent",
-        // height: "120px",
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "flex-start",
@@ -98,13 +96,10 @@ const EditProfileBody: React.FC = () => {
         name="headline"
         customBorderRadius={10}
       />
-      {/* <TypographyComponent text={t("headline_info")} /> */}
       <RichTextBox
         text={formValues.description}
         handleTextChange={handleDescriptionChange}
       />
-      {/* <TypographyComponent text={t("links_and_coupon_prevent")} /> */}
-      {/* <LanguageSelectComponent lang={lang} handleChange={handleLangChange} /> */}
       <Typography variant="h6" fontWeight="bold" mt="20px">
         {t("links")}
       </Typography>
@@ -112,7 +107,7 @@ const EditProfileBody: React.FC = () => {
         label={t("website_example")}
         value={formValues.website_link || ""}
         onChange={handleInputChange}
-        name="website_example"
+        name="website_link"
       />
       <TextFieldComponent
         label={t("twitter_example")}

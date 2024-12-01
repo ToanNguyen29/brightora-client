@@ -243,7 +243,9 @@ const LearningPage: React.FC = () => {
             <Box mt={2}>
               {tabIndex === 0 && <Overview course={course} />}
               {tabIndex === 1 && <QuesAndAns courseId={courseId} />}
-              {tabIndex === 2 && <Reviews />}
+              {tabIndex === 2 && (
+                <Reviews reviewStat={course?.review} courseId={courseId} />
+              )}
             </Box>
           </Box>
 
@@ -317,6 +319,7 @@ const LearningPage: React.FC = () => {
                   {section.lessons.map(
                     (lesson: ILessonLearn | IExerciseLearn) => (
                       <ListItemLesson
+                        key={lesson._id}
                         lesson={lesson}
                         selectedLesson={selectedLesson}
                         onSelectLesson={handleClickLesson}

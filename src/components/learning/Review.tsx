@@ -1,12 +1,8 @@
 // Reviews.tsx
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
   Divider,
   Rating,
   TextField,
@@ -15,38 +11,113 @@ import {
 import RatingStats from "../course/rating/RatingStats";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
+import {
+  createReview,
+  getReviewByCourse,
+  getReviewMeOfCourse,
+  updateReview,
+} from "../../services/ReviewService";
+import { IReview, IReviewDetail } from "../../models/Course";
+import ReviewItem from "../review/ReviewItem";
 
-const data = {
-  average_rating: 5,
-  course: "2",
-  star: {
-    "1_star": 0,
-    "2_star": 0,
-    "3_star": 0,
-    "4_star": 0,
-    "5_star": 3,
-  },
-  total_reviews: 5,
-};
-const Reviews: React.FC = () => {
+interface ReviewsProps {
+  courseId: string | undefined;
+  reviewStat: IReview | undefined;
+}
+
+const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
+  const token = localStorage.getItem("token");
   const [rating, setRating] = useState<number>(1);
-  const [comment, setComment] = useState<string>();
-  const [reviews, setReviews] = useState([
-    {
-      id: "1",
-      name: "Toan",
-      rating: 5,
-      content: "Toan",
-    },
-  ]);
+  const [comment, setComment] = useState<string>("");
+  const [reviews, setReviews] = useState<IReviewDetail[]>();
+  const [isRated, setIsRated] = useState<boolean>(false);
+  const [reviewId, setReviewId] = useState("");
   const { t } = useTranslation();
   const { mode } = useThemeContext();
+
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(5);
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
+  useEffect(() => {
+    if (!courseId) return;
+    const fetchReviewMeOfCourse = async () => {
+      await getReviewMeOfCourse(token, courseId).then((data) => {
+        console.log(data);
+        if (data.status <= 305) {
+          setRating(data.data.data.rating);
+          setComment(data.data.data.comment);
+          setReviewId(data.data.data._id);
+          setIsRated(true);
+        }
+      });
+    };
+    fetchReviewMeOfCourse();
+  }, [token, courseId]);
+
+  useEffect(() => {
+    console.log("hello My", courseId);
+    if (!courseId) return;
+    const fetchReview = async () => {
+      try {
+        await getReviewByCourse(courseId, pageNumber, pageSize).then((data) => {
+          console.log("getReviewByCourseInstructor", data);
+          if (data.status <= 305) {
+            setReviews(data.data.data);
+          }
+        });
+      } catch (error) {}
+    };
+    fetchReview();
+  }, [courseId, pageNumber, pageSize]);
+
+  const fetchReview = useCallback(async () => {
+    if (!courseId) return;
+    try {
+      await getReviewByCourse(courseId, pageNumber, pageSize).then((data) => {
+        console.log("getReviewByCourseInstructor", data);
+        if (data.status <= 305) {
+          setReviews(data.data.data);
+        }
+      });
+    } catch (error) {}
+  }, [courseId, pageNumber, pageSize]);
+
+  useEffect(() => {
+    fetchReview();
+  }, [fetchReview]);
+
+  const handleSubmitRating = async () => {
+    if (!courseId) return;
+    try {
+      await createReview(token, courseId, rating, comment).then((data) => {
+        console.log(data.data);
+        if (data.status <= 305) {
+          fetchReview();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateRating = async () => {
+    try {
+      await updateReview(token, reviewId, rating, comment).then((data) => {
+        console.log(data.data);
+        if (data.status <= 305) {
+          fetchReview();
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Box p={3}>
+    <Box pb={3} pl={10} pr={10} pt={3}>
       <Typography
         variant="h6"
         gutterBottom
@@ -72,8 +143,8 @@ const Reviews: React.FC = () => {
           sx={{ mb: 2 }}
         />
         <TextField
+          label={t("Review")}
           variant="outlined"
-          label={t("your_review")}
           fullWidth
           multiline
           rows={4}
@@ -90,7 +161,8 @@ const Reviews: React.FC = () => {
           variant="outlined"
           color="primary"
           onClick={() => {
-            console.log("toan");
+            if (!isRated) handleSubmitRating();
+            else handleUpdateRating();
           }}
           sx={{
             width: "20%",
@@ -111,24 +183,9 @@ const Reviews: React.FC = () => {
       >
         {t("student_feedback")}
       </Typography>
-      <RatingStats data={data} />
-      {reviews.map((review) => (
-        <Card key={review.id} sx={{ mt: 3, width: "80%", mx: "auto" }}>
-          <CardHeader
-            avatar={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
-                {review.name.charAt(0)}
-              </Avatar>
-            }
-            title={review.name}
-            subheader={
-              <Rating value={review.rating} readOnly precision={0.5} />
-            }
-          />
-          <CardContent>
-            <Typography>{review.content}</Typography>
-          </CardContent>
-        </Card>
+      <RatingStats data={reviewStat} />
+      {reviews?.map((review) => (
+        <ReviewItem review={review} />
       ))}
     </Box>
   );

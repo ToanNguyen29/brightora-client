@@ -24,6 +24,7 @@ import PaymentStatistics from "./pages/CourseStats";
 import CoursePage from "./pages/CoursePage";
 import QAndAPage from "./pages/QAndAPage";
 import PurchaseHistory from "./components/mylearning/PurchaseHistory";
+import InstructorReviewPage from "./pages/InstructorReviewPage";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
@@ -78,13 +79,16 @@ const AppRoutes: React.FC = () => {
           <Router>
             <Routes>
               <Route element={<LayoutFullWidth />}>
-                {/* <Route
-                  path="/drive-viewer/:itemId/:fileType"
-                  element={<GoogleDriveViewer />}
-                /> */}
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/user/:id" element={<UserAccountPage />} />
                 <Route
@@ -125,9 +129,6 @@ const AppRoutes: React.FC = () => {
                   <Route path="edit-account" element={<EditAccountPage />} />
                   <Route path="close-account" element={<CloseAccountPage />} />
                 </Route>
-              </Route>
-
-              <Route element={<LayoutFullWidth />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route
@@ -170,7 +171,7 @@ const AppRoutes: React.FC = () => {
                   <Route path="learning" element={<CourseEnrollmentList />} />
                   <Route path="wishlist" element={<WishList />} />
                   <Route
-                    path="purchase_history"
+                    path="purchase-history"
                     element={<PurchaseHistory />}
                   />
                 </Route>
@@ -191,11 +192,16 @@ const AppRoutes: React.FC = () => {
                 <Route path="question-and-answer" element={<QAndAPage />} />
                 <Route path="course-stats" element={<PaymentStatistics />} />
                 <Route path="discount-coupon" element={<></>} />
+                <Route path="reviews" element={<InstructorReviewPage />} />
               </Route>
 
               <Route
                 path="/instructor/course/create"
-                element={<CreateCoursePage />}
+                element={
+                  <ProtectedRoute>
+                    <CreateCoursePage />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/instructor/course/:id/manage"

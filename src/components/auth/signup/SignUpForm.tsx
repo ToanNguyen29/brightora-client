@@ -16,7 +16,7 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
-  const { setIsAuthenticated, setUserInfo, setIsLoadingAuth } = useAuth();
+  // const { setIsAuthenticated, setUserInfo, setIsLoadingAuth } = useAuth();
   const token = localStorage.getItem("token");
   const { t } = useTranslation();
   // const navigate = useNavigate();
@@ -49,6 +49,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
   };
 
   const onSignUpClick = async () => {
+    // if()
     try {
       await signUp({
         email,
@@ -165,8 +166,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
       >
         {t("sign_up")}
       </Button>
-      <Typography>Other Signup Options</Typography>
-      <SocialSignUpButtons textColor={textColor} />
+      {/* <Typography>Other Signup Options</Typography> */}
+      {/* <SocialSignUpButtons textColor={textColor} /> */}
     </Box>
   );
 };

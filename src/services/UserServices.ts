@@ -46,14 +46,18 @@ export const updateMe = async (
 };
 
 export const updatePhoto = async (
-  formData: FormData
+  token: string | null,
+  photo: string
 ): Promise<AxiosResponse> => {
   return await axios
-    .patch(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/updatePhoto`,
-      formData,
+    .put(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/users/me`,
+      { photo: photo },
       {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((res) => {

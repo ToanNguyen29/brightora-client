@@ -21,10 +21,6 @@ const CourseMessages: React.FC = () => {
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
   useEffect(() => {
-    console.log("WelcomeMessage", welcomeMessage);
-  }, [welcomeMessage]);
-
-  useEffect(() => {
     const fetchData = async () => {
       if (id) {
         await getCourse(id).then((data) => {
@@ -40,31 +36,30 @@ const CourseMessages: React.FC = () => {
     fetchData();
   }, [id]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (id) {
-        await getCourse(id).then((data) => {
-          if (data.status <= 305) {
-            console.log("course landing", data);
-            const collection = {
-              title: data.data.title || "",
-              subtitle: data.data.subtitle || "",
-              description: data.data.description || "",
-              language: data.data.language || [""],
-              level: data.data.level || [""],
-              category: data.data.category || [""],
-              objectives: data.data.objectives || "",
-              thumbnail: data.data.thumbnail || "",
-              promotional_video: data.data.promotional_video || "",
-            };
-            console.log("collection", collection);
-          }
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (id) {
+  //       await getCourse(id).then((data) => {
+  //         if (data.status <= 305) {
+  //           const collection = {
+  //             title: data.data.title || "",
+  //             subtitle: data.data.subtitle || "",
+  //             description: data.data.description || "",
+  //             language: data.data.language || [""],
+  //             level: data.data.level || [""],
+  //             category: data.data.category || [""],
+  //             objectives: data.data.objectives || "",
+  //             thumbnail: data.data.thumbnail || "",
+  //             promotional_video: data.data.promotional_video || "",
+  //           };
+  //           console.log("collection", collection);
+  //         }
+  //       });
+  //     }
+  //   };
 
-    fetchData();
-  }, [id]);
+  //   fetchData();
+  // }, [id]);
 
   const handleWelcomeMessageChange = (value: string) => {
     setWelcomeMessage(value);

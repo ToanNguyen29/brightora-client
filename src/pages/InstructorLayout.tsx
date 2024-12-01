@@ -10,6 +10,7 @@ import {
   Build as ToolsIcon,
   Description as ResourceIcon,
 } from "@mui/icons-material";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 
 function a11yProps(index: number) {
   return {
@@ -23,7 +24,7 @@ const tabPaths = [
   "/instructor/question-and-answer",
   "/instructor/course-stats",
   "/instructor/discount-coupon",
-  // "/instructor/help",
+  "/instructor/reviews",
 ];
 
 const InstructorLayout: React.FC = () => {
@@ -110,6 +111,12 @@ const InstructorLayout: React.FC = () => {
           <Tab
             icon={<ToolsIcon sx={{ fontSize: 40, mr: 2 }} />}
             label={<Box sx={labelBoxStyles}>{t("discount_coupon")}</Box>}
+            {...a11yProps(4)}
+            sx={tabStyles}
+          />
+          <Tab
+            icon={<ReviewsIcon sx={{ fontSize: 40, mr: 2 }} />}
+            label={<Box sx={labelBoxStyles}>{t("reviews")}</Box>}
             {...a11yProps(4)}
             sx={tabStyles}
           />

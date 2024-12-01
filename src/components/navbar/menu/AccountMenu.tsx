@@ -83,7 +83,11 @@ const AccountMenu: React.FC = () => {
 
   const handleMenuItemClick = (url?: string, textKey?: string) => {
     handleMenuClose();
-    if (url) {
+    if (textKey === "instruction_dashboard") {
+      // console.log("url");
+      window.open(url, "_blank");
+    }
+    if (textKey !== "instruction_dashboard" && url) {
       window.location.href = url;
     }
     if (textKey === "logout") {

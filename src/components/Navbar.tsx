@@ -7,7 +7,6 @@ import Logo from "./navbar/Logo";
 import SearchBar from "./navbar/SearchBar";
 import NavLinks from "./navbar/NavLinks";
 import ThemeToggle from "./navbar/ThemeToggle";
-import LanguageSwitcher from "./navbar/languageSwitcher/LanguageSwitcher";
 import AccountSection from "./navbar/AccountSection";
 import { useAuth } from "../context/AuthContext";
 import Cart from "./navbar/Cart";
@@ -20,8 +19,6 @@ const Navbar: React.FC = () => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setSearchQuery(event.target.value);
-
-  const handleSearch = () => {};
 
   return (
     <AppBar position="static">
