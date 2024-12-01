@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FilterBar from "./FilterBar";
+
 import SearchBar from "../navbar/SearchBar";
 import { Box, Grid, Pagination } from "@mui/material";
 

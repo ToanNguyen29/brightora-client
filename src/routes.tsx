@@ -79,10 +79,6 @@ const AppRoutes: React.FC = () => {
           <Router>
             <Routes>
               <Route element={<LayoutFullWidth />}>
-                {/* <Route
-                  path="/drive-viewer/:itemId/:fileType"
-                  element={<GoogleDriveViewer />}
-                /> */}
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route
@@ -133,9 +129,6 @@ const AppRoutes: React.FC = () => {
                   <Route path="edit-account" element={<EditAccountPage />} />
                   <Route path="close-account" element={<CloseAccountPage />} />
                 </Route>
-              </Route>
-
-              <Route element={<LayoutFullWidth />}>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route
@@ -204,7 +197,11 @@ const AppRoutes: React.FC = () => {
 
               <Route
                 path="/instructor/course/create"
-                element={<CreateCoursePage />}
+                element={
+                  <ProtectedRoute>
+                    <CreateCoursePage />
+                  </ProtectedRoute>
+                }
               />
               <Route
                 path="/instructor/course/:id/manage"

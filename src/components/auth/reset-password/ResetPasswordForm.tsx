@@ -31,7 +31,6 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
   };
 
   const handleResetPassword = async () => {
-    console.log("toan", token);
     const res = await resetPassword({ password, passwordConfirm, token });
     try {
       if (res.status <= 304) {

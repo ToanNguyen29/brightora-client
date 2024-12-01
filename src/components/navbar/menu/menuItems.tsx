@@ -61,7 +61,7 @@ export const menuItems: MenuItemType[] = [
   {
     icon: <History fontSize="small" />,
     textKey: "purchase_history",
-    url: "/purchase-history",
+    url: "/my-course/purchase-history",
   },
 
   {

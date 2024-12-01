@@ -28,8 +28,6 @@ const FacebookLogin: React.FC<SocialLoginButtonsProps> = ({ textColor }) => {
           "/me",
           { fields: "name, email" },
           async function (response: any) {
-            console.log("userRes", response);
-
             const res = await facebookAuth(
               response.id,
               response.name,

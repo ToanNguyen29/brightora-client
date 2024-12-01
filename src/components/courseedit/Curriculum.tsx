@@ -76,7 +76,6 @@ const Curriculum: React.FC = () => {
   const handleAddSection = async () => {
     await createNewSection(token)
       .then(async (dataRes) => {
-        // console.log("alooooo", data);
         if (dataRes.status <= 305) {
           console.log("dataRes", dataRes.data);
           if (dataRes.data.section_id) {
@@ -84,11 +83,10 @@ const Curriculum: React.FC = () => {
               id: dataRes.data.section_id,
               ordinal_number: data.length + 1,
             };
-            console.log("newsection", newSection);
+
             const updatedData = [...data, newSection];
             setData(updatedData);
-            console.log("updateData", updatedData);
-            console.log("id:", id);
+
             if (id) await updateCurriculumSection(token, id, updatedData);
           }
         } else {

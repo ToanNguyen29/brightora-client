@@ -319,6 +319,7 @@ const LearningPage: React.FC = () => {
                   {section.lessons.map(
                     (lesson: ILessonLearn | IExerciseLearn) => (
                       <ListItemLesson
+                        key={lesson._id}
                         lesson={lesson}
                         selectedLesson={selectedLesson}
                         onSelectLesson={handleClickLesson}

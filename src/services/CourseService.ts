@@ -95,7 +95,7 @@ export const getCoursesByOwner = async (
 
 export const getCourse = async (
   id: string,
-  userId: string | undefined
+  userId?: string | undefined
 ): Promise<AxiosResponse> => {
   console.log("url:", `${course_url}/get_by_id/${id}?user_id=${userId}`);
   const response = await axios
