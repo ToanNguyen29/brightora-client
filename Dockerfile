@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the application source code to the container
 COPY . .
 
-# Expose the port Vite runs on
-EXPOSE 5173
+# Expose both ports (5173 for Vite, 3000 for additional mapping)
+EXPOSE 5173 8888
 
 # Set the default command to start the development server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
