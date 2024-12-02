@@ -218,7 +218,7 @@ export const updateCurriculumSection = async (
 export const getCourseByType = async (filter: CourseFilterType) => {
   try {
     const response = await axios.get(
-      `${course_url}/get_by_type?category=${filter.type}&page_number=${filter.page_number}&page_size=${filter.page_size}&sort_by=${filter.sort_by}&sort_order=${filter.sort_order}`,
+      `${course_url}/get_by_type?category=${filter.type}&status=Published&page_number=${filter.page_number}&page_size=${filter.page_size}&sort_by=${filter.sort_by}&sort_order=${filter.sort_order}`,
       {
         withCredentials: true,
       }

@@ -1,7 +1,6 @@
 import { Paper, Typography } from "@mui/material";
 import CourseDetails from "./coursecontent/CourseDetails";
 import { useThemeContext } from "../../theme/ThemeContext";
-import fakeData from "./fakeData.json";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { getSectionByCourseId } from "../../services/SectionService";

@@ -18,7 +18,8 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
     return courses
       .reduce(
         (total, course) =>
-          total + (course.price * (100 - (course?.discount | 0))) / 100,
+          total +
+          (course.price * (100 - (course?.discount_percentage | 0))) / 100,
         0
       )
       .toFixed(2);
@@ -32,8 +33,9 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
         return {
           course_id: item._id,
           price: item.price,
-          discount: item.discount | 0,
-          payment_price: (item.price * (100 - (item.discount | 0))) / 100,
+          discount: item.discount_percentage | 0,
+          payment_price:
+            (item.price * (100 - (item.discount_percentage | 0))) / 100,
         };
       });
       await createPayment(
@@ -74,7 +76,7 @@ const PayPalButtonComponent: React.FC<PayPalButtonComponentProps> = ({
               unit_amount: {
                 currency_code: "USD",
                 value: (
-                  (course.price * (100 - (course?.discount | 0))) /
+                  (course.price * (100 - (course?.discount_percentage | 0))) /
                   100
                 ).toFixed(2),
               },

@@ -275,5 +275,6 @@
   "submit": "Submit",
   "resources": "Resources",
   "create_course_what_type?": "What type of course?",
-  "send_for_review": "Send for review"
+  "send_for_review": "Send for review",
+  "no_courses_found": "No courses found"
 }

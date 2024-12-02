@@ -104,7 +104,7 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
               ordinal_number: lessons ? lessons.length + 1 : 1,
               type: "lesson",
             };
-            console.log("neeeeeee", newItem, section, section.id);
+
             if (lessons) {
               const updatedItems = [...lessons, newItem];
               setLessons(updatedItems);

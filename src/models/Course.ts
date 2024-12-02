@@ -68,7 +68,7 @@ export interface ICourseInfoPage {
   relation?: IRelation;
   created_at: string;
   updated_at: string;
-  discount?: number;
+  discount_percentage?: number;
 }
 
 // Card này là nhưng card hiện course mà mình chưa mua
@@ -81,7 +81,7 @@ export interface ICourseCard {
   title: string;
   created_at: string;
   updated_at: string;
-  discount?: number;
+  discount_percentage?: number;
 }
 
 export interface IMyCourseCard {
@@ -110,6 +110,7 @@ export interface IUpdateCourse {
   promotional_video?: string;
   price?: number;
   status?: string;
+  discount_percentage?: number;
 }
 
 export interface CurriculumMap {

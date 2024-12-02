@@ -37,7 +37,6 @@ const InstructorCoursePage = () => {
         {t("add_new_course")}
       </Button>
       <CourseOfInstructor />
-      <CourseOfInstructor />
     </Box>
   );
 };

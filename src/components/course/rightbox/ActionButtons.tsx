@@ -13,6 +13,7 @@ import {
 } from "../../../services/WishListService";
 import LoadingComponent from "../../reused/LoadingComponent";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useAuth } from "../../../context/AuthContext";
 
 interface ActionButtonsProps {
   is_cart: boolean | undefined;
@@ -40,6 +41,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   const { t } = useTranslation();
   const { fetchCartMe } = useCart();
   const { courseId } = useParams();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     setIsCart(is_cart);
@@ -47,6 +49,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   }, [is_cart, in_wishlist]);
 
   const handleAddItemToCart = async () => {
+    if (!userInfo._id) {
+      navigate("/login");
+      return;
+    }
     if (courseId) {
       try {
         const items = [{ course: courseId }];
@@ -68,6 +74,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   const handleAddItemToWishList = async () => {
+    if (!userInfo._id) {
+      navigate("/login");
+      return;
+    }
     if (courseId) {
       try {
         const items = [{ course: courseId }];

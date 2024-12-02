@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TextFieldComponent from "../intercommunity/TextFieldComponent";
@@ -9,11 +9,12 @@ import { useAuth } from "../../../context/AuthContext";
 import { UserProfile } from "../../../models/User";
 import { updateMe } from "../../../services/UserServices";
 import RichTextBox from "../../reused/RichTextBoxComponent";
+import AutoCloseAlert from "../../reused/Alert";
 
 const EditProfileBody: React.FC = () => {
   const token = localStorage.getItem("token");
   const { userInfo, setUserInfo } = useAuth();
-
+  const [alertOpen, setAlertOpen] = useState(false);
   const { t } = useTranslation();
 
   const [formValues, setFormValues] = React.useState<Partial<UserProfile>>({});
@@ -25,6 +26,10 @@ const EditProfileBody: React.FC = () => {
   // const handleLangChange = (event: any) => {
   //   setLang(event.target.value);
   // };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -50,6 +55,7 @@ const EditProfileBody: React.FC = () => {
         console.log(data);
         if (data.status <= 304) {
           setUserInfo(data.data.data);
+          setAlertOpen(true);
         } else {
           console.log(data);
         }
@@ -72,6 +78,12 @@ const EditProfileBody: React.FC = () => {
         px: "50px",
       }}
     >
+      <AutoCloseAlert
+        severity="success"
+        message="Profile updated successfully"
+        open={alertOpen}
+        onClose={handleCloseAlert}
+      />
       <Typography variant="h6" fontWeight="bold">
         {t("basics")}
       </Typography>

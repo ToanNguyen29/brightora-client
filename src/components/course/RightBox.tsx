@@ -23,6 +23,7 @@ interface RightBoxProps {
   in_wishlist: boolean | undefined;
   is_enroll: boolean | undefined;
   price: number;
+  discount: number;
   handleCheckout: any;
   promotional_video: string;
 }
@@ -33,6 +34,7 @@ const RightBox: React.FC<RightBoxProps> = ({
   is_enroll,
   in_wishlist,
   price,
+  discount,
   handleCheckout,
   promotional_video,
 }) => {
@@ -87,7 +89,7 @@ const RightBox: React.FC<RightBoxProps> = ({
             height="100%"
           />
         </Box>
-        <PriceSection price={price} textColor={textColor} />
+        <PriceSection price={price} discount={discount} textColor={textColor} />
         <CourseIncludes include={fakeData.include} textColor={textColor} />
         <ActionButtons
           is_cart={is_cart}

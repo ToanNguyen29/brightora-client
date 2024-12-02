@@ -100,6 +100,7 @@ const CoursePage = () => {
               in_wishlist={course?.relation?.in_wishlist}
               is_review={course?.relation?.is_review}
               price={course?.price || 0}
+              discount={course?.discount_percentage || 0}
               handleCheckout={handleCheckout}
               promotional_video={course?.promotional_video || ""}
             />

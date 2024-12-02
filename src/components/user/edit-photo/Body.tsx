@@ -7,6 +7,7 @@ import SaveComponent from "../intercommunity/SaveComponent";
 import { updatePhoto } from "../../../services/UserServices";
 import UploadFile from "../../../services/AwsServices"; // Đảm bảo bạn có hàm này cho việc upload ảnh
 import { useAuth } from "../../../context/AuthContext";
+import AutoCloseAlert from "../../reused/Alert";
 
 const EditPhotoBody: React.FC = () => {
   const token = localStorage.getItem("token");
@@ -17,6 +18,11 @@ const EditPhotoBody: React.FC = () => {
   const [photo, setPhoto] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null); // Để lưu trữ lỗi nếu có
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -55,6 +61,7 @@ const EditPhotoBody: React.FC = () => {
           console.log(data);
           if (data.status < -305) {
             setUserInfo(data.data.data);
+            setAlertOpen(true);
           }
         });
         setError(null);
@@ -79,6 +86,12 @@ const EditPhotoBody: React.FC = () => {
         // px: "50px",
       }}
     >
+      <AutoCloseAlert
+        severity="success"
+        message="Photo updated successfully"
+        open={alertOpen}
+        onClose={handleCloseAlert}
+      />
       <ImagePreview selectedImage={selectedImage} />
       <ImageUploadButton
         imageName={imageName}

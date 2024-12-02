@@ -8,7 +8,7 @@ import {
   Link,
 } from "@mui/material";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
-// import DescriptionIcon from "@mui/icons-material/Description";
+
 import QuizIcon from "@mui/icons-material/Quiz";
 import { IExerciseLearn, ILessonLearn } from "../../../models/Course";
 

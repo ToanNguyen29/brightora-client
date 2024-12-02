@@ -15,14 +15,6 @@ import ContentItem from "./ContentItem";
 import { useThemeContext } from "../../../theme/ThemeContext";
 import { ISectionLearn } from "../../../models/Course";
 
-interface Content {
-  type: string;
-  durationVideo: number;
-  video_url: string;
-  title: string;
-  canReview: boolean;
-}
-
 interface Section {
   section: ISectionLearn;
 }
