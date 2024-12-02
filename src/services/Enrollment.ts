@@ -83,11 +83,6 @@ export const getAnswer = async (
   conversation_history: Message[]
 ) => {
   try {
-    console.log({
-      question: question,
-      answer: answer,
-      conversation_history: conversation_history,
-    });
     const response = await axios.post(
       `${import.meta.env.VITE_SERVER_URL}/api/v1/enrollment/ai/answer/`,
       {

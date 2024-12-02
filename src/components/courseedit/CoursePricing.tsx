@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { IUpdateCourse } from "../../models/Course";
 import { getCourse, updateCourse } from "../../services/CourseService";
 import { useParams } from "react-router-dom";
-const priceTier = [];
 
 const CoursePricing: React.FC = () => {
   const [price, setPrice] = useState<number>(0);

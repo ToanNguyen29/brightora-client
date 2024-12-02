@@ -10,7 +10,7 @@ export const getExerciseInfo = async (id: string) => {
     const response = await axios.get(`${exercise_url}/get_by_id/${id}`, {
       withCredentials: true,
     });
-    console.log("alo exercise", response);
+
     return response;
   } catch (error: any) {
     if (error.response) {

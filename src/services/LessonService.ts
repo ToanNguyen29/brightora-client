@@ -8,7 +8,7 @@ export const getLessonInfo = async (id: string) => {
     const response = await axios.get(`${lesson_url}/get_by_id/${id}`, {
       withCredentials: true,
     });
-    // console.log("geeeeeeee", response);
+
     return response;
   } catch (error: any) {
     if (error.response) {
@@ -90,7 +90,7 @@ export const saveDocument = async (token: string | null, file: File) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response);
+
     return response;
   } catch (error: any) {
     if (error.response) {
@@ -109,7 +109,6 @@ export const updateLessonVideo = async (
   url: string
 ) => {
   try {
-    console.log(id, url);
     const response = await axios.put(
       `${lesson_url}/${id}`,
       { video_url: url },
@@ -121,7 +120,7 @@ export const updateLessonVideo = async (
         },
       }
     );
-    console.log("toannn", response);
+
     return response;
   } catch (error: any) {
     if (error.response) {

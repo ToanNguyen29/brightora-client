@@ -17,7 +17,6 @@ export const login = async ({
       { withCredentials: true }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -39,7 +38,6 @@ export const signUp = async ({
       { withCredentials: true }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -61,7 +59,6 @@ export const logOut = async (token: string | null): Promise<AxiosResponse> => {
       }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -84,7 +81,6 @@ export const updatePassword = async ({
       }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -111,21 +107,19 @@ export const forgotPassword = async (email: string): Promise<AxiosResponse> => {
     });
 };
 
-export const resetPassword = async ({
-  password,
-  passwordConfirm,
-  token,
-}: ResetPasswordRequest): Promise<AxiosResponse> => {
+export const resetPassword = async (
+  token: string,
+  new_password: string
+): Promise<AxiosResponse> => {
   return await axios
-    .patch(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/resetPassword/${token}`,
-      { password, passwordConfirm },
+    .post(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/reset-password`,
+      { token, new_password },
       {
         withCredentials: true,
       }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -141,7 +135,6 @@ export const googleAuth = async (code: string): Promise<AxiosResponse> => {
       { withCredentials: true }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -164,7 +157,6 @@ export const facebookAuth = async (
       }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {

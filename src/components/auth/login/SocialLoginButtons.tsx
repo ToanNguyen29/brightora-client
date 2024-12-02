@@ -3,7 +3,7 @@ import { Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import GoogleAuthWrapper from "./googleAuth/GoogleAuthWrapper";
 import GoogleLogin from "./googleAuth/GoogleLogin";
-import FacebookLogin from "./facebookAuth/FacebookLogin";
+
 import GithubLogin from "./githubAuth/GithubLogin";
 
 interface SocialLoginButtonsProps {

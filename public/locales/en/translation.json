@@ -267,5 +267,13 @@
   "send_reset_password_link_via_email_note": "We will send link for reset your password via email",
   "send_reset_password_link_via_email_successfully": "Send reset password Link Successfully",
   "send_reset_password_link_via_email_successfully_note": "We sent a password reset link to your email. Please follow the instructions in the email to reset your password.",
-  "reset_password": "Reset password"
+  "reset_password": "Reset password",
+  "select_rating": "Select rating",
+  "cancel": "Cancel",
+  "review": "Review",
+  "rate": "Rate",
+  "submit": "Submit",
+  "resources": "Resources",
+  "create_course_what_type?": "What type of course?",
+  "send_for_review": "Send for review"
 }

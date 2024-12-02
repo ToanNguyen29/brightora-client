@@ -6,6 +6,7 @@ import AutoCloseAlert from "../../../reused/Alert";
 import UploadFile from "../../../../services/AwsServices";
 // import testUploadFile from "../../../../services/test";
 import ProgressBox from "../ProgressBox";
+import { createTranscript } from "../../../../services/TranscriptService";
 
 interface UploadVideoProps {
   video_url: string | undefined;
@@ -47,8 +48,11 @@ const UploadVideo: React.FC<UploadVideoProps> = ({
     const s3_key = `lesson_video/${id}.mp4`;
 
     UploadFile(s3_key, file, setProgress, async () => {
-      await updateLessonVideo(token, id, url).then((data) => {
+      await updateLessonVideo(token, id, url).then(async (data) => {
         console.log(data);
+        await createTranscript(token, url).then((data) => {
+          console.log("Transcript created:", data);
+        });
         reloadData();
       });
       setSelectedTab(0);

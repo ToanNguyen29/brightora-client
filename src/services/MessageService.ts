@@ -11,7 +11,6 @@ export const getAllConversations = async (
       },
     })
     .then((res) => {
-      console.log("conversation: ", res);
       return res;
     })
     .catch((err) => {

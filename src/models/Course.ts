@@ -109,6 +109,7 @@ export interface IUpdateCourse {
   thumbnail?: string;
   promotional_video?: string;
   price?: number;
+  status?: string;
 }
 
 export interface CurriculumMap {

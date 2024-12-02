@@ -7,10 +7,15 @@ import { getLessonInfo } from "../../services/LessonService";
 import { ILessonLearn } from "../../models/Course";
 import ReactMarkdown from "react-markdown";
 import { Box } from "@mui/material";
+import { getTranscript } from "../../services/TranscriptService";
 
 const LessonComponent: React.FC = () => {
+  const token = localStorage.getItem("token");
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState<ILessonLearn | undefined>();
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [transcript, setTranscript] = useState<string>("");
+
   useEffect(() => {
     // fetch lesson
     console.log("fetch lesson", lessonId);
@@ -22,6 +27,7 @@ const LessonComponent: React.FC = () => {
             if (data.data) {
               console.log("lesson:", data.data);
               setLesson(data.data);
+              setVideoUrl(data.data.video_url || "");
             } else {
               console.log(data);
             }
@@ -33,6 +39,28 @@ const LessonComponent: React.FC = () => {
     };
     fetchLesson();
   }, [lessonId]);
+
+  useEffect(() => {
+    if (!videoUrl) return;
+    const fetchTranscript = async () => {
+      await getTranscript(token, videoUrl)
+        .then((data) => {
+          if (data.status <= 305) {
+            if (data.data) {
+              console.log("getTranscript:", data.data);
+              setTranscript(data.data.data.transcript);
+            } else {
+              console.log(data);
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchTranscript();
+  }, [videoUrl, token]);
+
   return (
     <>
       {lesson?.video_url ? (
@@ -49,7 +77,7 @@ const LessonComponent: React.FC = () => {
               tracks: [
                 {
                   kind: "subtitles",
-                  src: "https://brightora.s3.amazonaws.com/transcript/1732337165.vtt", // Ensure this URL is correct
+                  src: transcript,
                   srcLang: "en",
                   default: true,
                   label: "English",

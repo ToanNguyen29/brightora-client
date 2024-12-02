@@ -33,16 +33,6 @@ const MyCourseCard: React.FC<CourseProps> = ({ course }) => {
     setRatingDialogOpen(true);
   };
 
-  // const handleSubmitRating = async () => {
-  //   try {
-  //     await createReview(token, course._id, selectedRating, reviewText).then(
-  //       (data) => {
-  //         console.log(data);
-  //       }
-  //     );
-  //   } catch (error) {}
-  // };
-
   const handleCardClick = () => {
     navigate(`/course/${course._id}/learn`);
   };

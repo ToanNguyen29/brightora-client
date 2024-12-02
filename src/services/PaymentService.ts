@@ -50,7 +50,6 @@ export const getStats = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -74,7 +73,6 @@ export const getPurchaseHistory = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {

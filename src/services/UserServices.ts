@@ -11,7 +11,6 @@ export const getMe = async (token: string | null): Promise<AxiosResponse> => {
       },
     })
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {

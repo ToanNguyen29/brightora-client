@@ -53,7 +53,6 @@ export const updateSectionLesson = async (
   id: string,
   lessons: CurriculumMap[]
 ) => {
-  console.log(lessons);
   try {
     const response = await axios.put(
       `${section_url}/${id}`,
@@ -97,7 +96,7 @@ export const createNewSection = async (
         },
       }
     );
-    console.log("response", response);
+
     return response;
   } catch (error: any) {
     console.log(error);

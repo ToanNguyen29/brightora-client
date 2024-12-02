@@ -13,7 +13,6 @@ import { Link, useNavigate } from "react-router-dom";
 import AutoCloseAlert from "../../components/reused/Alert";
 
 const LoginPage: React.FC = () => {
-  const token = localStorage.getItem("token");
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const textColor = mode === "light" ? "black" : "white";
@@ -52,7 +51,6 @@ const LoginPage: React.FC = () => {
         .then((data) => {
           if (data.status === 200) {
             localStorage.setItem("token", data.data.access_token);
-            console.log(token, data);
             window.location.href = "/";
           } else {
             console.log("error");

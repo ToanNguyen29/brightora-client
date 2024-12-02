@@ -5,6 +5,7 @@ import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
 import FormTextField from "./FormTextField";
 import { signUp } from "../../../services/AuthService";
 import AutoCloseAlert from "../../reused/Alert";
+import SocialSignUpButtons from "./SocialSignUpButtons";
 
 interface SignUpFormProps {
   mode: "light" | "dark";
@@ -195,8 +196,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
       >
         {t("sign_up")}
       </Button>
-      {/* <Typography>Other Signup Options</Typography> */}
-      {/* <SocialSignUpButtons textColor={textColor} /> */}
+      {/* <Typography>Other Signup Options</Typography>
+      <SocialSignUpButtons textColor={textColor} /> */}
     </Box>
   );
 };

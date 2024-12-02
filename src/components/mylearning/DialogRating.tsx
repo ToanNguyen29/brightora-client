@@ -109,7 +109,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
           fontWeight: "bold",
         }}
       >
-        {t("Select Rating")}
+        {t("select_rating")}
       </DialogTitle>
 
       <DialogContent sx={{ bgcolor: backgroundColor }}>
@@ -122,7 +122,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
           />
         </Box>
         <TextField
-          label={t("Review")}
+          label={t("review")}
           variant="outlined"
           fullWidth
           multiline
@@ -150,7 +150,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
           onClick={handleRatingClose}
           sx={{ color: "error.main", fontWeight: "bold" }}
         >
-          {t("Cancel")}
+          {t("cancel")}
         </Button>
         <Button
           onClick={() => {
@@ -162,7 +162,7 @@ const DialogRating: React.FC<DialogRatingProps> = ({
           variant="contained"
           sx={{ fontWeight: "bold", ml: 2 }}
         >
-          {t("Submit")}
+          {t("submit")}
         </Button>
       </DialogActions>
     </Dialog>

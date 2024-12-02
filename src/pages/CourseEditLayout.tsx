@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { useNavigate, useLocation, Outlet, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
 import { StepSection } from "../components/courseedit/StepSection";
 import SendIcon from "@mui/icons-material/Send"; // Example icon
+import { IUpdateCourse } from "../models/Course";
+import { getCourse, updateCourse } from "../services/CourseService";
+import AutoCloseAlert from "../components/reused/Alert";
 
 export default function CourseEditLayout() {
+  const token = localStorage.getItem("token");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [statusCourse, setStatusCourse] = useState<string>("Draft");
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const { mode } = useThemeContext();
@@ -32,6 +38,20 @@ export default function CourseEditLayout() {
     currentPathIndex !== -1 ? currentPathIndex : 0
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (id) {
+        await getCourse(id).then((data) => {
+          if (data.status <= 305) {
+            setStatusCourse(data.data.status);
+          }
+        });
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     navigate(tabPaths[newValue]);
@@ -40,6 +60,21 @@ export default function CourseEditLayout() {
   const labelBoxStyles = {
     whiteSpace: "nowrap",
     color: textColor,
+  };
+
+  const handleSubmitCourse = async () => {
+    if (statusCourse !== "Draft") return;
+    const formData: IUpdateCourse = {
+      status: "Pending",
+    };
+    if (id) {
+      await updateCourse(token, id, formData).then((data) => {
+        console.log("Price:", data);
+        if (data.data.succeed) {
+          setAlertOpen(true);
+        }
+      });
+    }
   };
 
   // Combine all steps into a single array of tabs
@@ -71,6 +106,13 @@ export default function CourseEditLayout() {
           mt: 3,
         }}
       >
+        <AutoCloseAlert
+          severity="success"
+          message="Submit course for publishing successfully."
+          open={alertOpen}
+          onClose={() => setAlertOpen(false)}
+        />
+
         <StepSection
           tabs={allTabs}
           value={value}
@@ -78,7 +120,9 @@ export default function CourseEditLayout() {
           labelBoxStyles={labelBoxStyles}
           isStepDone={isStepDone}
         />
+
         <Button
+          onClick={handleSubmitCourse}
           sx={{
             fontSize: "16px",
             my: "45px",
@@ -90,9 +134,9 @@ export default function CourseEditLayout() {
               backgroundColor: mode === "dark" ? "white" : "grey",
             },
           }}
-          startIcon={<SendIcon />}
+          startIcon={statusCourse === "Draft" && <SendIcon />}
         >
-          Send for Review
+          {statusCourse === "Draft" ? t("send_for_review") : statusCourse}
         </Button>
       </Box>
       <Box sx={{ p: 3, margin: "10px", borderRadius: "8px", flexGrow: 1 }}>

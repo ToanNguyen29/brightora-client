@@ -13,7 +13,6 @@ export const createCourse = async (
   token: string | null,
   formData: ICreateCourse
 ): Promise<AxiosResponse> => {
-  console.log(course_url);
   const response = await axios
     .post(
       `${course_url}`,
@@ -28,7 +27,6 @@ export const createCourse = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -43,7 +41,6 @@ export const updateCourse = async (
   id: string,
   formData: IUpdateCourse
 ): Promise<AxiosResponse> => {
-  console.log(formData);
   const response = await axios
     .put(
       `${course_url}/${id}`,
@@ -58,7 +55,6 @@ export const updateCourse = async (
       }
     )
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
@@ -83,7 +79,6 @@ export const getCoursesByOwner = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -97,13 +92,11 @@ export const getCourse = async (
   id: string,
   userId?: string | undefined
 ): Promise<AxiosResponse> => {
-  console.log("url:", `${course_url}/get_by_id/${id}?user_id=${userId}`);
   const response = await axios
     .get(`${course_url}/get_by_id/${id}?user_id=${userId}`, {
       withCredentials: true,
     })
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -131,7 +124,6 @@ export const updateCourseImage = async (
       }
     )
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
@@ -162,7 +154,6 @@ export const updatePromotionalVideo = async (
       }
     )
     .then((res) => {
-      console.log(res);
       return res;
     })
     .catch((err) => {
@@ -199,7 +190,6 @@ export const updateCurriculumSection = async (
   sections: CurriculumMap[]
 ) => {
   try {
-    console.log(sections);
     const response = await axios.put(
       `${course_url}/${id}`,
       {
@@ -233,7 +223,7 @@ export const getCourseByType = async (filter: CourseFilterType) => {
         withCredentials: true,
       }
     );
-    console.log("toan", response.data);
+
     return response.data;
   } catch (error: any) {
     if (error.response) {
@@ -251,7 +241,6 @@ export const generateThumnail = async (
   formData: GenerateThumbnailForm,
   token: string
 ) => {
-  console.log(course_url);
   const response = await axios
     .post(
       `${course_url}/ai/generate_thumbnail`,
@@ -266,7 +255,6 @@ export const generateThumnail = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -277,7 +265,6 @@ export const generateThumnail = async (
 };
 
 export const generateDescription = async (title: string) => {
-  console.log(course_url);
   const response = await axios
     .post(`${course_url}/ai/gen_description`, {
       course_title: title,
@@ -298,10 +285,6 @@ export const searchCourse = async (
   pageNumber: number | undefined,
   pageSize: number | undefined
 ): Promise<AxiosResponse> => {
-  console.log(
-    "search with url:",
-    `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`
-  );
   const response = await axios
     .get(
       `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`,
@@ -323,7 +306,6 @@ export const searchCourse = async (
 export const getCoursesMe = async (
   token: string | null
 ): Promise<AxiosResponse> => {
-  console.log(course_url);
   const response = await axios
     .get(`${course_url}/get_me`, {
       withCredentials: true,
@@ -332,7 +314,6 @@ export const getCoursesMe = async (
       },
     })
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -348,9 +329,6 @@ export const updateMessagesCourse = async (
   welcome_message: string | null,
   congratulation_message: string | null
 ): Promise<AxiosResponse> => {
-  console.log(course_url);
-  const message = { welcome_message, congratulation_message };
-  console.log("messageupdate", message);
   const response = await axios
     .put(
       `${course_url}/${id}`,
@@ -366,7 +344,6 @@ export const updateMessagesCourse = async (
       }
     )
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {
@@ -380,7 +357,6 @@ export const getInformationMe = async (
   token: string | null,
   userId: string
 ): Promise<AxiosResponse> => {
-  console.log(`${course_url}/?user_id=${userId}`);
   const response = await axios
     .get(`${course_url}/?user_id=${userId}`, {
       withCredentials: true,
@@ -389,7 +365,6 @@ export const getInformationMe = async (
       },
     })
     .then((res) => {
-      console.log("res", res);
       return res;
     })
     .catch((err) => {

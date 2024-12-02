@@ -56,7 +56,7 @@ const CourseEnrollmentList: React.FC = () => {
             const courses = data.data.map((item) => item.course);
             console.log("Course", courses);
             setMyCourses(courses);
-            setFilteredCourses(courses); // Cập nhật filteredCourses ban đầu
+            setFilteredCourses(courses);
           }
         });
       } catch (error) {
