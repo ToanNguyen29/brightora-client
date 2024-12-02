@@ -18,6 +18,7 @@ const SearchCoursePage: React.FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
   const [totalItem, setTotalItem] = useState<number>(0);
+  const [filter, setFilter] = useState("");
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
@@ -40,6 +41,27 @@ const SearchCoursePage: React.FC = () => {
     fetchCourse();
   }, [querySearch, pageNumber, pageSize]);
 
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const updateQuerySearch = querySearch + "&" + filter;
+
+        await searchCourse(updateQuerySearch, pageNumber, pageSize).then(
+          (data) => {
+            console.log(data);
+            if (data.status <= 305) {
+              setTotalItem(data.data.total_items);
+              setCourses(data.data.data);
+            }
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCourse();
+  }, [filter, pageNumber, pageSize]);
+
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     page: number
@@ -49,13 +71,6 @@ const SearchCoursePage: React.FC = () => {
 
   return (
     <Box>
-      <Typography
-        variant="h4"
-        fontWeight={"bold"}
-        sx={{ mt: 6, mb: 1.5, color: textColor, mx: "15%" }}
-      >
-        {`${totalItem} results for "${querySearch}"`}
-      </Typography>
       <Box
         sx={{
           display: "flex",
@@ -75,18 +90,11 @@ const SearchCoursePage: React.FC = () => {
             mt: 1.5,
           }}
         >
-          <FilterBar />
+          <FilterBar setFilter={setFilter} />
         </Box>
 
         {/* Course List Section */}
         <Box sx={{ flex: "5", pl: 2, flexDirection: "column" }}>
-          {/* <Typography
-            variant="body1"
-            fontWeight={"bold"}
-            sx={{ display: "flex", mb: 1.5, justifyContent: "flex-end" }}
-          >
-            {`${totalItem} results`}
-          </Typography> */}
           <Box
             sx={{
               justifyContent: "left",
@@ -95,6 +103,9 @@ const SearchCoursePage: React.FC = () => {
               gap: 2,
             }}
           >
+            <Typography variant="h6" sx={{ color: "black" }}>
+              {`${totalItem} results for "${querySearch}"`}
+            </Typography>
             {/* Render courses */}
             {courses &&
               courses.map((item) => (
@@ -118,7 +129,7 @@ const SearchCoursePage: React.FC = () => {
             sx={{
               display: "flex",
               justifyContent: "center",
-              marginTop: "16px",
+              my: "30px",
             }}
           >
             <Pagination
