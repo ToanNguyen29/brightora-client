@@ -6,11 +6,13 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
-      - "8888:8888"
+      - "5173:5173" # Vite default port
+      - "8888:8888" # Additional port for localhost
     volumes:
       - .:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
+    env_file:
+      - .env
     command: ["npm", "run", "start"]

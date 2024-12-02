@@ -133,11 +133,28 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ color: textColor, mt: 0.5, fontSize: "0.9rem", mr: 3 }}
+              sx={{ mt: 0.5, fontSize: "0.9rem", mr: 3 }}
             >
-              {t("level")}: {level.map((item) => item)}
+              {t("level")}:
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
+                {level.map((item) => (
+                  <Box
+                    key={item}
+                    sx={{
+                      backgroundColor: "lightblue",
+                      color: "black",
+                      padding: "0.3rem 0.6rem",
+                      borderRadius: "16px",
+                      fontSize: "0.85rem",
+                      display: "inline-block",
+                      boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+                    }}
+                  >
+                    {item}
+                  </Box>
+                ))}
+              </Box>
             </Typography>
-
             {updated_at && (
               <Typography
                 variant="body2"

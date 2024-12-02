@@ -228,7 +228,7 @@ export const updateCurriculumSection = async (
 export const getCourseByType = async (filter: CourseFilterType) => {
   try {
     const response = await axios.get(
-      `${course_url}/get_by_type?type=${filter.type}&page_number=${filter.page_number}&page_size=${filter.page_size}&sort_by=${filter.sort_by}&sort_order=${filter.sort_order}`,
+      `${course_url}/get_by_type?category=${filter.type}&page_number=${filter.page_number}&page_size=${filter.page_size}&sort_by=${filter.sort_by}&sort_order=${filter.sort_order}`,
       {
         withCredentials: true,
       }
@@ -298,6 +298,10 @@ export const searchCourse = async (
   pageNumber: number | undefined,
   pageSize: number | undefined
 ): Promise<AxiosResponse> => {
+  console.log(
+    "search with url:",
+    `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`
+  );
   const response = await axios
     .get(
       `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`,
