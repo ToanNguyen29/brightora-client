@@ -262,5 +262,10 @@
   "your_review": "Your review",
   "student_feedback": "Student feedback",
   "congratulation_message": "Congratulation Message",
-  "welcome_message": "Welcome Message"
+  "welcome_message": "Welcome Message",
+  "forgot_password": "Forgot password",
+  "send_reset_password_link_via_email_note": "We will send link for reset your password via email",
+  "send_reset_password_link_via_email_successfully": "Send reset password Link Successfully",
+  "send_reset_password_link_via_email_successfully_note": "We sent a password reset link to your email. Please follow the instructions in the email to reset your password.",
+  "reset_password": "Reset password"
 }

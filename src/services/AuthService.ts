@@ -3,7 +3,6 @@ import {
   LoginRequest,
   SignUpRequest,
   UpdatePasswordRequest,
-  ForgotPasswordRequest,
   ResetPasswordRequest,
 } from "../models/Auth";
 
@@ -78,7 +77,7 @@ export const updatePassword = async ({
 }: UpdatePasswordRequest): Promise<AxiosResponse> => {
   return await axios
     .patch(
-      `${import.meta.env.VITE_AUTH_SERVER}/api/v1/users/updatePassword`,
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/updatePassword`,
       { passwordCurrent, password, passwordConfirm },
       {
         withCredentials: true,
@@ -94,19 +93,16 @@ export const updatePassword = async ({
     });
 };
 
-export const forgotPassword = async ({
-  email,
-}: ForgotPasswordRequest): Promise<AxiosResponse> => {
+export const forgotPassword = async (email: string): Promise<AxiosResponse> => {
   return await axios
     .post(
-      `${import.meta.env.VITE_AUTH_SERVER}/api/v1/users/forgotPass`,
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/forgot-password`,
       { email },
       {
         withCredentials: true,
       }
     )
     .then((res) => {
-      console.log("response: ", res);
       return res;
     })
     .catch((err) => {
@@ -122,7 +118,7 @@ export const resetPassword = async ({
 }: ResetPasswordRequest): Promise<AxiosResponse> => {
   return await axios
     .patch(
-      `${import.meta.env.VITE_AUTH_SERVER}/api/v1/users/resetPassword/${token}`,
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/resetPassword/${token}`,
       { password, passwordConfirm },
       {
         withCredentials: true,

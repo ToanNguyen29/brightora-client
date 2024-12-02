@@ -3,13 +3,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import PasswordStrengthIndicator from "./PasswordStrengthIndicator";
 import FormTextField from "./FormTextField";
-import SocialSignUpButtons from "./SocialSignUpButtons";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
 import { signUp } from "../../../services/AuthService";
-import { SignUpResponse } from "../../../models/Auth";
-
-import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import AutoCloseAlert from "../../reused/Alert";
 
 interface SignUpFormProps {
   mode: "light" | "dark";
@@ -17,7 +12,8 @@ interface SignUpFormProps {
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
   // const { setIsAuthenticated, setUserInfo, setIsLoadingAuth } = useAuth();
-  const token = localStorage.getItem("token");
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
+  // const token = localStorage.getItem("token");
   const { t } = useTranslation();
   // const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -49,7 +45,27 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
   };
 
   const onSignUpClick = async () => {
-    // if()
+    setErrorAlertOpen("");
+    if (!firstName || !lastName || !email || !password || !passwordConfirm) {
+      setErrorAlertOpen("Please fill all information");
+      setPassword("");
+      setPasswordConfirm("");
+      return;
+    }
+    if (password.length < 8) {
+      setErrorAlertOpen("Password has at least 8 character");
+      setPassword("");
+      setPasswordConfirm("");
+      return;
+    }
+
+    if (password !== passwordConfirm) {
+      setErrorAlertOpen("Password confirm is wrong");
+      setPassword("");
+      setPasswordConfirm("");
+      return;
+    }
+
     try {
       await signUp({
         email,
@@ -60,10 +76,17 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
         .then((data) => {
           if (data.status === 200) {
             localStorage.setItem("token", data.data.access_token);
-            // console.log(token, data);
             window.location.href = "/";
           } else {
             console.log("error");
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
+            setEmail("");
+            setPassword("");
+            setPasswordConfirm("");
           }
         })
         .catch((err) => {
@@ -87,6 +110,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
         px: "3%",
       }}
     >
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
       <Typography
         variant="h4"
         fontWeight={"bold"}

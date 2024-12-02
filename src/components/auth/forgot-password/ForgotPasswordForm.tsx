@@ -3,6 +3,7 @@ import { Box, Button, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import { forgotPassword } from "../../../services/AuthService";
+import AutoCloseAlert from "../../reused/Alert";
 
 interface ForgotPasswordFormProps {
   textColor: string;
@@ -14,19 +15,30 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   setIsSendEmail,
 }) => {
   const { t } = useTranslation();
-
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
   const [email, setEmail] = useState("");
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
   const handleResetPassword = async () => {
+    if (!email) {
+      setErrorAlertOpen("Please fill email information");
+      return;
+    }
+
     try {
-      const res = await forgotPassword({ email });
-      if (res.status <= 304) {
-        setIsSendEmail(true);
-      } else {
-        alert(`Error: ${res.detail}}`);
-      }
+      await forgotPassword(email).then((data) => {
+        console.log("for,", data);
+        if (data.status <= 304) {
+          setIsSendEmail(true);
+        } else {
+          if (Array.isArray(data.data.detail)) {
+            setErrorAlertOpen(data.data.detail[0].msg);
+          } else {
+            setErrorAlertOpen(data.data.detail);
+          }
+        }
+      });
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +46,12 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
   return (
     <Box component="form" noValidate sx={{ mt: 1, width: "100%" }}>
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
       <TextField
         margin="normal"
         required

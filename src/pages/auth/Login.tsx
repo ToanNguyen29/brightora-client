@@ -10,13 +10,14 @@ import LeftPanel from "../../components/auth/login/LeftPanel";
 import { useAuth } from "../../context/AuthContext";
 import { login } from "../../services/AuthService";
 import { Link, useNavigate } from "react-router-dom";
+import AutoCloseAlert from "../../components/reused/Alert";
 
 const LoginPage: React.FC = () => {
   const token = localStorage.getItem("token");
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const textColor = mode === "light" ? "black" : "white";
-
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
   const { setIsLoadingAuth, isAuthenticated, isLoadingAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +38,12 @@ const LoginPage: React.FC = () => {
   };
 
   const handleLoginClick = async () => {
+    setErrorAlertOpen("");
+    if (!email || !password) {
+      setErrorAlertOpen("Please fill all information");
+      return;
+    }
+
     try {
       await login({
         email,
@@ -49,6 +56,11 @@ const LoginPage: React.FC = () => {
             window.location.href = "/";
           } else {
             console.log("error");
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
           }
         })
         .catch((err) => {
@@ -72,6 +84,12 @@ const LoginPage: React.FC = () => {
         width: "100%",
       }}
     >
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
       <LeftPanel />
 
       <Box
