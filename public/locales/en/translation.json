@@ -276,5 +276,12 @@
   "resources": "Resources",
   "create_course_what_type?": "What type of course?",
   "send_for_review": "Send for review",
-  "no_courses_found": "No courses found"
+  "no_courses_found": "No courses found",
+  "are_you_sure_you_want_to_delete_this_section": "Are you sure you want to delete this section?",
+  "this_action_cannot_be_undone": "This action cannot be undone",
+  "edit_question": "Edit question",
+  "Lesson": "Lesson",
+  "confirm": "Confirm",
+  "add_section": "Add section",
+  "become_to_instructor": "Become to instructor"
 }

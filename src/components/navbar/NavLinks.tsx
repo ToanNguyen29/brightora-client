@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
+import UserInfo from "../user/user-accout-page/UserInfo";
 
 interface NavLinksProps {
   mode: string;
@@ -12,7 +13,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ mode }) => {
   const { t } = useTranslation();
   const borderColor = mode === "dark" ? "white" : "black";
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, userInfo } = useAuth();
 
   return (
     <>
@@ -42,7 +43,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ mode }) => {
         {t("about")}
       </Button>
 
-      {isAuthenticated && (
+      {isAuthenticated && userInfo.role === "Instructor" ? (
         <Button
           color="inherit"
           component={Link}
@@ -55,6 +56,20 @@ const NavLinks: React.FC<NavLinksProps> = ({ mode }) => {
           }}
         >
           {t("instructor")}
+        </Button>
+      ) : (
+        <Button
+          color="inherit"
+          component={Link}
+          to="/sign-to-instructor"
+          target="_blank"
+          sx={{
+            ml: 2,
+            color: mode === "dark" ? "white" : "black",
+            borderRadius: 1,
+          }}
+        >
+          {t("become_to_instructor")}
         </Button>
       )}
 

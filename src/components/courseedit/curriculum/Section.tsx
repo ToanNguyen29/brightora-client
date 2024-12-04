@@ -1,4 +1,14 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { CurriculumMap, ISection } from "../../../models/Course";
 import { useEffect, useState } from "react";
@@ -17,6 +27,7 @@ import {
 } from "../../../services/LessonService";
 import ExcerciseForm from "./Exercise";
 import { createNewExercise } from "../../../services/ExerciseService";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type SectionProps = {
   section: CurriculumMap;
@@ -32,8 +43,10 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const [sectionInfo, setSectionInfo] = useState<ISection>();
   const [lessons, setLessons] = useState<CurriculumMap[]>();
-  const [title, setTitle] = useState("Toan Nguyen");
+  const [title, setTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [lessonToDelete, setLessonToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +65,50 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
     };
     fetchData();
   }, [section]);
+
+  const handleDelete = (id: string) => {
+    console.log("setLessonToDelete", id);
+    setLessonToDelete(id);
+    setOpenDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!sectionInfo) return;
+    console.log("sectionInfo", sectionInfo._id);
+    if (lessonToDelete) {
+      try {
+        const updatedData = lessons?.filter(
+          (lesson) => lesson.id !== lessonToDelete
+        );
+        setLessons(updatedData);
+
+        console.log("lesson remove", lessons, updatedData);
+        // await updateCurriculumSection(token, id, updatedData).then((data) => {
+        //   console.log("updateCurriculumSection", data);
+        // });
+
+        await updateSectionLesson(
+          token,
+          sectionInfo?._id,
+          updatedData || []
+        ).then((data) => {
+          console.log("updateSectionTitle, ", data);
+          // if (data.status <= 305) {
+          //   setIsEditing(false);
+          // }
+          setOpenDialog(false);
+        });
+
+        setOpenDialog(false);
+      } catch (err) {
+        alert("Error deleting section");
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDialog(false); // Close the dialog without deleting
+  };
 
   const handleDragEnd = async (result: any) => {
     if (!result.destination) return;
@@ -235,6 +292,12 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
                           ) : (
                             <ExcerciseForm exercise={item} />
                           )}
+                          <IconButton
+                            sx={{ marginLeft: 2 }}
+                            onClick={() => handleDelete(item.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
                         </Box>
                       )}
                     </Draggable>
@@ -262,6 +325,77 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
           </Button>
         </Box>
       </Box>
+      <Dialog
+        open={openDialog}
+        onClose={handleCancelDelete}
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            boxShadow: 3,
+            backgroundColor: backgroundColor,
+          },
+        }}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle
+          sx={{
+            fontWeight: "bold",
+            textAlign: "center",
+            color: textColor,
+            fontSize: "1.25rem",
+            paddingBottom: "16px",
+          }}
+        >
+          {t("are_you_sure_you_want_to_delete_this_section")}
+        </DialogTitle>
+
+        <DialogContent
+          sx={{
+            textAlign: "center",
+            padding: "20px",
+            color: textColor,
+          }}
+        >
+          <Typography variant="body2" color="textSecondary">
+            {t("this_action_cannot_be_undone")}
+          </Typography>
+        </DialogContent>
+
+        <DialogActions sx={{ justifyContent: "center", paddingBottom: "20px" }}>
+          <Button
+            onClick={handleCancelDelete}
+            color="primary"
+            variant="outlined"
+            sx={{
+              borderRadius: "20px",
+              padding: "8px 20px",
+              marginRight: "10px",
+              fontWeight: "bold",
+              borderColor: textColor,
+            }}
+          >
+            {t("cancel")}
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="primary"
+            variant="contained"
+            sx={{
+              borderRadius: "20px",
+              padding: "8px 20px",
+              fontWeight: "bold",
+              backgroundColor: textColor,
+              "&:hover": {
+                backgroundColor: textColor,
+                opacity: 0.8,
+              },
+            }}
+          >
+            {t("confirm")}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

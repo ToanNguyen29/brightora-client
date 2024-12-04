@@ -131,3 +131,25 @@ export const updateSection = async (
       return err.response;
     });
 };
+
+export const deleteSection = async (
+  token: string | null,
+  id: string
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .delete(`${section_url}/${id}`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err.response;
+    });
+
+  return response;
+};
