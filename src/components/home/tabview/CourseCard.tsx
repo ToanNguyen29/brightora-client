@@ -55,18 +55,15 @@ const CourseCard: React.FC<CourseProps> = ({
         display: "flex",
         width: "100%",
         flexDirection: "column",
-        // minWidth: "300px",
         position: "relative",
         cursor: "pointer",
-        // boxShadow: 3,
-        boxShadow: "none", // Loại bỏ bóng
-        border: "none", // Loại bỏ viền
+        boxShadow: "none",
+        border: "none",
         "&:hover": {
-          boxShadow: 6, // Shadow tăng khi hover
-          transform: "translateY(-5px)", // Hiệu ứng nâng lên khi hover
+          boxShadow: 6,
+          transform: "translateY(-5px)",
           transition: "all 0.3s ease-in-out",
         },
-        // overflow: "hidden", // Đảm bảo nội dung không bị tràn
       }}
       onClick={handleCardClick}
     >
@@ -141,7 +138,6 @@ const CourseCard: React.FC<CourseProps> = ({
                 sx={{
                   mr: 2,
                   fontWeight: "bold",
-                  // color: textColor,
                   alignContent: "center",
                   textAlign: "center",
                 }}
@@ -173,9 +169,8 @@ const CourseCard: React.FC<CourseProps> = ({
             <Typography
               variant="h6"
               sx={{
-                mr: 2,
+                display: "flex",
                 fontWeight: "bold",
-                // color: textColor,
                 alignContent: "center",
                 textAlign: "center",
               }}
@@ -193,9 +188,10 @@ const CourseCard: React.FC<CourseProps> = ({
               variant="caption"
               sx={{
                 bgcolor: "#FFB74D",
+                fontSize: "0.7rem",
                 color: "white",
                 borderRadius: 1,
-                px: 1,
+                px: 0.5,
                 py: 0.25,
               }}
             >
@@ -210,8 +206,9 @@ const CourseCard: React.FC<CourseProps> = ({
                 sx={{
                   bgcolor: "success.main", // Màu xanh
                   color: "white",
+                  fontSize: "0.7rem",
                   borderRadius: 1,
-                  px: 1,
+                  px: 0.5,
                   py: 0.25,
                 }}
               >

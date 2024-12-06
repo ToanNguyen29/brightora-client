@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 
 import SearchBar from "../navbar/SearchBar";
-import { Box, Grid, Pagination } from "@mui/material";
+import { Box, Grid, Pagination, Typography, Button } from "@mui/material";
 
 import { getEnrollmentMe } from "../../services/Enrollment";
 import { ICourseCard } from "../../models/Course";
 import MyCourseCard from "./MyCourseCard";
+import { useNavigate } from "react-router-dom"; // Thêm hook để điều hướng
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../../theme/ThemeContext";
 
 const CourseEnrollmentList: React.FC = () => {
+  const navigate = useNavigate(); // Hook để điều hướng
   const token = localStorage.getItem("token");
   const [myCourses, setMyCourses] = useState<ICourseCard[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<ICourseCard[]>([]);
-
+  const { mode } = useThemeContext();
+  const { t } = useTranslation();
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 8;
@@ -86,27 +93,64 @@ const CourseEnrollmentList: React.FC = () => {
         />
       </Box>
       <Box>
-        <Grid container spacing={3}>
-          {currentCourses.map((course, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <MyCourseCard course={course} />
+        {filteredCourses.length === 0 ? (
+          <Box
+            sx={{
+              textAlign: "center",
+              marginTop: "50px",
+            }}
+          >
+            <Typography
+              variant="body1"
+              color={textColor}
+              gutterBottom
+              sx={{ mb: 3 }}
+            >
+              You don't have any courses in your list yet. Explore amazing
+              courses now!
+            </Typography>
+            <Button
+              variant="outlined"
+              // color="primary"
+              sx={{
+                color: backgroundColor,
+                backgroundColor: textColor,
+                borderColor: textColor,
+                ":hover": {
+                  color: textColor,
+                  backgroundColor: backgroundColor,
+                },
+              }}
+              onClick={() => navigate("/")} // Điều hướng đến trang chủ
+            >
+              Browse Now
+            </Button>
+          </Box>
+        ) : (
+          <>
+            <Grid container spacing={3}>
+              {currentCourses.map((course, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+                  <MyCourseCard course={course} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "16px",
-          }}
-        >
-          <Pagination
-            count={Math.ceil(filteredCourses.length / coursesPerPage)} // Tổng số trang
-            page={currentPage} // Trang hiện tại
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "16px",
+              }}
+            >
+              <Pagination
+                count={Math.ceil(filteredCourses.length / coursesPerPage)} // Tổng số trang
+                page={currentPage} // Trang hiện tại
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </Box>
+          </>
+        )}
       </Box>
     </>
   );

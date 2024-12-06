@@ -1,16 +1,20 @@
 import React, { useCallback, useEffect, useState } from "react";
-import FilterBar from "./FilterBar";
 import SearchBar from "../navbar/SearchBar";
-import { Box } from "@mui/material";
-import { useThemeContext } from "../../theme/ThemeContext";
-import { useTranslation } from "react-i18next";
+import { Box, Typography, Button } from "@mui/material";
 import { getWishlistMe } from "../../services/WishListService";
 import { ICourseCard } from "../../models/Course";
 import CourseGrid from "../home/tabview/CourseGrid";
+import { useNavigate } from "react-router-dom";
+import { useThemeContext } from "../../theme/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 const WishList: React.FC = () => {
   const token = localStorage.getItem("token");
-
+  const navigate = useNavigate();
+  const { mode } = useThemeContext();
+  const { t } = useTranslation();
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [courseInWishList, setCourseInWishList] = useState<ICourseCard[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<ICourseCard[]>([]);
@@ -66,7 +70,35 @@ const WishList: React.FC = () => {
           />
         </Box>
       </Box>
-      {filteredCourses && (
+      {filteredCourses.length === 0 ? (
+        <Box textAlign="center" mt={5}>
+          <Typography
+            variant="body1"
+            color={textColor}
+            gutterBottom
+            sx={{ mb: 3 }}
+          >
+            You don't have any courses in your wish list. Explore amazing
+            courses now!
+          </Typography>
+          <Button
+            variant="outlined"
+            // color="primary"
+            sx={{
+              color: backgroundColor,
+              backgroundColor: textColor,
+              borderColor: textColor,
+              ":hover": {
+                color: textColor,
+                backgroundColor: backgroundColor,
+              },
+            }}
+            onClick={() => navigate("/")} // Điều hướng đến trang chủ
+          >
+            Browse Now
+          </Button>
+        </Box>
+      ) : (
         <CourseGrid
           courses={filteredCourses} // Hiển thị danh sách đã lọc
           isWishListCard={true}

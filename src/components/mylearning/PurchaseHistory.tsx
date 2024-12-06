@@ -11,9 +11,10 @@ import {
   TableHead,
   TableRow,
   Typography,
-  TextField,
 } from "@mui/material";
 import SearchBar from "../navbar/SearchBar";
+import ModalInvoice from "./Invoice";
+import { useAuth } from "../../context/AuthContext";
 
 // Interface cho dữ liệu payment
 interface ICourseInfoPage {
@@ -39,11 +40,12 @@ interface IPayment {
 }
 
 const PurchaseHistory: React.FC = () => {
-  const token = localStorage.getItem("token"); // Lấy token từ localStorage
-  const [purchaseHistory, setPurchaseHistory] = useState<
-    IPayment[] | undefined
-  >([]); // Lưu trữ lịch sử thanh toán
-  const [searchQuery, setSearchQuery] = useState<string>(""); // Lưu trữ từ khoá tìm kiếm
+  const token = localStorage.getItem("token");
+  const [purchaseHistory, setPurchaseHistory] = useState<IPayment[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const { userInfo } = useAuth();
+  const [selectedPayment, setSelectedPayment] = useState<IPayment | null>(null); // Trạng thái cho modal
+  const [openModal, setOpenModal] = useState(false); // Kiểm soát modal
 
   // Fetch dữ liệu khi component mount
   useEffect(() => {
@@ -66,9 +68,15 @@ const PurchaseHistory: React.FC = () => {
   };
 
   // Lọc các giao dịch thanh toán dựa trên title khóa học
-  const filteredPayments = purchaseHistory?.filter((payment) =>
+  const filteredPayments = purchaseHistory.filter((payment) =>
     payment.course.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Mở modal và thiết lập dữ liệu
+  const handleOpenModal = (payment: IPayment) => {
+    setSelectedPayment(payment);
+    setOpenModal(true);
+  };
 
   return (
     <Box sx={{ padding: 0 }}>
@@ -131,8 +139,17 @@ const PurchaseHistory: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredPayments?.map((payment, index) => (
-              <TableRow key={index}>
+            {filteredPayments.map((payment, index) => (
+              <TableRow
+                key={index}
+                onClick={() => handleOpenModal(payment)} // Mở modal khi click vào
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    backgroundColor: "#f5f5f5",
+                  },
+                }}
+              >
                 <TableCell
                   sx={{
                     borderBottom: "1px solid #ddd", // Viền dưới
@@ -194,6 +211,24 @@ const PurchaseHistory: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Modal Invoice */}
+      {selectedPayment && userInfo && (
+        <ModalInvoice
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          invoiceData={{
+            payment_id: selectedPayment._id,
+            date: selectedPayment.created_at,
+            description: selectedPayment.course.title,
+            listPrice: selectedPayment.price,
+            discount: selectedPayment.discount || 0,
+            salePrice: selectedPayment.payment_price,
+            total: selectedPayment.payment_price,
+            customerName: `${userInfo.first_name} ${userInfo.last_name}`,
+          }}
+        />
+      )}
     </Box>
   );
 };

@@ -8,7 +8,6 @@ import {
   TextField,
   DialogActions,
 } from "@mui/material";
-// import { useNavigate } from "react-router-dom";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
 import Rating from "@mui/material/Rating";
