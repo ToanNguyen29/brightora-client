@@ -14,10 +14,12 @@ import { useEffect, useState } from "react";
 import { getCourse } from "../services/CourseService";
 import { ICourseInfoPage } from "../models/Course";
 import { useAuth } from "../context/AuthContext";
+import NotFound from "./NotFound";
 
 const CoursePage = () => {
   const { userInfo } = useAuth();
   const [course, setCourse] = useState<ICourseInfoPage | undefined>(undefined);
+  const [isNotFound, setIsNotFound] = useState<boolean>(false);
   const navigate = useNavigate();
   const { courseId } = useParams();
 
@@ -29,12 +31,15 @@ const CoursePage = () => {
           if (data.status <= 305) {
             console.log("course info page1: ", data.data);
             setCourse(data.data);
+            setIsNotFound(false);
           } else {
-            console.log();
+            console.log(data);
+            setIsNotFound(true);
           }
         })
         .catch((err) => {
           alert("Error: " + err.detail);
+          setIsNotFound(true);
         });
     };
     fetchCourse();
@@ -47,6 +52,8 @@ const CoursePage = () => {
       navigate("/checkout", { state: { courses } });
     }
   };
+
+  if (isNotFound) return <NotFound />;
 
   return (
     <Box
@@ -71,7 +78,7 @@ const CoursePage = () => {
             owner={course?.owner || undefined}
             lastUpdated={course?.updated_at || ""}
             lang={course?.language || []}
-            // sub="Dutch, French, German, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Simplified Chinese, Spanish, Thai, Turkish, Vietnamese"
+            level={course?.level || []}
           />
           <CourseLearn
             learningObjectives={course?.goals.learningObjectives || []}
@@ -79,13 +86,8 @@ const CoursePage = () => {
           <CourseContent courseId={courseId || ""} />
           <Requiments requirements={course?.goals.requirements || []} />
           <Description description={course?.description || ""} />
-          {/* <FeaturedReview /> */}
           <Intructor owner_id={course?.owner._id || ""} />
-          <Rating
-            courseId={courseId}
-            total_reviews={course?.review.total_reviews || 0}
-            average_rating={course?.review.average_rating || 0}
-          />
+          <Rating courseId={courseId} ratingStat={course?.review} />
         </Grid>
         <Grid item xs={12} md={4}>
           <Box

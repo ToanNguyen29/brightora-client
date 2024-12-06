@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Sidebar from "../components/chat/Sidebar";
 import ChatBox from "../components/chat/ChatBox";
-// import Header from "../components/chat/Header";
-// import VerticalSidebar from "../components/chat/VerticalSidebar";
 import ChatHeader from "../components/chat/Header";
 import { useAuth } from "../context/AuthContext";
 import {
   getAllConversations,
   getConversation,
 } from "../services/MessageService";
-// import { getConversation } from "../services/MessageService";
-
-// please note that the types are reversed
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../theme/ThemeContext";
 
 interface Message {
   _id: string;
@@ -33,6 +30,12 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[] | undefined>();
   const [currentConversation, setCurrentConversation] = useState<string>();
   const [senderInfo, setSenderInfo] = useState();
+
+  const { t } = useTranslation();
+  const { mode } = useThemeContext();
+
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
 
   const fetchChats = useCallback(async () => {
     try {
@@ -61,7 +64,6 @@ const ChatPage: React.FC = () => {
     try {
       const data = await getConversation(token, currentConversation);
       if (data.status <= 305) {
-        console.log("oooooooooooo:", data.data.messages);
         setMessages(data.data.messages);
       }
     } catch (error) {
@@ -141,11 +143,27 @@ const ChatPage: React.FC = () => {
             chats={chats}
             handleGetConversation={handleGetConversation}
           />
-          <ChatBox
-            messages={messages}
-            sendMessage={sendMessage}
-            senderInfo={senderInfo}
-          />
+          {currentConversation ? (
+            <ChatBox
+              messages={messages}
+              sendMessage={sendMessage}
+              senderInfo={senderInfo}
+            />
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{
+                display: "flex",
+                justifyContent: "flex-start",
+                mt: 10,
+                textAlign: "center",
+                mx: "auto",
+                color: textColor,
+              }}
+            >
+              Select a message thread to read it here.
+            </Typography>
+          )}
         </Box>
       </Box>
     </Box>

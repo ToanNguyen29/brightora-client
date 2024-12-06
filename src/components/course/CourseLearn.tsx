@@ -64,24 +64,27 @@ const CourseLearn: React.FC<CourseLearnProps> = ({ learningObjectives }) => {
             gap: 1,
           }}
         >
-          {learningObjectives.map((item, index) => (
-            <ListItem
-              key={index}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: "40px",
-                }}
-              >
-                <CheckIcon sx={{ color: "green" }} />
-              </ListItemIcon>
-              <Typography variant="subtitle2">{item}</Typography>
-            </ListItem>
-          ))}
+          {learningObjectives.map(
+            (item, index) =>
+              item && (
+                <ListItem
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: "40px",
+                    }}
+                  >
+                    <CheckIcon sx={{ color: "green" }} />
+                  </ListItemIcon>
+                  <Typography variant="subtitle2">{item}</Typography>
+                </ListItem>
+              )
+          )}
         </List>
       </Paper>
     </Box>

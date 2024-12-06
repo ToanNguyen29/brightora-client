@@ -49,7 +49,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as Type;
-    setSelectedCategory((prev) => (prev === value ? "" : value)); // Toggle category selection
+    setSelectedCategory((prev) => (prev === value ? "" : value));
   };
 
   const handleFilterClick = () => {
@@ -75,7 +75,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
       )
       .join("&");
 
-    console.log("queryString", queryString);
     setFilter(queryString);
   };
 

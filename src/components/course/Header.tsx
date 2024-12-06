@@ -16,6 +16,7 @@ interface HeaderProps {
   lastUpdated: string;
   lang: string[];
   numberRating: number;
+  level: string[];
   // sub: string;
   // additionalContent: string;
 }
@@ -29,6 +30,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
   lastUpdated,
   lang,
   numberRating,
+  level,
   // sub,
   // additionalContent,
 }) => {
@@ -56,6 +58,7 @@ const CourseHeader: React.FC<HeaderProps> = ({
         students={students}
         lastUpdated={lastUpdated}
         lang={lang}
+        level={level}
         // sub={sub}
       />
     </Paper>

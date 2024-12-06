@@ -10,6 +10,8 @@ import SendIcon from "@mui/icons-material/Send";
 
 import ListMessage from "./ListMessage";
 import { useAuth } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../../theme/ThemeContext";
 
 interface Message {
   _id: string;
@@ -34,14 +36,16 @@ const ChatBox: React.FC<ChatBoxProps> = ({
   sendMessage,
   senderInfo,
 }) => {
-  // const token = localStorage.getItem("token");
   const { userInfo } = useAuth();
-  // const [messages, setMessages] = useState<Message[] | undefined>();
+  const { t } = useTranslation();
+  const { mode } = useThemeContext();
+
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
 
   const [textMessage, setTextMessage] = useState<string>("");
 
   const handleSend = () => {
-    console.log(textMessage);
     if (!messages || !textMessage) return;
     const input = {
       content: textMessage,

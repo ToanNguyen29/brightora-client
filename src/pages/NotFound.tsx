@@ -1,39 +1,55 @@
 import React from "react";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-// import { useTranslation } from "react-i18next";
+import { Box, Typography, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../theme/ThemeContext";
 
 const NotFound: React.FC = () => {
-   // const { t } = useTranslation();
-   return (
-      <Box
-         sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: "100vh",
-         }}
+  const { mode } = useThemeContext();
+  const { t } = useTranslation();
+
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        mt: 15,
+        minHeight: "90vh",
+        textAlign: "center",
+      }}
+    >
+      <img
+        src="/page-not-found.png"
+        alt="Not Found"
+        style={{
+          maxWidth: "600px",
+          marginBottom: "20px",
+        }}
+      />
+      <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+        We can’t find the page you’re looking for
+      </Typography>
+      <Button
+        variant="outlined"
+        sx={{
+          color: backgroundColor,
+          backgroundColor: textColor,
+          borderColor: textColor,
+          ":hover": {
+            color: textColor,
+            backgroundColor: backgroundColor,
+          },
+        }}
+        onClick={() => (window.location.href = "/")}
       >
-         <Container maxWidth="md">
-            <Grid container spacing={2}>
-               <Grid xs={6}>
-                  <Typography variant="h1">404</Typography>
-                  <Typography variant="h6">
-                     The page you’re looking for doesn’t exist.
-                  </Typography>
-                  <Button variant="contained">Back Home</Button>
-               </Grid>
-               <Grid xs={6}>
-                  <img
-                     src="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
-                     alt=""
-                     width={500}
-                     height={250}
-                  />
-               </Grid>
-            </Grid>
-         </Container>
-      </Box>
-   );
+        Back to Home
+      </Button>
+    </Box>
+  );
 };
 
 export default NotFound;

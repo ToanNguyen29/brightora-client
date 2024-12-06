@@ -25,6 +25,7 @@ const ContentItem: React.FC<ContentItemProps> = ({
   canReview,
   durationVideo,
 }) => {
+  console.log("lessonlessonlessonlesson", lesson);
   return (
     <ListItem sx={{ justifyContent: "space-between" }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -62,9 +63,12 @@ const ContentItem: React.FC<ContentItemProps> = ({
         variant="body2"
         sx={{ color: textColor, minWidth: "50px", textAlign: "right" }}
       >
-        {`${String(Math.floor(durationVideo)).padStart(2, "0")}:${String(
+        {/* {`${String(Math.floor(durationVideo)).padStart(2, "0")}:${String(
           Math.round((durationVideo % 1) * 60)
-        ).padStart(2, "0")}`}
+        ).padStart(2, "0")}`} */}
+        {lesson.type === "lesson"
+          ? `${(lesson as ILessonLearn).documents?.length || 0} resources`
+          : `${(lesson as IExerciseLearn).questions?.length || 0} questions`}
       </Typography>
     </ListItem>
   );

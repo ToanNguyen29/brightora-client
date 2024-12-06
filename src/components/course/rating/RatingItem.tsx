@@ -32,6 +32,7 @@ const RatingItem: React.FC<RatingItemProps> = ({
         mb: 2,
         p: 2,
         borderRadius: "8px",
+        width: "100%",
         border: `1px solid ${headerBackgroundColor}`,
         backgroundColor: backgroundColor,
         display: "flex",

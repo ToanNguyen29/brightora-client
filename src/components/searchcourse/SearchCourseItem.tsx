@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 import CourseRating from "../course/header/CourseRating";
 import MouseEnterCourseBox from "./MouseEnterCourseBox";
-import { Flare } from "@mui/icons-material";
 
 interface SearchCourseItemProps {
   id: string;
@@ -41,7 +40,7 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const [isHovered, setIsHovered] = useState(false); // State để kiểm soát hiển thị component phụ
+  const [isHovered, setIsHovered] = useState(false);
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
@@ -57,6 +56,7 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
         p: 1.5,
         width: "100%",
         display: "flex",
+        cursor: "pointer",
         backgroundColor: backgroundColor,
         color: textColor,
         position: "relative",
@@ -73,7 +73,6 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
           flex: 6,
           display: "flex",
           alignItems: "center",
-          mr: 1,
         }}
       >
         <Box

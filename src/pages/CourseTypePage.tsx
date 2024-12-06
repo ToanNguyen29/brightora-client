@@ -26,7 +26,7 @@ const CourseTypePage: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         gap: 5,
-        px: "20%",
+        px: "15%",
         mt: 5,
         minHeight: "90vh",
       }}

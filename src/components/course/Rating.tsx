@@ -5,26 +5,21 @@ import { Box, Paper, Typography, Button } from "@mui/material";
 import RatingList from "./rating/RatingList";
 import RatingModal from "./rating/RatingModal";
 import { getReviewByCourse } from "../../services/ReviewService";
-import { IReviewDetail } from "../../models/Course";
+import { IReview, IReviewDetail } from "../../models/Course";
 import StarIcon from "@mui/icons-material/Star";
 
 interface RatingProps {
   courseId: string | undefined;
-  total_reviews: number;
-  average_rating: number;
+  ratingStat: IReview | undefined;
 }
 
-const Rating: React.FC<RatingProps> = ({
-  courseId,
-  total_reviews,
-  average_rating,
-}) => {
+const Rating: React.FC<RatingProps> = ({ courseId, ratingStat }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const page_size = 4;
   const page_number = 1;
-  // const sort_by = "rating";
+
   const [reviewsOfCourse, setReviewOfCourse] = useState<IReviewDetail[]>();
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
@@ -100,9 +95,9 @@ const Rating: React.FC<RatingProps> = ({
             }}
           >
             <StarIcon sx={{ mr: 1 }} />
-            {`${average_rating.toFixed(
-              1
-            )} course rating  - ${total_reviews} ratings`}
+            {`${ratingStat?.average_rating.toFixed(1)} course rating  - ${
+              ratingStat?.total_reviews
+            } ratings`}
           </Typography>
 
           <RatingList
@@ -133,6 +128,7 @@ const Rating: React.FC<RatingProps> = ({
         open={open}
         onClose={handleClose}
         ratings={reviewsOfCourse}
+        ratingStat={ratingStat}
         textColor={textColor}
         backgroundColor={backgroundColor}
         headerBackgroundColor={headerBackgroundColor}

@@ -43,12 +43,9 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
         </Typography>
       </Box>
 
-      {/* Right Section: Star Distribution */}
       <Box sx={{ flex: 1 }}>
         {stars.map((star) => {
           const starCount = data?.star[`${star}_star`];
-          console.log("startData", data);
-          console.log("starCount", `${star}_star`, starCount);
           const percentage = totalReviews
             ? (starCount / totalReviews) * 100
             : 0;
@@ -56,7 +53,6 @@ const RatingStats: React.FC<RatingData> = ({ data }) => {
           return (
             <Grid container alignItems="center" spacing={3} key={star}>
               <Grid item xs={7}>
-                {/* Progress Bar */}
                 <LinearProgress
                   variant="determinate"
                   value={percentage}

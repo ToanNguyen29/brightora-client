@@ -6,6 +6,7 @@ interface CourseDetailsProps {
   students: number;
   lastUpdated: string;
   lang: string[];
+  level: string[];
   // sub: string;
 }
 
@@ -13,6 +14,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
   students,
   lastUpdated,
   lang,
+  level,
   // sub,
 }) => {
   const { mode } = useThemeContext();
@@ -26,16 +28,16 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
         {students.toLocaleString()} students enrolled
       </Typography>
       <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
-        Last Updated: {lastUpdated}
+        Last Updated: {lastUpdated.slice(0, 10)}
       </Typography>
       <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
         Language: {lang}
       </Typography>
-      {/* <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
-        Subtitles available in:
-      </Typography> */}
-      {/* <Stack direction="row" sx={{ mt: 1, flexWrap: "wrap", gap: 1 }}>
-        {sub.split(", ").map((sub, index) => (
+      <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
+        Level of the course:
+      </Typography>
+      <Stack direction="row" sx={{ mt: 1, flexWrap: "wrap", gap: 1 }}>
+        {level.map((sub, index) => (
           <Chip
             key={index}
             label={sub}
@@ -48,7 +50,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
             }}
           />
         ))}
-      </Stack> */}
+      </Stack>
     </Box>
   );
 };

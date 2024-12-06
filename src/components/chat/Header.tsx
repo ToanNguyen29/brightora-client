@@ -29,17 +29,6 @@ const ChatHeader: React.FC = () => {
       >
         Message
       </Typography>
-      {/* <Typography
-        variant="h6"
-        sx={
-          {
-            // fontWeight: "bold",
-          }
-        }
-      >
-        You have 0 unread messages.
-      </Typography> */}
-      {/* Notification Icon and User Info */}
     </Box>
   );
 };

@@ -27,9 +27,7 @@ const CourseContent: React.FC<CourseContentProps> = ({ courseId }) => {
     const fetchSectionByCourse = async () => {
       await getSectionByCourseId(courseId)
         .then((data) => {
-          console.log("Hi", data);
           if (data.status <= 305) {
-            console.log("section In coursePage", data.data);
             setSections(data.data);
           } else {
             console.log();

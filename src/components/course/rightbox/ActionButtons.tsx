@@ -156,7 +156,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
               color: backgroundColor,
               "&:hover": {
                 backgroundColor: "rgba(0, 0, 0, 0.1)",
-                // color: textColor,
               },
             }}
             fullWidth

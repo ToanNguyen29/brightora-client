@@ -151,7 +151,7 @@ export interface IExerciseLearn {
   ordinal_number: number;
   owner: string;
   type: string;
-  question: any[];
+  questions: any[];
   title: string;
   description?: string;
 }

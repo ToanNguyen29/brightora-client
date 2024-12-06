@@ -29,14 +29,14 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
         transform: "translateX(-40%)",
         minWidth: "300px",
         maxWidth: "450px",
-        bgcolor: "background.paper",
+        bgcolor: backgroundColor,
         boxShadow: 3,
         p: 2,
         zIndex: 10,
         borderRadius: "8px",
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start", // Align items to the left
+        alignItems: "flex-start",
         "&:hover": {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         },
@@ -96,12 +96,13 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
           width: "100%",
         }}
       >
-        {/* Add to Cart Button */}
         <Button
-          variant="contained"
-          color="primary"
+          variant="outlined"
+          // color="primary"
           sx={{
             flex: 3, // Chiếm 3 phần
+            color: textColor,
+            backgroundColor: backgroundColor,
             textTransform: "none",
             fontWeight: "bold",
           }}
@@ -110,12 +111,11 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
           {t("Add to Cart")}
         </Button>
 
-        {/* Add to Wishlist Icon */}
         <IconButton
           sx={{
-            flex: 1, // Chiếm 1 phần
+            flex: 1,
             ml: 1,
-            color: "secondary.main",
+            color: textColor,
           }}
         >
           <FavoriteBorderIcon />

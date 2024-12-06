@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Pagination } from "@mui/material";
+import { Box, Typography, Pagination, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import SearchCourseItem from "./SearchCourseItem";
 import { ICourseInfoPage } from "../../models/Course";
 import { searchCourse } from "../../services/CourseService";
@@ -17,6 +17,7 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
   const { querySearch } = useParams();
   const { t } = useTranslation();
   const { mode } = useThemeContext();
+  const navigate = useNavigate(); // Dùng để điều hướng về trang chủ
   const [courses, setCourses] = useState<ICourseInfoPage[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -34,10 +35,9 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
         const updateQuerySearch = querySearch
           ? "search" + "=" + querySearch + "&" + filter
           : filter;
-        console.log("updateQuerySearch", updateQuerySearch);
+
         await searchCourse(updateQuerySearch, pageNumber, pageSize).then(
           (data) => {
-            console.log(data);
             if (data.status <= 305) {
               setTotalItem(data.data.total_items);
               setCourses(data.data.data);
@@ -75,11 +75,9 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
           mt: 1.5,
         }}
       >
-        {/* defaultType={Type.DATABASE_ADMINISTRATION} */}
         <FilterBar setFilter={setFilter} defaultType={defaultType} />
       </Box>
 
-      {/* Course List Section */}
       <Box sx={{ flex: "5", pl: 2, flexDirection: "column" }}>
         <Box
           sx={{
@@ -95,8 +93,16 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
           >
             {querySearch && `${totalItem} results for "${querySearch}"`}
           </Typography>
-          {/* Render courses */}
-          {courses &&
+
+          {courses.length === 0 ? (
+            <Typography
+              variant="h6"
+              color="textSecondary"
+              sx={{ marginBottom: "20px", textAlign: "center", mt: 7 }}
+            >
+              No courses found.
+            </Typography>
+          ) : (
             courses.map((item) => (
               <SearchCourseItem
                 key={item._id}
@@ -113,22 +119,26 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
                 level={item.level || []}
                 discount_percentage={item.discount_percentage || 0}
               />
-            ))}
+            ))
+          )}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            my: "30px",
-          }}
-        >
-          <Pagination
-            count={Math.ceil(totalItem / pageSize)}
-            page={pageNumber}
-            onChange={handlePageChange}
-            color="primary"
-          />
-        </Box>
+
+        {courses.length > 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              my: "30px",
+            }}
+          >
+            <Pagination
+              count={Math.ceil(totalItem / pageSize)}
+              page={pageNumber}
+              onChange={handlePageChange}
+              color="primary"
+            />
+          </Box>
+        )}
       </Box>
     </Box>
   );
