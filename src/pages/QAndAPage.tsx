@@ -39,9 +39,6 @@ const QAndAPage: React.FC = () => {
   >();
   const [filter, setFilter] = useState<string>("all");
 
-  const { t } = useTranslation();
-  const { mode } = useThemeContext();
-
   useEffect(() => {
     const fetchCoursesMe = async () => {
       await getCoursesMe(token).then((data) => {

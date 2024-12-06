@@ -5,7 +5,6 @@ import CourseLearn from "../components/course/CourseLearn";
 import CourseContent from "../components/course/CourseContent";
 import Requiments from "../components/course/Requiments";
 import Description from "../components/course/Description";
-// import FeaturedReview from "../components/course/FeaturedReview";
 import Intructor from "../components/course/Instructor";
 import Rating from "../components/course/Rating";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +28,6 @@ const CoursePage = () => {
       await getCourse(courseId, userInfo._id)
         .then((data) => {
           if (data.status <= 305) {
-            console.log("course info page1: ", data.data);
             setCourse(data.data);
             setIsNotFound(false);
           } else {
@@ -61,7 +59,6 @@ const CoursePage = () => {
         display: "flex",
         flexDirection: "column",
         minHeight: "90vh",
-        //   gap: 3,
         px: "20%",
         width: "100%",
         height: "100%",
@@ -97,6 +94,7 @@ const CoursePage = () => {
             }}
           >
             <RightBox
+              id={courseId}
               is_cart={course?.relation?.in_cart}
               is_enroll={course?.relation?.is_enroll}
               in_wishlist={course?.relation?.in_wishlist}

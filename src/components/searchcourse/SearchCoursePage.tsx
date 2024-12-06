@@ -8,6 +8,7 @@ import SearchCourseItem from "./SearchCourseItem";
 import { ICourseInfoPage } from "../../models/Course";
 import { searchCourse } from "../../services/CourseService";
 import FilterBar, { Type } from "./FilterBar";
+import { useAuth } from "../../context/AuthContext";
 
 interface SearchCoursePageProps {
   defaultType?: Type;
@@ -16,6 +17,7 @@ interface SearchCoursePageProps {
 const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
   const { querySearch } = useParams();
   const { t } = useTranslation();
+  const { userInfo } = useAuth();
   const { mode } = useThemeContext();
   const navigate = useNavigate(); // Dùng để điều hướng về trang chủ
   const [courses, setCourses] = useState<ICourseInfoPage[]>([]);
@@ -39,6 +41,7 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
         await searchCourse(updateQuerySearch, pageNumber, pageSize).then(
           (data) => {
             if (data.status <= 305) {
+              console.log("Hello search:", data.data);
               setTotalItem(data.data.total_items);
               setCourses(data.data.data);
             }
@@ -49,7 +52,7 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
       }
     };
     fetchCourse();
-  }, [filter, pageNumber, pageSize, querySearch]);
+  }, [filter, pageNumber, pageSize, querySearch, userInfo._id]);
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,

@@ -310,11 +310,12 @@ export const generateDescription = async (title: string) => {
 export const searchCourse = async (
   query: string,
   pageNumber: number | undefined,
-  pageSize: number | undefined
+  pageSize: number | undefined,
+  userId?: string | undefined
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
-      `${course_url}?${query}&page_number=${pageNumber}&page_size=${pageSize}&status=Published`,
+      `${course_url}?${query}&page_number=${pageNumber}&page_size=${pageSize}&status=Published&user_id=${userId}`,
       {
         withCredentials: true,
       }

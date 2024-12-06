@@ -37,7 +37,7 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
         Level of the course:
       </Typography>
       <Stack direction="row" sx={{ mt: 1, flexWrap: "wrap", gap: 1 }}>
-        {level.map((sub, index) => (
+        {level?.map((sub, index) => (
           <Chip
             key={index}
             label={sub}

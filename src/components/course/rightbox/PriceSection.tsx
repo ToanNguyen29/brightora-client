@@ -15,9 +15,6 @@ const PriceSection: React.FC<PriceSectionProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  // Calculate the original price based on the discount
-  // const originalPrice = price / (100 - discount / 100);
-
   return (
     <Box>
       {/* Discounted Price */}

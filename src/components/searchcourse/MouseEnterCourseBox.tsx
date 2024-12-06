@@ -1,23 +1,51 @@
-import React from "react";
-import { Box, Typography, Button, IconButton } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"; // Import icon trái tim
+import React, { useEffect, useRef, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
-import { useNavigate } from "react-router-dom";
+import ActionButtons from "../course/rightbox/ActionButtons";
+import { useAuth } from "../../context/AuthContext";
+import { getCourse } from "../../services/CourseService";
 
 export interface MouseEnterCourseBoxProps {
   id: string;
-  handleMouseEnter: () => void;
-  handleMouseLeave: () => void;
 }
 
 const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
-  const navigate = useNavigate();
-
+  const { userInfo } = useAuth();
+  const [isCart, setIsCart] = useState(false);
+  const [isEnroll, setIsEnroll] = useState(false);
+  const [inWishList, setInWishList] = useState(false);
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
+
+  const displayedObjectivesRef = useRef<string[]>([]);
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchCourse = async () => {
+      await getCourse(id, userInfo._id)
+        .then((data) => {
+          if (data.status <= 305) {
+            setIsCart(data.data.relation.in_cart);
+            setIsEnroll(data.data.relation.is_enroll);
+            setInWishList(data.data.relation.in_wishlist);
+            const objectives =
+              data.data.goals.learningObjectives.length > 3
+                ? data.data.goals.learningObjectives.slice(0, 3)
+                : data.data.goals.learningObjectives;
+            displayedObjectivesRef.current = objectives;
+          } else {
+            console.log(data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    fetchCourse();
+  }, [id, userInfo._id]);
 
   return (
     <Box
@@ -27,11 +55,9 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
         bottom: "100%",
         left: "70%",
         transform: "translateX(-40%)",
-        minWidth: "300px",
-        maxWidth: "450px",
         bgcolor: backgroundColor,
         boxShadow: 3,
-        p: 2,
+        p: 1,
         zIndex: 10,
         borderRadius: "8px",
         display: "flex",
@@ -56,71 +82,34 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
 
       {/* List of items */}
       <Box sx={{ mb: 2 }}>
-        <Typography
-          variant="body2"
-          sx={{
-            color: textColor,
-            mb: 0.5,
-            fontSize: "0.9rem",
-          }}
-        >
-          - {t("Learn the basics of React")}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: textColor,
-            mb: 0.5,
-            fontSize: "0.9rem",
-          }}
-        >
-          - {t("Master state management")}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: textColor,
-            fontSize: "0.9rem",
-          }}
-        >
-          - {t("Build real-world applications")}
-        </Typography>
+        {displayedObjectivesRef.current.map(
+          (objective: string, index: number) => (
+            <Typography
+              key={index}
+              variant="body2"
+              sx={{
+                color: textColor,
+                mb: 0.5,
+                fontSize: "0.9rem",
+                display: "-webkit-box",
+                overflow: "hidden",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+              }}
+            >
+              - {objective}
+            </Typography>
+          )
+        )}
       </Box>
-
-      {/* Buttons Section */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <Button
-          variant="outlined"
-          // color="primary"
-          sx={{
-            flex: 3, // Chiếm 3 phần
-            color: textColor,
-            backgroundColor: backgroundColor,
-            textTransform: "none",
-            fontWeight: "bold",
-          }}
-          onClick={() => navigate(`/course/${id}`)}
-        >
-          {t("Add to Cart")}
-        </Button>
-
-        <IconButton
-          sx={{
-            flex: 1,
-            ml: 1,
-            color: textColor,
-          }}
-        >
-          <FavoriteBorderIcon />
-        </IconButton>
-      </Box>
+      <ActionButtons
+        id={id}
+        is_cart={isCart}
+        in_wishlist={inWishList}
+        is_enroll={isEnroll}
+        textColor={textColor}
+        backgroundColor={backgroundColor}
+      />
     </Box>
   );
 };

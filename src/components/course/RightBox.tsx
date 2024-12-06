@@ -18,6 +18,7 @@ const fakeData = {
 };
 
 interface RightBoxProps {
+  id: string | undefined;
   is_cart: boolean | undefined;
   is_review: any;
   in_wishlist: boolean | undefined;
@@ -29,6 +30,7 @@ interface RightBoxProps {
 }
 
 const RightBox: React.FC<RightBoxProps> = ({
+  id,
   is_cart,
   is_review,
   is_enroll,
@@ -92,6 +94,7 @@ const RightBox: React.FC<RightBoxProps> = ({
         <PriceSection price={price} discount={discount} textColor={textColor} />
         <CourseIncludes include={fakeData.include} textColor={textColor} />
         <ActionButtons
+          id={id}
           is_cart={is_cart}
           is_enroll={is_enroll}
           in_wishlist={in_wishlist}

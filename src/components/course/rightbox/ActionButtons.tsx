@@ -6,7 +6,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import { useTranslation } from "react-i18next";
 import { addItemToCartMe } from "../../../services/CartService";
 import { useCart } from "../../../context/CartContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   addItemToWishListMe,
   deleteItemFromWishlistMe,
@@ -16,18 +16,19 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useAuth } from "../../../context/AuthContext";
 
 interface ActionButtonsProps {
+  id: string | undefined;
   is_cart: boolean | undefined;
-  is_review: any;
+  is_review?: any;
   in_wishlist: boolean | undefined;
   is_enroll: boolean | undefined;
   textColor: string;
   backgroundColor: string;
-  handleCheckout: any;
+  handleCheckout?: any;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({
+  id,
   is_cart,
-  is_review,
   is_enroll,
   in_wishlist,
   textColor,
@@ -40,7 +41,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { fetchCartMe } = useCart();
-  const { courseId } = useParams();
+  // const { id } = useParams();
   const { userInfo } = useAuth();
 
   useEffect(() => {
@@ -53,9 +54,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       navigate("/login");
       return;
     }
-    if (courseId) {
+    if (id) {
       try {
-        const items = [{ course: courseId }];
+        const items = [{ course: id }];
         console.log(items);
         await addItemToCartMe(token, items).then(async (data) => {
           if (data.status <= 305) {
@@ -78,9 +79,9 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       navigate("/login");
       return;
     }
-    if (courseId) {
+    if (id) {
       try {
-        const items = [{ course: courseId }];
+        const items = [{ course: id }];
         await addItemToWishListMe(token, items).then(async (data) => {
           if (data.status <= 305) {
             console.log(data);
@@ -94,10 +95,10 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   const handleDeleteItemFromWishList = async () => {
-    if (courseId) {
+    if (id) {
       console.log("delete wish");
       try {
-        await deleteItemFromWishlistMe(token, courseId).then((data) => {
+        await deleteItemFromWishlistMe(token, id).then((data) => {
           console.log(data);
           if (data.status <= 205) {
             setInWishList(false);
@@ -119,7 +120,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     return <LoadingComponent />;
 
   return (
-    <Stack spacing={2} sx={{ mt: 3, position: "relative" }}>
+    <Stack spacing={2} sx={{ mt: 2, position: "relative" }}>
       {is_enroll === false && (
         <Box sx={{ display: "flex" }}>
           <Button
@@ -168,22 +169,43 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           </Button>
         </Box>
       )}
-      <Button
-        variant="contained"
-        onClick={is_enroll ? handleLearn : handleCheckout}
-        sx={{
-          backgroundColor: textColor,
-          color: backgroundColor,
-          "&:hover": {
-            backgroundColor: backgroundColor,
-            color: textColor,
-          },
-        }}
-        startIcon={<PaymentIcon />}
-        fullWidth
-      >
-        {is_enroll ? t("go_to_learn") : t("buy_now")}
-      </Button>
+      {}
+      {is_enroll && (
+        <Button
+          variant="contained"
+          onClick={handleLearn}
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<PaymentIcon />}
+          fullWidth
+        >
+          {t("go_to_learn")}
+        </Button>
+      )}
+      {!is_enroll && handleCheckout && (
+        <Button
+          variant="contained"
+          onClick={handleCheckout}
+          sx={{
+            backgroundColor: textColor,
+            color: backgroundColor,
+            "&:hover": {
+              backgroundColor: backgroundColor,
+              color: textColor,
+            },
+          }}
+          startIcon={<PaymentIcon />}
+          fullWidth
+        >
+          {t("buy_now")}
+        </Button>
+      )}
     </Stack>
   );
 };

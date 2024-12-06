@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import CourseRating from "../course/header/CourseRating";
 import MouseEnterCourseBox from "./MouseEnterCourseBox";
+import { FlashOnTwoTone } from "@mui/icons-material";
 
 interface SearchCourseItemProps {
   id: string;
@@ -235,13 +236,7 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
         )}
       </Box>
 
-      {isHovered && (
-        <MouseEnterCourseBox
-          id={id}
-          handleMouseEnter={handleMouseEnter}
-          handleMouseLeave={handleMouseLeave}
-        />
-      )}
+      {isHovered && <MouseEnterCourseBox id={id} />}
     </Box>
   );
 };
