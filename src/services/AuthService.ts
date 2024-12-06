@@ -1,10 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {
-  LoginRequest,
-  SignUpRequest,
-  UpdatePasswordRequest,
-  ResetPasswordRequest,
-} from "../models/Auth";
+import { LoginRequest, SignUpRequest } from "../models/Auth";
 
 export const login = async ({
   email,
@@ -67,17 +62,20 @@ export const logOut = async (token: string | null): Promise<AxiosResponse> => {
     });
 };
 
-export const updatePassword = async ({
-  passwordCurrent,
-  password,
-  passwordConfirm,
-}: UpdatePasswordRequest): Promise<AxiosResponse> => {
+export const updatePassword = async (
+  token: string | null,
+  current_password: string,
+  new_password: string
+): Promise<AxiosResponse> => {
   return await axios
-    .patch(
-      `${import.meta.env.VITE_SERVER_URL}/api/v1/users/updatePassword`,
-      { passwordCurrent, password, passwordConfirm },
+    .put(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/auth/change_password`,
+      { current_password, new_password },
       {
         withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((res) => {
@@ -139,28 +137,6 @@ export const googleAuth = async (code: string): Promise<AxiosResponse> => {
     })
     .catch((err) => {
       console.log("error: ", err);
-      return err.response;
-    });
-};
-
-export const facebookAuth = async (
-  id: string,
-  name: string,
-  email: string
-): Promise<AxiosResponse> => {
-  return await axios
-    .post(
-      `${import.meta.env.VITE_AUTH_SERVER}/api/v1/users/auth/facebook`,
-      { id, name, email },
-      {
-        withCredentials: true,
-      }
-    )
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.log("error: ", err.response);
       return err.response;
     });
 };

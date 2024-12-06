@@ -1,18 +1,24 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TextFieldComponent from "../intercommunity/TextFieldComponent";
 import ChangeButtonComponent from "./ChangeButtonComponent";
 import { updatePassword } from "../../../services/AuthService";
 import { UpdatePasswordRequest } from "../../../models/Auth";
+import AutoCloseAlert from "../../reused/Alert";
+import { useThemeContext } from "../../../theme/ThemeContext";
 
 const EditAccountBody: React.FC = () => {
+  const token = localStorage.getItem("token");
   const { t } = useTranslation();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
   const [formValues, setFormValues] = React.useState<UpdatePasswordRequest>({
     passwordCurrent: "",
     password: "",
     passwordConfirm: "",
   });
+  const { mode } = useThemeContext();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -23,23 +29,41 @@ const EditAccountBody: React.FC = () => {
   };
 
   const handleSave = async () => {
-    console.log("Form values saved:", formValues);
+    setErrorAlertOpen("");
+    if (!formValues.password || !formValues.passwordConfirm) {
+      setErrorAlertOpen("Please fill all information");
+      return;
+    }
+    if (formValues.password.length < 8) {
+      setErrorAlertOpen("Password has at least 8 character");
+      return;
+    }
 
-    // try {
-    //   const res = await updatePassword(formValues);
-    //   if ((res.status = 200)) {
-    //     alert(t("password_updated_successfully"));
-    //     // setFormValues({
-    //     //   passwordCurrent: "",
-    //     //   password: "",
-    //     //   passwordConfirm: "",
-    //     // });
-    //   } else {
-    //     alert(`Error: ${res.detail}`);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    if (formValues.password !== formValues.passwordConfirm) {
+      setErrorAlertOpen("Password confirm is wrong");
+      return;
+    }
+
+    try {
+      await updatePassword(
+        token,
+        formValues.passwordCurrent,
+        formValues.password
+      ).then((data) => {
+        if (data.status <= 305) {
+          console.log(data);
+          setAlertOpen(true);
+        } else {
+          if (Array.isArray(data.data.detail)) {
+            setErrorAlertOpen(data.data.detail[0].msg);
+          } else {
+            setErrorAlertOpen(data.data.detail);
+          }
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -57,43 +81,67 @@ const EditAccountBody: React.FC = () => {
           px: "50px",
         }}
       >
-        {/* <Typography variant="h6" fontWeight="bold" mt="20px">
-          {t("email")}
-        </Typography> */}
-
-        {/* <TextFieldComponent
-          label={t("your_email_address_is")}
-          value={formValues.email}
-          onChange={handleInputChange}
-          name="email"
-          customBorderRadius={10}
-        /> */}
+        <AutoCloseAlert
+          severity="success"
+          message="Password updated successfully"
+          open={alertOpen}
+          onClose={() => setAlertOpen(false)}
+        />
+        <AutoCloseAlert
+          severity="error"
+          message={`${errorAlertOpen}`}
+          open={!errorAlertOpen ? false : true}
+          onClose={() => setErrorAlertOpen("")}
+        />
 
         <Typography variant="h6" fontWeight="bold" mt="20px">
           {t("password")}
         </Typography>
 
-        <TextFieldComponent
+        <TextField
           label={t("enter_current_password")}
           value={formValues.passwordCurrent}
+          type="password"
           onChange={handleInputChange}
           name="passwordCurrent"
-          customBorderRadius={10}
+          // customBorderRadius={10}
+          sx={{
+            width: "100%",
+            mt: "10px",
+            color: mode === "dark" ? "white" : "black",
+            borderRadius: 10,
+            fontSize: "20px",
+          }}
         />
 
-        <TextFieldComponent
+        <TextField
           label={t("enter_new_password")}
           value={formValues.password}
+          type="password"
           onChange={handleInputChange}
           name="password"
-          customBorderRadius={10}
+          sx={{
+            width: "100%",
+            mt: "10px",
+            color: mode === "dark" ? "white" : "black",
+            borderRadius: 10,
+            fontSize: "20px",
+          }}
         />
-        <TextFieldComponent
+
+        <TextField
           label={t("retype_password")}
           value={formValues.passwordConfirm}
+          type="password"
           onChange={handleInputChange}
           name="passwordConfirm"
-          customBorderRadius={10}
+          sx={{
+            width: "100%",
+            mt: "10px",
+            color: mode === "dark" ? "white" : "black",
+            borderRadius: 10,
+            fontSize: "20px",
+          }}
         />
         <ChangeButtonComponent handleSave={handleSave} />
       </Box>

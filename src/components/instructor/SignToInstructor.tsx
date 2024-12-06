@@ -13,7 +13,6 @@ const SignToInstructor: React.FC = () => {
   const { t } = useTranslation();
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
-  const [cvv, setCvv] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -25,9 +24,7 @@ const SignToInstructor: React.FC = () => {
     if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
       return t("Invalid expiry date. Format should be MM/YY");
     }
-    if (!cvv || cvv.length !== 3) {
-      return t("Invalid CVV");
-    }
+
     return null;
   };
 
@@ -41,18 +38,18 @@ const SignToInstructor: React.FC = () => {
     setSuccess(null);
     setLoading(true);
 
-    try {
-      await updateU;
-      if (response.success) {
-        setSuccess(t("Your role has been updated to Instructor successfully!"));
-      } else {
-        setError(t("Failed to update your role. Please try again."));
-      }
-    } catch (err) {
-      setError(t("An error occurred. Please try again."));
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   await updateU;
+    //   if (response.success) {
+    //     setSuccess(t("Your role has been updated to Instructor successfully!"));
+    //   } else {
+    //     setError(t("Failed to update your role. Please try again."));
+    //   }
+    // } catch (err) {
+    //   setError(t("An error occurred. Please try again."));
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -96,16 +93,6 @@ const SignToInstructor: React.FC = () => {
           value={expiryDate}
           onChange={(e) => setExpiryDate(e.target.value)}
           placeholder="MM/YY"
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label={t("CVV")}
-          type="password"
-          value={cvv}
-          onChange={(e) => setCvv(e.target.value)}
-          inputProps={{ maxLength: 3 }}
-          placeholder="123"
           margin="normal"
         />
       </Box>

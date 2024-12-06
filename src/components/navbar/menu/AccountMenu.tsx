@@ -74,7 +74,7 @@ const AccountMenu: React.FC = () => {
         setUserInfo({});
         window.location.href = "/";
       } else {
-        alert(`Error: ${res.detail}}`);
+        // alert(`Error: ${res.detail}}`);
       }
     } catch (error) {
       console.log(error);
@@ -83,10 +83,6 @@ const AccountMenu: React.FC = () => {
 
   const handleMenuItemClick = (url?: string, textKey?: string) => {
     handleMenuClose();
-    if (textKey === "instruction_dashboard") {
-      // console.log("url");
-      window.open(url, "_blank");
-    }
     if (textKey !== "instruction_dashboard" && url) {
       window.location.href = url;
     }

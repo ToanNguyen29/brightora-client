@@ -25,7 +25,6 @@ import CoursePage from "./pages/CoursePage";
 import QAndAPage from "./pages/QAndAPage";
 import PurchaseHistory from "./components/mylearning/PurchaseHistory";
 import InstructorReviewPage from "./pages/InstructorReviewPage";
-import SignToInstructor from "./components/instructor/SignToInstructor";
 import BankingInfoPage from "./components/instructor/SignToInstructor";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
@@ -198,7 +197,6 @@ const AppRoutes: React.FC = () => {
                 <Route path="course" element={<InstructorCoursePage />} />
                 <Route path="question-and-answer" element={<QAndAPage />} />
                 <Route path="course-stats" element={<PaymentStatistics />} />
-                <Route path="discount-coupon" element={<></>} />
                 <Route path="reviews" element={<InstructorReviewPage />} />
               </Route>
 

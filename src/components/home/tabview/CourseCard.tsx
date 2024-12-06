@@ -13,6 +13,7 @@ import CourseRating from "../../course/header/CourseRating";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteItemFromWishlistMe } from "../../../services/WishListService";
 import { useTranslation } from "react-i18next";
+import PriceSection from "../../course/rightbox/PriceSection";
 
 interface CourseProps {
   course: ICourseCard;
@@ -30,6 +31,7 @@ const CourseCard: React.FC<CourseProps> = ({
   const navigate = useNavigate();
 
   const handleCardClick = () => {
+    console.log("Date", course);
     navigate(`/course/${course._id}`);
   };
 
@@ -53,6 +55,7 @@ const CourseCard: React.FC<CourseProps> = ({
         display: "flex",
         width: "100%",
         flexDirection: "column",
+        // minWidth: "300px",
         position: "relative",
         cursor: "pointer",
         // boxShadow: 3,
@@ -123,15 +126,69 @@ const CourseCard: React.FC<CourseProps> = ({
           rating={course.review.average_rating}
           numberRating={course.review.total_reviews}
         />
-        <Typography
-          variant="h6"
-          color="text.secondary"
-          sx={{ fontWeight: "bold" }}
-        >
-          {course.price ? `$${course.price.toFixed(3)}` : "Free"}
-        </Typography>
+
+        <Box>
+          {course.discount_percentage ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  mr: 2,
+                  fontWeight: "bold",
+                  // color: textColor,
+                  alignContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(
+                  (course.price * (100 - course?.discount_percentage)) / 100
+                )}
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  textDecoration: "line-through",
+                  color: "gray",
+                  alignContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(course.price)}
+              </Typography>
+            </Box>
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                mr: 2,
+                fontWeight: "bold",
+                // color: textColor,
+                alignContent: "center",
+                textAlign: "center",
+              }}
+            >
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(course.price)}
+            </Typography>
+          )}
+        </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-          {course.review.average_rating <= 4.5 && (
+          {course.review.average_rating >= 4.5 && (
             <Typography
               variant="caption"
               sx={{
@@ -145,20 +202,22 @@ const CourseCard: React.FC<CourseProps> = ({
               {t("high_rating")}
             </Typography>
           )}
-          {course.review.average_rating <= 4.5 && (
-            <Typography
-              variant="caption"
-              sx={{
-                bgcolor: "success.main", // Màu xanh
-                color: "white",
-                borderRadius: 1,
-                px: 1,
-                py: 0.25,
-              }}
-            >
-              {t("new")}
-            </Typography>
-          )}
+          {course.updated_at &&
+            new Date(course.updated_at) >=
+              new Date(new Date().setMonth(new Date().getMonth() - 3)) && (
+              <Typography
+                variant="caption"
+                sx={{
+                  bgcolor: "success.main", // Màu xanh
+                  color: "white",
+                  borderRadius: 1,
+                  px: 1,
+                  py: 0.25,
+                }}
+              >
+                {t("updated_recently")}
+              </Typography>
+            )}
         </Box>
       </CardContent>
     </Card>

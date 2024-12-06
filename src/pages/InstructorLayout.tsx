@@ -23,7 +23,6 @@ const tabPaths = [
   "/instructor/course",
   "/instructor/question-and-answer",
   "/instructor/course-stats",
-  "/instructor/discount-coupon",
   "/instructor/reviews",
 ];
 
@@ -106,12 +105,6 @@ const InstructorLayout: React.FC = () => {
             icon={<PerformanceIcon sx={{ fontSize: 40, mr: 2 }} />}
             label={<Box sx={labelBoxStyles}>{t("course_stats")}</Box>}
             {...a11yProps(3)}
-            sx={tabStyles}
-          />
-          <Tab
-            icon={<ToolsIcon sx={{ fontSize: 40, mr: 2 }} />}
-            label={<Box sx={labelBoxStyles}>{t("discount_coupon")}</Box>}
-            {...a11yProps(4)}
             sx={tabStyles}
           />
           <Tab

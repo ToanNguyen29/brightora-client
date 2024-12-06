@@ -283,5 +283,9 @@
   "Lesson": "Lesson",
   "confirm": "Confirm",
   "add_section": "Add section",
-  "become_to_instructor": "Become to instructor"
+  "become_to_instructor": "Become to instructor",
+  "keep_shopping_message": "Your cart is empty. Keep shopping to find a course!",
+  "keep_shopping": "Keep shopping",
+  "search_your_courses": "Search your courses",
+  "updated_recently": "Updated recently"
 }

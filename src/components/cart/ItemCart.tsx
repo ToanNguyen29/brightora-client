@@ -50,12 +50,6 @@ const CartItem: React.FC<CartProps> = ({
           console.log("ok");
           await fetchCartMe();
         }
-        // if (res.status <= 304) {
-        //    // setCart((res as IDeleteItemCartResponse).data);
-        //    // setQuantity((quantity) => quantity - 1);
-        // } else {
-        //    alert(`Error delete Item to Cart: ${res.detail}}`);
-        // }
       });
     } catch (error) {
       console.log("Error", error);
@@ -139,7 +133,12 @@ const CartItem: React.FC<CartProps> = ({
               color="text.secondary"
               sx={{ color: textColor, mt: 0.5, fontSize: "0.9rem" }}
             >
-              {t("updated_at")}: {updated_at}
+              {t("updated_at")}:{" "}
+              {new Date(updated_at).toLocaleDateString("vn", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </Typography>
           )}
         </Box>
@@ -154,12 +153,6 @@ const CartItem: React.FC<CartProps> = ({
             onClick={() => handleDeleteItem()}
           >
             <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-
-        <Tooltip title={t("moveToWishlist")}>
-          <IconButton size="small" sx={{ display: "block" }}>
-            <FavoriteIcon />
           </IconButton>
         </Tooltip>
       </Box>

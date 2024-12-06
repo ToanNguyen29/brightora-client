@@ -16,7 +16,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({
   const { t } = useTranslation();
 
   // Calculate the original price based on the discount
-  const originalPrice = price / (1 - discount / 100);
+  // const originalPrice = price / (100 - discount / 100);
 
   return (
     <Box>
@@ -42,7 +42,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({
           {new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
-          }).format(price)}
+          }).format((price * (100 - discount)) / 100)}
         </Typography>
 
         {discount !== 0 && (
@@ -58,7 +58,7 @@ const PriceSection: React.FC<PriceSectionProps> = ({
             {new Intl.NumberFormat("en-US", {
               style: "currency",
               currency: "USD",
-            }).format(originalPrice)}
+            }).format(price)}
           </Typography>
         )}
       </Box>

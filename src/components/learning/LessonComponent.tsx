@@ -47,7 +47,7 @@ const LessonComponent: React.FC = () => {
         .then((data) => {
           if (data.status <= 305) {
             if (data.data) {
-              console.log("getTranscript:", data.data);
+              console.log("getTranscript:", data.data.data.transcript);
               setTranscript(data.data.data.transcript);
             } else {
               console.log(data);
@@ -63,7 +63,7 @@ const LessonComponent: React.FC = () => {
 
   return (
     <>
-      {lesson?.video_url ? (
+      {lesson?.video_url && transcript.length > 0 ? (
         <ReactPlayer
           url={lesson.video_url}
           controls

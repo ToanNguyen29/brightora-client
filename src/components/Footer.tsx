@@ -43,16 +43,32 @@ const Footer: React.FC = () => {
           {t("follow_us")}
         </Typography>
         <Box sx={{ display: "flex", gap: 2 }}>
-          <IconButton href="#" color="inherit" aria-label="Facebook">
+          <IconButton
+            href="https://www.facebook.com/letanloc202"
+            color="inherit"
+            aria-label="Facebook"
+          >
             <Facebook sx={{ fontSize: 36 }} /> {/* Tăng kích thước icon */}
           </IconButton>
-          <IconButton href="#" color="inherit" aria-label="Twitter">
+          <IconButton
+            href="https://www.facebook.com/letanloc202"
+            color="inherit"
+            aria-label="Twitter"
+          >
             <Twitter sx={{ fontSize: 36 }} />
           </IconButton>
-          <IconButton href="#" color="inherit" aria-label="Instagram">
+          <IconButton
+            href="https://www.facebook.com/letanloc202"
+            color="inherit"
+            aria-label="Instagram"
+          >
             <Instagram sx={{ fontSize: 36 }} />
           </IconButton>
-          <IconButton href="#" color="inherit" aria-label="LinkedIn">
+          <IconButton
+            href="https://www.facebook.com/letanloc202"
+            color="inherit"
+            aria-label="LinkedIn"
+          >
             <LinkedIn sx={{ fontSize: 36 }} />
           </IconButton>
         </Box>
@@ -106,13 +122,13 @@ const Footer: React.FC = () => {
                 {t("contact_info")}
               </Typography>
               <Typography variant="body2" sx={{ lineHeight: 1.8, mb: 1 }}>
-                {t("address")}: 1234 Course Lane, Education City, USA
+                {t("address")}: 01 Vo Van Ngan Street, Thu Duc City, Viet Nam
               </Typography>
               <Typography variant="body2" sx={{ lineHeight: 1.8, mb: 1 }}>
-                {t("phone")}: +1 234 567 890
+                {t("phone")}: +84 37 9460 409
               </Typography>
               <Typography variant="body2" sx={{ lineHeight: 1.8 }}>
-                {t("email")}: info@courseshop.com
+                {t("email")}: 20110379@student.hcmute.edu.vn
               </Typography>
             </Grid>
           </Grid>
@@ -136,7 +152,7 @@ const Footer: React.FC = () => {
           justifyContent: "flex-end",
         }}
       >
-        © {new Date().getFullYear()} CourseShop. {t("all_rights_reserved")}.
+        © {new Date().getFullYear()} BrightOra. {t("all_rights_reserved")}.
       </Typography>
     </Box>
   );

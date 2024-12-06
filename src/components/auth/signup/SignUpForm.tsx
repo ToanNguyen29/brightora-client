@@ -12,11 +12,8 @@ interface SignUpFormProps {
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({ mode }) => {
-  // const { setIsAuthenticated, setUserInfo, setIsLoadingAuth } = useAuth();
   const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
-  // const token = localStorage.getItem("token");
   const { t } = useTranslation();
-  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");

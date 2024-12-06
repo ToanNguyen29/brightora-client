@@ -12,11 +12,21 @@ import {
   Avatar,
   IconButton,
   TextField,
+  TablePagination,
+  CardMedia,
+  Button,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-import { getCoursesMe, updateCourse } from "../../services/CourseService";
+import {
+  getCoursesByOwner,
+  getCoursesOfInstructor,
+  updateCourse,
+} from "../../services/CourseService";
 import { useNavigate } from "react-router-dom";
 import { IUpdateCourse } from "../../models/Course";
+import { useAuth } from "../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../../theme/ThemeContext";
 
 type Course = {
   _id: string;
@@ -36,17 +46,22 @@ interface CourseOfInstructorProps {
   status?: string;
 }
 
-const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
-  status = "Draft",
-}) => {
+const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
+  const { t } = useTranslation();
+  const { mode } = useThemeContext();
+
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
+  const { userInfo } = useAuth();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
-  const [coursesDraft, setCoursesDraft] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleEdit = (id: string) => {
-    console.log(`Edit course with ID: ${id}`);
     navigate(`${id}/manage/goals/`, { replace: true });
   };
 
@@ -54,10 +69,10 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
     const formData: IUpdateCourse = {
       discount_percentage: discountPercentage,
     };
+    console.log("Disount", formData);
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
-        console.log("Discount updated:", data);
-        setCoursesDraft((prevCourses) =>
+        setCourses((prevCourses) =>
           prevCourses.map((course) =>
             course._id === id
               ? { ...course, discount_percentage: discountPercentage }
@@ -71,120 +86,197 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
 
   useEffect(() => {
     const fetchCoursesMe = async () => {
-      await getCoursesMe(token).then((data) => {
-        console.log("Course of instructor:", data);
-        if (data.status <= 305) {
-          setCoursesDraft(data.data.data);
+      if (!userInfo._id) return;
+      console.log(status);
+      await getCoursesOfInstructor(userInfo._id, 1, 100, status).then(
+        (data) => {
+          if (data.status <= 305) {
+            setCourses(data.data.data);
+          }
         }
-      });
+      );
     };
     fetchCoursesMe();
-  }, [token]);
+  }, [status, userInfo._id]);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
-    <Box sx={{ padding: 0 }}>
-      <Typography variant="body1" fontWeight="bold" sx={{ mb: 3, mt: 7 }}>
-        {`${status} courses`}
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>Thumbnail</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Title</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Category</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Level</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Language</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Price ($)</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>
-                Discount percentage (%)
-              </TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {coursesDraft.map((course) => (
-              <TableRow
-                key={course._id}
-                sx={{
-                  cursor: "pointer",
-                }}
-              >
-                <TableCell>
-                  <Avatar
-                    variant="square"
-                    src={course.thumbnail}
-                    alt={course.title}
-                    sx={{ width: 56, height: 56 }}
-                  />
+    <Box sx={{ padding: 1 }}>
+      {courses.length === 0 ? (
+        <Box
+          sx={{
+            textAlign: "center",
+            p: 6,
+            border: "0.01px solid",
+            minWidth: "120vh",
+          }}
+        >
+          <img
+            src="/empty-cart.png"
+            alt="Empty Cart"
+            style={{ maxWidth: "300px", margin: "0 auto" }}
+          />
+
+          <Typography variant="body1" sx={{ mt: 1, mb: 3, color: textColor }}>
+            {t("keep_shopping_message")}
+          </Typography>
+          <Button
+            variant="outlined"
+            sx={{
+              backgroundColor: textColor,
+              color: backgroundColor,
+              fontWeight: "bold",
+              ":hover": {
+                backgroundColor: backgroundColor,
+                color: textColor,
+              },
+            }}
+            onClick={() => navigate("/instructor/course/create")}
+          >
+            {t("add_new_course")}
+          </Button>
+        </Box>
+      ) : (
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: 2,
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Table>
+            <TableHead
+              sx={{
+                backgroundColor: "transparent",
+              }}
+            >
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", width: "15%" }}>
+                  Thumbnail
                 </TableCell>
-                <TableCell>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {course.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {course.subtitle}
-                  </Typography>
+                <TableCell sx={{ fontWeight: "bold", width: "20%" }}>
+                  Title
                 </TableCell>
-                <TableCell>{course.category.join(", ")}</TableCell>
-                <TableCell>{course.level.join(", ")}</TableCell>
-                <TableCell>
-                  {course.language
-                    ? course.language.join(", ")
-                    : ["English"].join(", ")}
+                <TableCell sx={{ fontWeight: "bold", width: "15%" }}>
+                  Category
                 </TableCell>
-                <TableCell>${course.price.toFixed(2)}</TableCell>
-                <TableCell>
-                  {editingCourseId === course._id ? (
-                    <TextField
-                      value={discountPercentage}
-                      onChange={(e) =>
-                        setDiscountPercentage(Number(e.target.value))
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") handleUpdateDiscount(course._id);
-                      }}
-                      autoFocus
-                      variant="standard"
-                      InputProps={{
-                        disableUnderline: true,
-                      }}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          fontSize: "1rem",
-                          border: "none",
-                          padding: 0,
-                        },
-                      }}
-                    />
-                  ) : (
-                    <Typography
-                      sx={{
-                        fontSize: "1rem",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setEditingCourseId(course._id);
-                        setDiscountPercentage(course.discount_percentage);
-                      }}
-                    >
-                      {course.discount_percentage}
-                    </Typography>
-                  )}
+                <TableCell sx={{ fontWeight: "bold", width: "15%" }}>
+                  Level
                 </TableCell>
-                <TableCell>
-                  <IconButton
-                    color="default"
-                    onClick={() => handleEdit(course._id)}
-                  >
-                    <Edit />
-                  </IconButton>
+                <TableCell sx={{ fontWeight: "bold", width: "15%" }}>
+                  Language
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "10%" }}>
+                  Price ($)
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "10%" }}>
+                  Discount (%)
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "10%" }}>
+                  Actions
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {courses
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((course) => (
+                  <TableRow
+                    key={course._id}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: "#f9f9f9",
+                      },
+                    }}
+                  >
+                    <TableCell>
+                      <CardMedia
+                        component="img"
+                        image={course.thumbnail}
+                        alt={course.title}
+                        sx={{
+                          aspectRatio: "16/9",
+                          objectFit: "cover",
+                          position: "relative",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="subtitle1" fontWeight="bold">
+                        {course.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {course.subtitle}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>{course.category.join(", ")}</TableCell>
+                    <TableCell>{course.level.join(", ")}</TableCell>
+                    <TableCell>{course.language.join(", ")}</TableCell>
+                    <TableCell>${course.price.toFixed(2)}</TableCell>
+                    <TableCell>
+                      {editingCourseId === course._id ? (
+                        <TextField
+                          value={discountPercentage}
+                          onChange={(e) =>
+                            setDiscountPercentage(Number(e.target.value))
+                          }
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter")
+                              handleUpdateDiscount(course._id);
+                          }}
+                          autoFocus
+                          variant="standard"
+                          InputProps={{
+                            disableUnderline: true,
+                          }}
+                          sx={{
+                            "& .MuiInputBase-root": {
+                              fontSize: "1rem",
+                              border: "none",
+                              padding: 0,
+                            },
+                          }}
+                        />
+                      ) : (
+                        <Typography
+                          sx={{
+                            fontSize: "1rem",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            setEditingCourseId(course._id);
+                            setDiscountPercentage(course.discount_percentage);
+                          }}
+                        >
+                          {course.discount_percentage}
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleEdit(course._id)}
+                      >
+                        <Edit />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Box>
   );
 };

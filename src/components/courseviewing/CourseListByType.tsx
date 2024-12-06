@@ -68,11 +68,13 @@ const CourseListByType: React.FC<CourseListByTypeProps> = ({ type }) => {
       >
         <ArrowBackIos />
       </IconButton>
-
       {data && (
-        <CourseGrid courses={data} coursesPerPageValue={4} pagination={false} />
+        <CourseGrid
+          courses={data}
+          coursesPerPageValue={pageSize}
+          pagination={false}
+        />
       )}
-
       <IconButton
         onClick={handleNextPage}
         disabled={currentPage === totalPages || totalPages === 0}

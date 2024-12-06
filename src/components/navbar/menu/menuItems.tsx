@@ -3,17 +3,11 @@ import {
   CardMembership,
   Favorite,
   Dashboard,
-  Notifications,
   Message,
   Settings,
-  Payment,
-  Subscriptions,
-  CreditCard,
   History,
-  Language,
   AccountCircle,
   Edit,
-  Help,
   Logout,
 } from "@mui/icons-material";
 
@@ -40,11 +34,11 @@ export const menuItems: MenuItemType[] = [
     textKey: "wishlist",
     url: "/my-course/wishlist/",
   },
-  {
-    icon: <Dashboard fontSize="small" />,
-    textKey: "instruction_dashboard",
-    url: "/instructor/course",
-  },
+  // {
+  //   icon: <Dashboard fontSize="small" />,
+  //   textKey: "instruction_dashboard",
+  //   url: "/instructor/course",
+  // },
   { divider: true },
 
   {

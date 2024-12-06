@@ -88,10 +88,8 @@ export interface IMyCourseCard {
   _id: string;
   owner: IOwner;
   review: IReview;
-  // price: number;
   thumbnail: string;
   title: string;
-  // created_at: string;
   updated_at: string;
 }
 

@@ -34,7 +34,7 @@ const CourseGrid: React.FC<CourseGridProps> = ({
   };
 
   return (
-    <Box>
+    <Box sx={{ width: "100%" }}>
       <Grid container spacing={3}>
         {currentCourses.map((course, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={index}>

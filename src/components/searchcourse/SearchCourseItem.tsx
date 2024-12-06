@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import CourseRating from "../course/header/CourseRating";
 import MouseEnterCourseBox from "./MouseEnterCourseBox";
+import { Flare } from "@mui/icons-material";
 
 interface SearchCourseItemProps {
   id: string;
@@ -19,6 +20,7 @@ interface SearchCourseItemProps {
   updated_at: string;
   price: number;
   level: string[];
+  discount_percentage?: number;
 }
 
 const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
@@ -32,6 +34,7 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
   rating,
   numberRating,
   price,
+  discount_percentage,
   level,
 }) => {
   const { mode } = useThemeContext();
@@ -56,13 +59,13 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
         display: "flex",
         backgroundColor: backgroundColor,
         color: textColor,
-        position: "relative", // Quan trọng để định vị component phụ
+        position: "relative",
         "&:hover": {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         },
       }}
-      onMouseEnter={handleMouseEnter} // Hiển thị component phụ khi chuột di vào card
-      onMouseLeave={handleMouseLeave} // Ẩn component phụ khi chuột di ra khỏi card
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Box
         onClick={() => navigate(`/course/${id}`)}
@@ -88,32 +91,35 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
               aspectRatio: "16/9",
               width: "100%",
               height: "auto",
-              maxWidth: "200px",
-              maxHeight: "200px",
               objectFit: "cover",
               borderRadius: "8px",
             }}
           />
         </Box>
-        <Box sx={{ flex: 2, textAlign: "left" }}>
+        <Box sx={{ flex: 3, textAlign: "left", ml: 3 }}>
           <Typography
-            variant="h6"
+            variant="body1"
             sx={{
               color: textColor,
               fontWeight: "bold",
-              mb: 1,
+              mb: 0.5,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
               WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 1,
+              WebkitLineClamp: 2,
             }}
           >
             {title}
           </Typography>
           <Typography
-            variant="subtitle2"
+            variant="body2"
             sx={{
               color: textColor,
-              fontWeight: "bold",
               mb: 1,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 2,
             }}
@@ -125,41 +131,41 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
             color="text.secondary"
             sx={{ color: textColor, mb: 0.5, fontSize: "0.9rem" }}
           >
-            {t("By")}: {first_name} {last_name}
+            {first_name} {last_name}
           </Typography>
 
           <CourseRating rating={rating} numberRating={numberRating} />
+
           <Box sx={{ display: "flex" }}>
             <Typography
               variant="body2"
-              color="text.secondary"
-              sx={{ mt: 0.5, fontSize: "0.9rem", mr: 3 }}
+              sx={{
+                fontSize: "0.8rem",
+                mr: 1,
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
             >
               {t("level")}:
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 1 }}>
-                {level.map((item) => (
-                  <Box
-                    key={item}
-                    sx={{
-                      backgroundColor: "lightblue",
-                      color: "black",
-                      padding: "0.3rem 0.6rem",
-                      borderRadius: "16px",
-                      fontSize: "0.85rem",
-                      display: "inline-block",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-                    }}
-                  >
-                    {item}
-                  </Box>
-                ))}
-              </Box>
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: "0.8rem",
+                mr: 3,
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              {level.join(", ")}
             </Typography>
             {updated_at && (
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{ color: textColor, mt: 0.5, fontSize: "0.9rem" }}
+                sx={{ color: textColor, fontSize: "0.9rem" }}
               >
                 {t("updated_at")}: {updated_at.slice(0, 10)}
               </Typography>
@@ -172,15 +178,64 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
       <Box
         sx={{
           flex: 1,
-          textAlign: "center",
         }}
       >
-        <Typography variant="h6" sx={{ color: textColor, fontWeight: "bold" }}>
-          ${price.toFixed(2)}
-        </Typography>
+        {discount_percentage ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignContent: "center",
+              textAlign: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: "bold",
+                alignContent: "center",
+                textAlign: "center",
+              }}
+            >
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format((price * (100 - discount_percentage)) / 100)}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              sx={{
+                textDecoration: "line-through",
+                color: "gray",
+                alignContent: "center",
+                textAlign: "center",
+              }}
+            >
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(price)}
+            </Typography>
+          </Box>
+        ) : (
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: "bold",
+              alignContent: "center",
+              textAlign: "center",
+            }}
+          >
+            {new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+            }).format(price)}
+          </Typography>
+        )}
       </Box>
 
-      {/* Component phụ (Hiển thị khi hover) */}
       {isHovered && (
         <MouseEnterCourseBox
           id={id}

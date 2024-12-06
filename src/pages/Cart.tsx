@@ -33,7 +33,7 @@ const CartPage: React.FC = () => {
     cart?.cart.reduce((sum, item) => sum + item.course.price, 0) || 0;
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", px: "10%", minHeight: "90vh" }}>
+    <Box sx={{ width: "80%", mx: "auto", px: "7%", minHeight: "90vh" }}>
       <Typography
         variant="h3"
         fontWeight={"bold"}
@@ -56,14 +56,43 @@ const CartPage: React.FC = () => {
               ml: 1.5,
               mb: 1,
               color: textColor,
-              borderBottom: "1px solid",
               fontWeight: "bold",
             }}
           >
             {`${quantity} Course in Cart`}
           </Typography>
-          {cart &&
-            cart.cart.map((item) => (
+          {quantity === 0 ? (
+            <Box sx={{ textAlign: "center", p: 6, border: "0.01px solid" }}>
+              <img
+                src="/empty-cart.png"
+                alt="Empty Cart"
+                style={{ maxWidth: "300px", margin: "0 auto" }}
+              />
+
+              <Typography
+                variant="body1"
+                sx={{ mt: 1, mb: 3, color: textColor }}
+              >
+                {t("keep_shopping_message")}
+              </Typography>
+              <Button
+                variant="outlined"
+                sx={{
+                  backgroundColor: textColor,
+                  color: backgroundColor,
+                  fontWeight: "bold",
+                  ":hover": {
+                    backgroundColor: backgroundColor,
+                    color: textColor,
+                  },
+                }}
+                onClick={() => navigate("/")}
+              >
+                {t("keep_shopping")}
+              </Button>
+            </Box>
+          ) : (
+            cart?.cart.map((item) => (
               <CartItem
                 key={item.course._id}
                 id={item.course._id}
@@ -75,48 +104,54 @@ const CartPage: React.FC = () => {
                 thumbnail={item.course.thumbnail}
                 owner_name={`${item.course.owner.first_name} ${item.course.owner.last_name}`}
               />
-            ))}
+            ))
+          )}
         </Box>
 
-        <Box
-          sx={{
-            // flex: 3,
-            p: 3,
-            // borderBottom: "1px solid",
-            borderColor: mode === "light" ? "#ccc" : "#555",
-            borderRadius: "8px",
-            backgroundColor: backgroundColor,
-            color: textColor,
-            maxHeight: "fit-content",
-            width: "100%",
-            maxWidth: "25%",
-          }}
-        >
-          <Typography
-            variant="h6"
-            sx={{ color: textColor, mb: 2, fontWeight: "bold" }}
-          >
-            {t("total")}
-          </Typography>
-          <Typography
-            variant="h3"
-            sx={{ color: textColor, fontWeight: "bold", mb: 3 }}
-          >
-            ${totalPrice.toFixed(3) || (0.0).toFixed(3)}
-          </Typography>
-
-          <Button
-            onClick={handleCheckout}
-            variant="contained"
-            fullWidth
+        {totalPrice > 0 && (
+          <Box
             sx={{
-              backgroundColor: textColor,
-              color: backgroundColor,
+              p: 3,
+              borderColor: mode === "light" ? "#ccc" : "#555",
+              borderRadius: "8px",
+              backgroundColor: backgroundColor,
+              color: textColor,
+              maxHeight: "fit-content",
+              width: "100%",
+              maxWidth: "25%",
             }}
           >
-            {t("checkout")}
-          </Button>
-        </Box>
+            <Typography
+              variant="h6"
+              sx={{ color: textColor, mb: 2, fontWeight: "bold" }}
+            >
+              {t("total")}
+            </Typography>
+            <Typography
+              variant="h3"
+              sx={{ color: textColor, fontWeight: "bold", mb: 3 }}
+            >
+              ${totalPrice.toFixed(3) || (0.0).toFixed(3)}
+            </Typography>
+
+            <Button
+              onClick={handleCheckout}
+              variant="contained"
+              fullWidth
+              sx={{
+                backgroundColor: textColor,
+                color: backgroundColor,
+                fontWeight: "bold",
+                ":hover": {
+                  backgroundColor: backgroundColor,
+                  color: textColor,
+                },
+              }}
+            >
+              {t("checkout")}
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   );

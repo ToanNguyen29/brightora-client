@@ -17,11 +17,6 @@ const tabPaths = [
   "/user/edit-profile/",
   "/user/edit-photo/",
   "/user/edit-account/",
-  //   "/user/manage-subscriptions/",
-  //   "/user/edit-payment-methods/",
-  //   "/user/edit-privacy/",
-  //   "/user/edit-notifications/",
-  //   "/user/edit-api-clients/",
   "/user/close-account/",
 ];
 

@@ -33,10 +33,6 @@ const SocialLoginButtons: React.FC<SocialLoginButtonsProps> = ({
           </GoogleAuthWrapper>
         </Grid>
 
-        {/* <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
-       <FacebookLogin textColor={textColor} />
-     </Grid> */}
-
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "center" }}>
           <GithubLogin textColor={textColor} />
         </Grid>

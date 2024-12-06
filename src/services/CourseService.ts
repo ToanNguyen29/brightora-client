@@ -69,15 +69,42 @@ export const updateCourse = async (
 export const getCoursesByOwner = async (
   id: string,
   pageNumber: number | undefined,
-  pageSize: number | undefined
+  pageSize: number | undefined,
+  status?: string
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
-      `${course_url}?owner=${id}&page_number=${pageNumber}&page_size=${pageSize}`,
+      `${course_url}?owner=${id}&page_number=${pageNumber}&page_size=${pageSize}&status=${
+        status ? status : "Published"
+      }`,
       {
         withCredentials: true,
       }
     )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log("err", err);
+      return err.response;
+    });
+  return response;
+};
+
+export const getCoursesOfInstructor = async (
+  id: string,
+  pageNumber: number | undefined,
+  pageSize: number | undefined,
+  status?: string
+): Promise<AxiosResponse> => {
+  let url = `${course_url}?owner=${id}&page_number=${pageNumber}&page_size=${pageSize}`;
+  if (status) {
+    url = `${course_url}?owner=${id}&page_number=${pageNumber}&page_size=${pageSize}&status=${status}`;
+  }
+  const response = await axios
+    .get(`${url}`, {
+      withCredentials: true,
+    })
     .then((res) => {
       return res;
     })
@@ -287,7 +314,7 @@ export const searchCourse = async (
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
-      `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}`,
+      `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}&status=Published`,
       {
         withCredentials: true,
       }
@@ -304,6 +331,26 @@ export const searchCourse = async (
 };
 
 export const getCoursesMe = async (
+  token: string | null
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .get(`${course_url}/get_me`, {
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};
+
+export const getCoursesOwner = async (
   token: string | null
 ): Promise<AxiosResponse> => {
   const response = await axios

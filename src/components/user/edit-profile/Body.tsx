@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import TextFieldComponent from "../intercommunity/TextFieldComponent";
-// import TypographyComponent from "./TypographyComponent";
-// import LanguageSelectComponent from "./LanguageSelectComponent";
 import SaveComponent from "../intercommunity/SaveComponent";
 import { useAuth } from "../../../context/AuthContext";
 import { UserProfile } from "../../../models/User";
@@ -15,6 +13,7 @@ const EditProfileBody: React.FC = () => {
   const token = localStorage.getItem("token");
   const { userInfo, setUserInfo } = useAuth();
   const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
   const { t } = useTranslation();
 
   const [formValues, setFormValues] = React.useState<Partial<UserProfile>>({});
@@ -22,10 +21,6 @@ const EditProfileBody: React.FC = () => {
   useEffect(() => {
     setFormValues(userInfo);
   }, [userInfo]);
-
-  // const handleLangChange = (event: any) => {
-  //   setLang(event.target.value);
-  // };
 
   const handleCloseAlert = () => {
     setAlertOpen(false);
@@ -49,15 +44,17 @@ const EditProfileBody: React.FC = () => {
   };
 
   const handleSave = async () => {
-    console.log("formValues", formValues);
     try {
       await updateMe(token, formValues).then((data) => {
-        console.log(data);
         if (data.status <= 304) {
           setUserInfo(data.data.data);
           setAlertOpen(true);
         } else {
-          console.log(data);
+          if (Array.isArray(data.data.detail)) {
+            setErrorAlertOpen(data.data.detail[0].msg);
+          } else {
+            setErrorAlertOpen(data.data.detail);
+          }
         }
       });
     } catch (error) {
@@ -83,6 +80,12 @@ const EditProfileBody: React.FC = () => {
         message="Profile updated successfully"
         open={alertOpen}
         onClose={handleCloseAlert}
+      />
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
       />
       <Typography variant="h6" fontWeight="bold">
         {t("basics")}

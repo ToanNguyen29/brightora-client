@@ -122,6 +122,7 @@ const SearchCoursePage: React.FC = () => {
                   first_name={item.owner.first_name}
                   last_name={item.owner.last_name}
                   level={item.level || []}
+                  discount_percentage={item.discount_percentage || 0}
                 />
               ))}
           </Box>

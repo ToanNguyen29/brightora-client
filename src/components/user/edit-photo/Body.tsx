@@ -19,6 +19,7 @@ const EditPhotoBody: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null); // Để lưu trữ lỗi nếu có
   const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
 
   const handleCloseAlert = () => {
     setAlertOpen(false);
@@ -59,9 +60,15 @@ const EditPhotoBody: React.FC = () => {
       UploadFile(s3Key, photo, setProgress, async () => {
         await updatePhoto(token, url).then((data) => {
           console.log(data);
-          if (data.status < -305) {
+          if (data.status <= 305) {
             setUserInfo(data.data.data);
             setAlertOpen(true);
+          } else {
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
           }
         });
         setError(null);
@@ -91,6 +98,12 @@ const EditPhotoBody: React.FC = () => {
         message="Photo updated successfully"
         open={alertOpen}
         onClose={handleCloseAlert}
+      />
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
       />
       <ImagePreview selectedImage={selectedImage} />
       <ImageUploadButton
