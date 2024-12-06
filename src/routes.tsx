@@ -18,7 +18,6 @@ import CheckoutPage from "./pages/CheckoutPage";
 import ChatPage from "./pages/ChatPage";
 import WishList from "./components/mylearning/WishList";
 import PublicProfilePage from "./pages/user/PublicProfile";
-import SearchCoursePage from "./pages/SearchCoursePage";
 import CourseMessages from "./components/courseedit/CourseMessages";
 import PaymentStatistics from "./pages/CourseStats";
 import CoursePage from "./pages/CoursePage";
@@ -26,13 +25,13 @@ import QAndAPage from "./pages/QAndAPage";
 import PurchaseHistory from "./components/mylearning/PurchaseHistory";
 import InstructorReviewPage from "./pages/InstructorReviewPage";
 import BankingInfoPage from "./components/instructor/SignToInstructor";
-import Invoice from "./components/mylearning/Invoice";
+import SearchPage from "./pages/SearchPage";
 
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
   () => import("./components/mylearning/CourseEnrollmentList")
 );
-// const GoogleDriveViewer = React.lazy(() => import("./pages/ViewFile"));
+
 const CartPage = React.lazy(() => import("./pages/Cart"));
 const CourseTypePage = React.lazy(() => import("./pages/CourseTypePage"));
 const ForgotPassWordPage = React.lazy(
@@ -135,7 +134,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route
                   path="/courses/search/:querySearch"
-                  element={<SearchCoursePage />}
+                  element={<SearchPage />}
                 />
                 <Route
                   path="course/:courseId/learn/"

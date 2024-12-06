@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -10,7 +10,7 @@ import {
   Checkbox,
 } from "@mui/material";
 
-enum Type {
+export enum Type {
   PROGRAMMING = "Programming",
   DATA_SCIENCE = "Data Science",
   WEB_DEVELOPMENT = "Web Development",
@@ -27,21 +27,31 @@ enum Type {
 
 interface FilterSidebarProps {
   setFilter: (filter: string) => void;
+  defaultType?: Type;
 }
 
-const FilterSidebar: React.FC<FilterSidebarProps> = ({ setFilter }) => {
+const FilterSidebar: React.FC<FilterSidebarProps> = ({
+  setFilter,
+  defaultType,
+}) => {
   const [level, setLevel] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [discountOnly, setDiscountOnly] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<Type | string>("");
+  const [selectedCategory, setSelectedCategory] = useState<Type | string>(
+    () => {
+      return defaultType ? defaultType : "";
+    }
+  );
 
   const handleDiscountToggle = () => {
     setDiscountOnly(!discountOnly);
   };
+
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as Type;
     setSelectedCategory((prev) => (prev === value ? "" : value)); // Toggle category selection
   };
+
   const handleFilterClick = () => {
     const filters: { [key: string]: string | boolean } = {};
 
@@ -87,6 +97,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({ setFilter }) => {
       <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
         Category
       </Typography>
+
       <Select
         value={selectedCategory}
         onChange={handleCategoryChange}

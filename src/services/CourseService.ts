@@ -314,7 +314,7 @@ export const searchCourse = async (
 ): Promise<AxiosResponse> => {
   const response = await axios
     .get(
-      `${course_url}?search=${query}&page_number=${pageNumber}&page_size=${pageSize}&status=Published`,
+      `${course_url}?${query}&page_number=${pageNumber}&page_size=${pageSize}&status=Published`,
       {
         withCredentials: true,
       }

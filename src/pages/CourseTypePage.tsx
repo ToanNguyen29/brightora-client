@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useThemeContext } from "../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
 import CourseListByType from "../components/courseviewing/CourseListByType";
+import SearchCoursePage from "../components/searchcourse/SearchCoursePage";
+import { Type } from "../components/searchcourse/FilterBar";
 
 const CourseTypePage: React.FC = () => {
   const { t } = useTranslation();
@@ -12,7 +14,10 @@ const CourseTypePage: React.FC = () => {
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const { type } = useParams();
-  console.log("type", type);
+
+  const defaultType: Type | undefined = Object.values(Type).find(
+    (value) => value === type
+  );
 
   return (
     <Box
@@ -20,17 +25,16 @@ const CourseTypePage: React.FC = () => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        gap: 3,
+        gap: 5,
         px: "20%",
-        mb: 5,
+        mt: 5,
         minHeight: "90vh",
       }}
     >
       <Typography
         variant="h4"
         sx={{
-          mt: 10,
-          mb: 5,
+          mb: 3,
           color: textColor,
           fontFamily: "math",
           fontWeight: "bold",
@@ -38,8 +42,20 @@ const CourseTypePage: React.FC = () => {
       >
         {type?.toUpperCase()} {t("courses")}
       </Typography>
-
+      <Typography
+        variant="h5"
+        sx={{ color: textColor, fontFamily: "math", fontWeight: "bold" }}
+      >
+        New course
+      </Typography>
       <CourseListByType type={type} />
+      <Typography
+        variant="h5"
+        sx={{ color: textColor, fontFamily: "math", fontWeight: "bold", mt: 3 }}
+      >
+        {`All "${type}" course`}
+      </Typography>
+      <SearchCoursePage defaultType={defaultType} />
     </Box>
   );
 };

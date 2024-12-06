@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../theme/ThemeContext";
 import PaypalPage from "../components/payment/paypal/PaypalPage";
@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 import PaymentSuccess from "../components/payment/PaymentSuccess";
 
 const CheckoutPage: React.FC = () => {
-  // const courses: any = [];
   const [isDone, setIsDone] = useState<boolean>(false);
   const location = useLocation();
   const { courses } = location.state || {}; // Lấy thông tin course từ state
