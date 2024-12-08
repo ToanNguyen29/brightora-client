@@ -9,7 +9,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator"; // Drag handle icon
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { useEffect, useState } from "react";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,7 @@ import { useParams } from "react-router-dom";
 import Section from "./curriculum/Section";
 import { createNewSection } from "../../services/SectionService";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AutoCloseAlert from "../reused/Alert";
 
 const Curriculum: React.FC = () => {
   const token = localStorage.getItem("token");
@@ -32,23 +33,30 @@ const Curriculum: React.FC = () => {
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const sectionColor = mode === "light" ? "#F7F9FA" : "#F7F9FA";
   const [openDialog, setOpenDialog] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
   const [sectionToDelete, setSectionToDelete] = useState<string | null>(null);
   const { id } = useParams<{ id: string }>();
-
   const [data, setData] = useState<CurriculumMap[]>([]);
 
   const fetchData = async (id: string | undefined) => {
-    if (id) {
-      await getCourseCurriculum(id)
-        .then((data) => {
+    try {
+      if (id) {
+        await getCourseCurriculum(id).then((data) => {
           if (data.status <= 305) {
-            console.log("cur", data);
+            console.log("Curriculum", data.data);
             setData(data.data);
+          } else {
+            console.log(data);
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
           }
-        })
-        .catch((err) => {
-          alert("Error: " + err.detail);
         });
+      }
+    } catch {
+      setErrorAlertOpen("Error fetching data.");
     }
   };
 
@@ -68,7 +76,7 @@ const Curriculum: React.FC = () => {
     }));
 
     setData(updatedItems);
-    console.log(id);
+
     if (id) await updateCurriculumSection(token, id, updatedItems);
   };
 
@@ -88,7 +96,6 @@ const Curriculum: React.FC = () => {
     await createNewSection(token)
       .then(async (dataRes) => {
         if (dataRes.status <= 305) {
-          console.log("dataRes", dataRes.data);
           if (dataRes.data.section_id) {
             const newSection: CurriculumMap = {
               id: dataRes.data.section_id,
@@ -111,9 +118,7 @@ const Curriculum: React.FC = () => {
   };
 
   const handleDelete = (sectionId: string) => {
-    console.log("sectionToDelete", sectionId);
     setSectionToDelete(sectionId);
-    console.log("sectionToDelete", sectionToDelete);
     setOpenDialog(true);
   };
 
@@ -125,9 +130,7 @@ const Curriculum: React.FC = () => {
           (section) => section.id !== sectionToDelete
         );
         setData(updatedData);
-        console.log("secton after remove", data, updatedData);
         await updateCurriculumSection(token, id, updatedData).then((data) => {
-          console.log("updateCurriculumSection", data);
           setOpenDialog(false);
         });
       } catch (err) {
@@ -137,7 +140,7 @@ const Curriculum: React.FC = () => {
   };
 
   const handleCancelDelete = () => {
-    setOpenDialog(false); // Close the dialog without deleting
+    setOpenDialog(false);
   };
 
   return (
@@ -152,6 +155,12 @@ const Curriculum: React.FC = () => {
         borderRadius: "8px",
       }}
     >
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
       <Head title={"curriculum"} />
       <Box
         mx={"20px"}

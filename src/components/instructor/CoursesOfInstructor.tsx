@@ -58,8 +58,6 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleEdit = (id: string) => {
     navigate(`${id}/manage/goals/`, { replace: true });
@@ -69,7 +67,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
     const formData: IUpdateCourse = {
       discount_percentage: discountPercentage,
     };
-    console.log("Disount", formData);
+
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
         setCourses((prevCourses) =>
@@ -79,7 +77,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
               : course
           )
         );
-        setEditingCourseId(null); // Exit edit mode
+        setEditingCourseId(null);
       });
     }
   };
@@ -99,17 +97,6 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
     fetchCoursesMe();
   }, [status, userInfo._id]);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   return (
     <Box sx={{ padding: 1 }}>
       {courses.length === 0 ? (
@@ -121,20 +108,15 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
             minWidth: "120vh",
           }}
         >
-          <img
-            src="/empty-cart.png"
-            alt="Empty Cart"
-            style={{ maxWidth: "300px", margin: "0 auto" }}
-          />
-
           <Typography variant="body1" sx={{ mt: 1, mb: 3, color: textColor }}>
-            {t("keep_shopping_message")}
+            {`No ${status} courses found`}
           </Typography>
           <Button
             variant="outlined"
             sx={{
               backgroundColor: textColor,
               color: backgroundColor,
+              borderColor: textColor,
               fontWeight: "bold",
               ":hover": {
                 backgroundColor: backgroundColor,
@@ -188,91 +170,89 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {courses
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((course) => (
-                  <TableRow
-                    key={course._id}
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": {
-                        backgroundColor: "#f9f9f9",
-                      },
-                    }}
-                  >
-                    <TableCell>
-                      <CardMedia
-                        component="img"
-                        image={course.thumbnail}
-                        alt={course.title}
+              {courses.map((course) => (
+                <TableRow
+                  key={course._id}
+                  sx={{
+                    cursor: "pointer",
+                    "&:hover": {
+                      backgroundColor: "#f9f9f9",
+                    },
+                  }}
+                >
+                  <TableCell>
+                    <CardMedia
+                      component="img"
+                      image={course.thumbnail}
+                      alt={course.title}
+                      sx={{
+                        aspectRatio: "16/9",
+                        objectFit: "cover",
+                        position: "relative",
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {course.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {course.subtitle}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>{course.category.join(", ")}</TableCell>
+                  <TableCell>{course.level.join(", ")}</TableCell>
+                  <TableCell>{course.language.join(", ")}</TableCell>
+                  <TableCell>${course.price.toFixed(2)}</TableCell>
+                  <TableCell>
+                    {editingCourseId === course._id ? (
+                      <TextField
+                        value={discountPercentage}
+                        onChange={(e) =>
+                          setDiscountPercentage(Number(e.target.value))
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter")
+                            handleUpdateDiscount(course._id);
+                        }}
+                        autoFocus
+                        variant="standard"
+                        InputProps={{
+                          disableUnderline: true,
+                        }}
                         sx={{
-                          aspectRatio: "16/9",
-                          objectFit: "cover",
-                          position: "relative",
+                          "& .MuiInputBase-root": {
+                            fontSize: "1rem",
+                            border: "none",
+                            padding: 0,
+                          },
                         }}
                       />
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        {course.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {course.subtitle}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>{course.category.join(", ")}</TableCell>
-                    <TableCell>{course.level.join(", ")}</TableCell>
-                    <TableCell>{course.language.join(", ")}</TableCell>
-                    <TableCell>${course.price.toFixed(2)}</TableCell>
-                    <TableCell>
-                      {editingCourseId === course._id ? (
-                        <TextField
-                          value={discountPercentage}
-                          onChange={(e) =>
-                            setDiscountPercentage(Number(e.target.value))
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter")
-                              handleUpdateDiscount(course._id);
-                          }}
-                          autoFocus
-                          variant="standard"
-                          InputProps={{
-                            disableUnderline: true,
-                          }}
-                          sx={{
-                            "& .MuiInputBase-root": {
-                              fontSize: "1rem",
-                              border: "none",
-                              padding: 0,
-                            },
-                          }}
-                        />
-                      ) : (
-                        <Typography
-                          sx={{
-                            fontSize: "1rem",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setEditingCourseId(course._id);
-                            setDiscountPercentage(course.discount_percentage);
-                          }}
-                        >
-                          {course.discount_percentage}
-                        </Typography>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleEdit(course._id)}
+                    ) : (
+                      <Typography
+                        sx={{
+                          fontSize: "1rem",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          setEditingCourseId(course._id);
+                          setDiscountPercentage(course.discount_percentage);
+                        }}
                       >
-                        <Edit />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        {course.discount_percentage || 0}
+                      </Typography>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleEdit(course._id)}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

@@ -28,6 +28,7 @@ import {
 import ExcerciseForm from "./Exercise";
 import { createNewExercise } from "../../../services/ExerciseService";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AutoCloseAlert from "../../reused/Alert";
 
 type SectionProps = {
   section: CurriculumMap;
@@ -38,7 +39,6 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
   const token = localStorage.getItem("token");
   const { t } = useTranslation();
   const { mode } = useThemeContext();
-
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const [sectionInfo, setSectionInfo] = useState<ISection>();
@@ -47,34 +47,48 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [lessonToDelete, setLessonToDelete] = useState<string | null>(null);
+  const [originalTitle, setOriginalTitle] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
+
+  const startEditing = () => {
+    setOriginalTitle(title);
+    setIsEditing(true);
+  };
+
+  const cancelEditing = () => {
+    setTitle(originalTitle);
+    setIsEditing(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      if (section.id) {
-        await getSectionInfo(section.id).then((data) => {
-          if (data.status <= 305) {
-            if (data.data) {
-              setSectionInfo(data.data);
-              console.log("Section title", data.data.title);
-              setTitle(data.data.title);
-              setLessons(data.data.lessons);
+      try {
+        if (section.id) {
+          await getSectionInfo(section.id).then((data) => {
+            if (data.status <= 305) {
+              if (data.data) {
+                setSectionInfo(data.data);
+                setTitle(data.data.title);
+                setLessons(data.data.lessons);
+              }
             }
-          }
-        });
+          });
+        }
+      } catch (error) {
+        console.log("Error fetching section info:", error);
       }
     };
     fetchData();
   }, [section]);
 
   const handleDelete = (id: string) => {
-    console.log("setLessonToDelete", id);
     setLessonToDelete(id);
     setOpenDialog(true);
   };
 
   const handleConfirmDelete = async () => {
     if (!sectionInfo) return;
-    console.log("sectionInfo", sectionInfo._id);
     if (lessonToDelete) {
       try {
         const updatedData = lessons?.filter(
@@ -82,32 +96,30 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
         );
         setLessons(updatedData);
 
-        console.log("lesson remove", lessons, updatedData);
-        // await updateCurriculumSection(token, id, updatedData).then((data) => {
-        //   console.log("updateCurriculumSection", data);
-        // });
-
         await updateSectionLesson(
           token,
           sectionInfo?._id,
           updatedData || []
         ).then((data) => {
-          console.log("updateSectionTitle, ", data);
-          // if (data.status <= 305) {
-          //   setIsEditing(false);
-          // }
-          setOpenDialog(false);
+          if (data.status <= 305) {
+            setOpenDialog(false);
+          } else {
+            console.log(data);
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
+          }
         });
-
-        setOpenDialog(false);
       } catch (err) {
-        alert("Error deleting section");
+        console.log("Error deleting section", err);
       }
     }
   };
 
   const handleCancelDelete = () => {
-    setOpenDialog(false); // Close the dialog without deleting
+    setOpenDialog(false);
   };
 
   const handleDragEnd = async (result: any) => {
@@ -131,29 +143,35 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
     m: 2,
     backgroundColor,
     color: textColor,
-
     "&:hover": {
       backgroundColor,
     },
   };
 
-  const handleUpdateTitle = async (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleUpdateTitle = async () => {
     if (!sectionInfo?._id) return;
-    if (e.key === "Enter") {
+    try {
       await updateSection(token, sectionInfo?._id, title).then((data) => {
-        console.log("updateSectionTitle, ", data);
         if (data.status <= 305) {
           setIsEditing(false);
+          setAlertOpen(true);
+        } else {
+          console.log(data);
+          if (Array.isArray(data.data.detail)) {
+            setErrorAlertOpen(data.data.detail[0].msg);
+          } else {
+            setErrorAlertOpen(data.data.detail);
+          }
         }
       });
+    } catch (error) {
+      console.log("Error updating section title:", error);
     }
   };
 
   const handleAddNormal = async () => {
-    await createNewLesson(token)
-      .then(async (data) => {
+    try {
+      await createNewLesson(token).then(async (data) => {
         if (data.status <= 305) {
           if (data.data.lesson_id) {
             const newItem: CurriculumMap = {
@@ -165,48 +183,68 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
             if (lessons) {
               const updatedItems = [...lessons, newItem];
               setLessons(updatedItems);
-
-              console.log(section.id);
               await updateSectionLesson(token, section.id, updatedItems);
             } else {
-              console.log(section.id);
               setLessons([newItem]);
               await updateSectionLesson(token, section.id, [newItem]);
             }
           } else {
             console.log(data);
+            if (Array.isArray(data.data.detail)) {
+              setErrorAlertOpen(data.data.detail[0].msg);
+            } else {
+              setErrorAlertOpen(data.data.detail);
+            }
           }
         }
-      })
-      .catch((err) => {
-        alert("Error: " + err.detail);
       });
+    } catch (error) {
+      console.log("Error add normal lesson: " + error);
+    }
   };
 
-  const handleAddExcercise = async () => {
-    await createNewExercise(token).then(async (data) => {
-      if (data.status <= 305) {
-        if (data.data._id) {
-          const newItem: CurriculumMap = {
-            id: data.data._id,
-            ordinal_number: lessons ? lessons.length + 1 : 1,
-            type: "excercise",
-          };
-          if (lessons) {
-            const updatedItems = [...lessons, newItem];
-            setLessons(updatedItems);
-            await updateSectionLesson(token, section.id, updatedItems);
-          } else {
-            setLessons([newItem]);
-            await updateSectionLesson(token, section.id, [newItem]);
+  const handleAddExercise = async () => {
+    try {
+      await createNewExercise(token).then(async (data) => {
+        if (data.status <= 305) {
+          if (data.data._id) {
+            const newItem: CurriculumMap = {
+              id: data.data._id,
+              ordinal_number: lessons ? lessons.length + 1 : 1,
+              type: "excercise",
+            };
+            if (lessons) {
+              const updatedItems = [...lessons, newItem];
+              setLessons(updatedItems);
+              await updateSectionLesson(token, section.id, updatedItems);
+            } else {
+              setLessons([newItem]);
+              await updateSectionLesson(token, section.id, [newItem]);
+            }
           }
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.log("Error add exercise: " + error);
+    }
   };
 
   return (
     <Box flexDirection={"column"} width={"100%"} height={"100%"}>
+      <AutoCloseAlert
+        severity="success"
+        message="Save change completed."
+        open={alertOpen}
+        onClose={() => {
+          setAlertOpen(false);
+        }}
+      />
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
       <Box sx={{ display: "flex", textAlign: "center", alignItems: "center" }}>
         <Typography
           ml={2}
@@ -218,34 +256,53 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
           {t("Section")} {section.ordinal_number} :
         </Typography>
         {isEditing ? (
-          <TextField
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={handleUpdateTitle}
-            autoFocus
-            variant="standard"
-            InputProps={{
-              disableUnderline: true,
-              sx: {
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <TextField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              autoFocus
+              variant="outlined"
+              size="small"
+              sx={{
+                "& .MuiInputBase-root": {
+                  fontSize: "1.25rem",
+                },
+              }}
+            />
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleUpdateTitle}
+              sx={{
                 fontWeight: "bold",
-              },
-            }}
-            sx={{
-              "& .MuiInputBase-root": {
-                fontSize: "1.25rem",
-                border: "none",
-                padding: 0,
-              },
-            }}
-          />
+                fontSize: "0.875rem",
+              }}
+            >
+              {t("save")}
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={cancelEditing}
+              sx={{
+                fontWeight: "bold",
+                fontSize: "0.875rem",
+              }}
+            >
+              {t("cancel")}
+            </Button>
+          </Box>
         ) : (
           <Typography
             fontWeight="bold"
             sx={{
               fontSize: "1.25rem",
               cursor: "pointer",
+              ":hover": {
+                textDecoration: "underline",
+              },
             }}
-            onClick={() => setIsEditing(true)} // Kích hoạt chế độ chỉnh sửa khi click
+            onClick={startEditing}
           >
             {title}
           </Typography>
@@ -319,7 +376,7 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
           <Button
             sx={styleButton}
             startIcon={<AddIcon />}
-            onClick={handleAddExcercise}
+            onClick={handleAddExercise}
           >
             {t("add_exercise")}
           </Button>
@@ -347,7 +404,7 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
             paddingBottom: "16px",
           }}
         >
-          {t("are_you_sure_you_want_to_delete_this_section")}
+          {t("are_you_sure_you_want_to_delete_this_lesson")}
         </DialogTitle>
 
         <DialogContent

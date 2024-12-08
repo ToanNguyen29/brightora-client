@@ -12,143 +12,167 @@ import { getCourse, updateCourse } from "../../services/CourseService";
 import AutoCloseAlert from "../reused/Alert";
 
 const Goals: React.FC = () => {
-   const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-   const { t } = useTranslation();
-   const { mode } = useThemeContext();
-   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
-   const textColor = mode === "light" ? "#000000" : "#ffffff";
-   const { id } = useParams<{ id: string }>();
-   const [alertOpen, setAlertOpen] = useState(false);
-   const [alertErrorOpen, setAlertErrorOpen] = useState(false);
+  const { t } = useTranslation();
+  const { mode } = useThemeContext();
+  const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
+  const textColor = mode === "light" ? "#000000" : "#ffffff";
+  const { id } = useParams<{ id: string }>();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
 
-   const [formData, setFormData] = useState<IGoal>({
-      learningObjectives: ["", "", "", ""],
-      requirements: [""],
-      intendedLearners: [""],
-   });
+  const [formData, setFormData] = useState<IGoal>({
+    learningObjectives: ["", "", "", ""],
+    requirements: [""],
+    intendedLearners: [""],
+  });
 
-   useEffect(() => {
-      const fetchData = async () => {
-         if (id) {
-            await getCourse(id)
-               .then((data) => {
-                  if (data.status <= 305) {
-                     setFormData(data.data.goals);
-                  } else {
-                     console.log(data);
-                  }
-               })
-               .catch((err) => {
-                  alert("Error: " + err.detail);
-               });
-         }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          await getCourse(id).then((data) => {
+            if (data.status <= 305) {
+              setFormData(data.data.goals);
+            } else {
+              console.log(data);
+              if (Array.isArray(data.data.detail)) {
+                setErrorAlertOpen(data.data.detail[0].msg);
+              } else {
+                setErrorAlertOpen(data.data.detail);
+              }
+            }
+          });
+        }
+      } catch (err) {
+        setErrorAlertOpen("Error fetching data.");
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  const handleChange = (name: string, value: string[]) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      const sanitizedFormData: IGoal = {
+        learningObjectives: formData.learningObjectives.filter(
+          (obj) => obj.trim() !== ""
+        ),
+        requirements: formData.requirements.filter((req) => req.trim() !== ""),
+        intendedLearners: formData.intendedLearners.filter(
+          (learner) => learner.trim() !== ""
+        ),
       };
-
-      fetchData();
-   }, [id]);
-
-   const handleChange = (name: string, value: string[]) => {
-      setFormData((prevData) => ({
-         ...prevData,
-         [name]: value,
-      }));
-   };
-
-   const handleSave = async () => {
-      // console.log(formData);
 
       const body: IUpdateCourse = {
-         goals: formData,
+        goals: sanitizedFormData,
       };
 
+      console.log("data filter", formData, sanitizedFormData);
+
       if (id) {
-         await updateCourse(token, id, body)
-            .then((data) => {
-               if (data.status <= 305) {
-                  setAlertOpen(true);
-               } else {
-                  setAlertErrorOpen(true);
-               }
-            })
-            .catch((err) => {});
-      } else {
-         alert(
-            "Course ID is missing, please provide course ID to save course goals.",
-         );
+        await updateCourse(token, id, body)
+          .then((data) => {
+            if (data.status <= 305) {
+              setAlertOpen(true);
+            } else {
+              if (Array.isArray(data.data.detail)) {
+                setErrorAlertOpen(data.data.detail[0].msg);
+              } else {
+                setErrorAlertOpen(data.data.detail);
+              }
+            }
+          })
+          .catch((err) => {});
       }
-   };
+    } catch (error) {
+      setErrorAlertOpen("Error saving data.");
+    }
+  };
 
-   const handleCloseAlert = () => {
-      setAlertOpen(false);
-   };
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
+  };
 
-   const handleCloseAlertError = () => {
-      setAlertErrorOpen(false);
-   };
+  return (
+    <Box
+      width={"100%"}
+      height={"100%"}
+      sx={{
+        border: "0.5px groove",
+        backgroundColor: backgroundColor,
+        color: textColor,
+        padding: "20px",
+        borderRadius: "8px",
+      }}
+    >
+      <AutoCloseAlert
+        severity="success"
+        message="Save change completed."
+        open={alertOpen}
+        onClose={handleCloseAlert}
+      />
+      <AutoCloseAlert
+        severity="error"
+        message={`${errorAlertOpen}`}
+        open={!errorAlertOpen ? false : true}
+        onClose={() => setErrorAlertOpen("")}
+      />
 
-   return (
-      <Box
-         width={"100%"}
-         height={"100%"}
-         sx={{
-            border: "0.5px groove",
-            backgroundColor: backgroundColor,
-            color: textColor,
-            padding: "20px",
-            borderRadius: "8px",
-         }}
+      <Head title={"intended_learners"} />
+
+      <LearningObjectives
+        handleChange={handleChange}
+        name={"learningObjectives"}
+        value={formData.learningObjectives}
+        backgroundColor={backgroundColor}
+        textColor={textColor}
+      />
+
+      <Requirements
+        backgroundColor={backgroundColor}
+        textColor={textColor}
+        handleChange={handleChange}
+        name={"requirements"}
+        value={formData.requirements}
+      />
+
+      <IntendedLearners
+        backgroundColor={backgroundColor}
+        textColor={textColor}
+        handleChange={handleChange}
+        name={"intendedLearners"}
+        value={formData.intendedLearners}
+      />
+
+      <Button
+        sx={{
+          fontSize: "16px",
+          my: "15px",
+          mx: "20px",
+          backgroundColor: mode === "dark" ? "white" : "black",
+          color: mode === "dark" ? "black" : "white",
+          padding: "10px 20px",
+          fontWeight: "bold",
+          ":hover": {
+            backgroundColor: mode === "dark" ? "white" : "black",
+          },
+          width: "100px",
+        }}
+        onClick={handleSave}
       >
-         <AutoCloseAlert
-            severity="success"
-            message="Save change completed."
-            open={alertOpen}
-            onClose={handleCloseAlert}
-         />
-
-         <Head title={"intended_learners"} />
-         <LearningObjectives
-            handleChange={handleChange}
-            name={"learningObjectives"}
-            value={formData.learningObjectives}
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-         />
-         <Requirements
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            handleChange={handleChange}
-            name={"requirements"}
-            value={formData.requirements}
-         />
-         <IntendedLearners
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            handleChange={handleChange}
-            name={"intendedLearners"}
-            value={formData.intendedLearners}
-         />
-
-         <Button
-            sx={{
-               fontSize: "16px",
-               my: "15px",
-               mx: "20px",
-               backgroundColor: mode === "dark" ? "white" : "black",
-               color: mode === "dark" ? "black" : "white",
-               padding: "10px 20px",
-               fontWeight: "bold",
-               ":hover": {
-                  backgroundColor: mode === "dark" ? "white" : "black",
-               },
-               width: "100px",
-            }}
-            onClick={handleSave}
-         >
-            {t("save")}
-         </Button>
-      </Box>
-   );
+        {t("save")}
+      </Button>
+    </Box>
+  );
 };
 
 export default Goals;

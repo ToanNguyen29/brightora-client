@@ -38,7 +38,6 @@ const InstructorCoursePage = () => {
 
   return (
     <Box sx={{ px: 4, py: 3 }}>
-      {/* Title */}
       <Typography
         variant="h4"
         fontWeight="bold"
@@ -49,16 +48,19 @@ const InstructorCoursePage = () => {
       </Typography>
 
       <Button
+        variant="outlined"
         component={Link}
         to="/instructor/course/create"
         sx={{
           height: "40px",
           fontSize: "16px",
-          backgroundColor: "#7d4cf3",
-          color: "#fff",
+          backgroundColor: backgroundColor,
+          color: textColor,
           fontWeight: "bold",
+          borderColor: backgroundColor,
           ":hover": {
-            backgroundColor: "#6931c7",
+            backgroundColor: textColor,
+            color: backgroundColor,
           },
         }}
       >
@@ -121,8 +123,6 @@ const InstructorCoursePage = () => {
             )}
           </Menu>
         </Box>
-
-        {/* Add New Course Button */}
       </Box>
       <CourseOfInstructor status={filter !== "All" ? filter : undefined} />
     </Box>

@@ -78,10 +78,6 @@ const CourseLanding: React.FC = () => {
     fetchData();
   }, [id]);
 
-  // useEffect(() => {
-  //    // console.log(formValue);
-  // }, [formValue]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormValue({
@@ -132,11 +128,12 @@ const CourseLanding: React.FC = () => {
         const s3_key2 = `promotional/${name}.mp4`;
         const url2 = `https://brightora.s3.amazonaws.com/promotional/${name}.mp4`;
 
-        UploadFile(s3_key2, video, setProgress, async () => {
-          await updatePromotionalVideo(token, id, url2);
+        UploadFile(s3_key2, video, setProgress2, async () => {
+          await updatePromotionalVideo(token, id, url2).then((data) => {
+            console.log(data);
+          });
         });
       }
-
       setAlertOpen(true);
     }
   };
