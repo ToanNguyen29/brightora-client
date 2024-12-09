@@ -21,19 +21,27 @@ interface LessonProps {
 const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
   const token = localStorage.getItem("token");
   const [dataInfo, setDataInfo] = useState<ILesson>();
-  // const [reload, setReload] = useState<boolean>(false);
   const { t } = useTranslation();
   const { mode } = useThemeContext();
   const [editDescription, setEditDescription] = useState<string>("");
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const [selectedTab, setSelectedTab] = useState(0);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [title, setTitle] = useState("Toan Nguyen");
+  const [title, setTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [originalTitle, setOriginalTitle] = useState("");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState<string>("");
 
-  const handleCloseAlert = () => {
-    setAlertOpen(false);
+  const startEditing = () => {
+    setOriginalTitle(title);
+    setIsEditing(true);
   };
+
+  const cancelEditing = () => {
+    setTitle(originalTitle);
+    setIsEditing(false);
+  };
+
   const handleChange = (newValue: number) => {
     if (selectedTab === newValue) {
       setSelectedTab(0);
@@ -48,7 +56,6 @@ const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
         await getLessonInfo(lesson.id)
           .then((data) => {
             if (data.status <= 305) {
-              // console.log("Le  Tan Loc", data.data);
               if (data.data) {
                 setDataInfo(data.data);
                 setTitle(data.data.title);
@@ -77,36 +84,38 @@ const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
   };
 
   const updateDescription = async () => {
-    console.log("description", lesson.id);
     if (lesson.id) {
-      // const newData = {...dataInfo, }
       await updateLessonDescription(token, lesson.id, editDescription).then(
         (data) => {
           if (data.status <= 305) {
-            console.log("description", data.data);
             if (data.data.succeed) {
               setAlertOpen(true);
+              reloadData();
             }
-            reloadData();
           }
         }
       );
     }
   };
 
-  const handleUpdateTitle = async (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    console.log("Lessssssssssss", lesson.id);
+  const handleUpdateTitle = async () => {
     if (!lesson?.id) return;
-    if (e.key === "Enter") {
-      console.log(lesson.id);
+    try {
       await updateLesson(token, lesson.id, title).then((data) => {
-        console.log("updateSectionTitle, ", data);
         if (data.status <= 305) {
           setIsEditing(false);
+          setAlertOpen(true);
+        } else {
+          console.log(data);
+          if (Array.isArray(data.data.detail)) {
+            setErrorAlertOpen(data.data.detail[0].msg);
+          } else {
+            setErrorAlertOpen(data.data.detail);
+          }
         }
       });
+    } catch (error) {
+      console.log("Error updating section title:", error);
     }
   };
 
@@ -126,40 +135,72 @@ const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
             ml={0}
             mr={1}
             fontWeight={"bold"}
-            variant="body1"
             color={textColor}
+            sx={{
+              fontSize: "1rem",
+            }}
           >
             {t("Lesson")} {lesson.ordinal_number} :
           </Typography>
           {isEditing ? (
-            <TextField
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              onKeyDown={handleUpdateTitle}
-              autoFocus
-              variant="standard"
-              InputProps={{
-                disableUnderline: true,
-                sx: {
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <TextField
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                autoFocus
+                variant="outlined"
+                size="small"
+                sx={{
+                  "& .MuiInputBase-root": {
+                    fontSize: "1rem",
+                  },
+                }}
+              />
+              <Button
+                onClick={handleUpdateTitle}
+                color="primary"
+                variant="contained"
+                sx={{
+                  borderRadius: "20px",
+                  padding: "8px 20px",
                   fontWeight: "bold",
-                },
-              }}
-              sx={{
-                "& .MuiInputBase-root": {
-                  fontSize: "1rem",
-                  border: "none",
-                  padding: 0,
-                },
-              }}
-            />
+                  backgroundColor: textColor,
+                  "&:hover": {
+                    backgroundColor: textColor,
+                    opacity: 0.8,
+                  },
+                }}
+              >
+                {t("save")}
+              </Button>
+
+              <Button
+                onClick={cancelEditing}
+                color="primary"
+                variant="outlined"
+                sx={{
+                  borderRadius: "20px",
+                  padding: "8px 20px",
+                  marginRight: "10px",
+                  fontWeight: "bold",
+                  color: textColor,
+                  borderColor: textColor,
+                }}
+              >
+                {t("cancel")}
+              </Button>
+            </Box>
           ) : (
             <Typography
               fontWeight="bold"
               sx={{
                 fontSize: "1rem",
                 cursor: "pointer",
+                ":hover": {
+                  textDecoration: "underline",
+                },
               }}
-              onClick={() => setIsEditing(true)} // Kích hoạt chế độ chỉnh sửa khi click
+              onClick={startEditing}
             >
               {title}
             </Typography>
@@ -214,10 +255,18 @@ const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
         )}
         <AutoCloseAlert
           severity="success"
-          message="Update description completed."
+          message="Save change completed."
           open={alertOpen}
-          onClose={handleCloseAlert}
-        />{" "}
+          onClose={() => {
+            setAlertOpen(false);
+          }}
+        />
+        <AutoCloseAlert
+          severity="error"
+          message={`${errorAlertOpen}`}
+          open={!errorAlertOpen ? false : true}
+          onClose={() => setErrorAlertOpen("")}
+        />
       </Box>
     </Box>
   );

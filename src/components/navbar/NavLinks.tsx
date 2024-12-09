@@ -43,7 +43,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ mode }) => {
         {t("about")}
       </Button>
 
-      {isAuthenticated && userInfo.role === "instructor" && (
+      {isAuthenticated && userInfo.role === "Instructor" && (
         <Button
           color="inherit"
           component={Link}
@@ -59,7 +59,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ mode }) => {
         </Button>
       )}
 
-      {isAuthenticated && userInfo.role !== "instructor" && (
+      {isAuthenticated && userInfo.role !== "Instructor" && (
         <Button
           color="inherit"
           component={Link}

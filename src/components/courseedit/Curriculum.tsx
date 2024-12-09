@@ -112,7 +112,6 @@ const Curriculum: React.FC = () => {
         }
       })
       .catch((err) => {
-        alert("Error: " + err);
         console.log("error", err);
       });
   };

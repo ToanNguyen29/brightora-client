@@ -270,23 +270,34 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
               }}
             />
             <Button
-              variant="outlined"
-              color="primary"
               onClick={handleUpdateTitle}
+              color="primary"
+              variant="contained"
               sx={{
+                borderRadius: "20px",
+                padding: "8px 20px",
                 fontWeight: "bold",
-                fontSize: "0.875rem",
+                backgroundColor: textColor,
+                "&:hover": {
+                  backgroundColor: textColor,
+                  opacity: 0.8,
+                },
               }}
             >
               {t("save")}
             </Button>
+
             <Button
-              variant="outlined"
-              color="secondary"
               onClick={cancelEditing}
+              color="primary"
+              variant="outlined"
               sx={{
+                borderRadius: "20px",
+                padding: "8px 20px",
+                marginRight: "10px",
                 fontWeight: "bold",
-                fontSize: "0.875rem",
+                color: textColor,
+                borderColor: textColor,
               }}
             >
               {t("cancel")}
@@ -347,7 +358,10 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
                           {item.type === "lesson" ? (
                             <LessonForm lesson={item} reloadData={reloadData} />
                           ) : (
-                            <ExcerciseForm exercise={item} />
+                            <ExcerciseForm
+                              exercise={item}
+                              reloadData={reloadData}
+                            />
                           )}
                           <IconButton
                             sx={{ marginLeft: 2 }}
@@ -430,6 +444,7 @@ const Section: React.FC<SectionProps> = ({ section, reloadData }) => {
               marginRight: "10px",
               fontWeight: "bold",
               borderColor: textColor,
+              color: textColor,
             }}
           >
             {t("cancel")}

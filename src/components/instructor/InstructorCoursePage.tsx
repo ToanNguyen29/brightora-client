@@ -67,7 +67,6 @@ const InstructorCoursePage = () => {
         {t("add_new_course")}
       </Button>
 
-      {/* Search and Filter Section */}
       <Box
         sx={{
           display: "flex",
@@ -76,7 +75,6 @@ const InstructorCoursePage = () => {
           mb: 3,
         }}
       >
-        {/* Search Field */}
         <Box sx={{ display: "flex", gap: 2, mt: 7 }}>
           <TextField
             variant="outlined"

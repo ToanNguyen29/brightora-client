@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { MultipleChoiceQuestion } from "../models/Course";
 
 const exercise_url = `${
@@ -49,6 +49,30 @@ export const createNewExercise = async (token: string | null) => {
       return new Error(error.message); // Return generic error if no response
     }
   }
+};
+
+export const updateExercise = async (
+  token: string | null,
+  id: string,
+  title: string
+): Promise<AxiosResponse> => {
+  return await axios
+    .put(
+      `${exercise_url}/${id}`,
+      { title },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
 };
 
 export const updateQuestions = async (

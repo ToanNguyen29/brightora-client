@@ -167,7 +167,7 @@ const CourseCard: React.FC<CourseProps> = ({
             </Box>
           ) : (
             <Typography
-              variant="h6"
+              variant="h5"
               sx={{
                 display: "flex",
                 fontWeight: "bold",
