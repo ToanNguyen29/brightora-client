@@ -24,8 +24,8 @@ const Navbar: React.FC = () => {
     <AppBar position="static">
       <Toolbar
         sx={{
-          p: 4,
-          height: 60,
+          p: 3,
+          height: 70,
           backgroundColor: mode === "light" ? "white" : "black",
         }}
       >
@@ -33,6 +33,8 @@ const Navbar: React.FC = () => {
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
             flexGrow: 1,
             mx: 10,
           }}

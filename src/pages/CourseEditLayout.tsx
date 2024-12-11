@@ -69,7 +69,6 @@ export default function CourseEditLayout() {
     };
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
-        console.log("Price:", data);
         if (data.data.succeed) {
           setAlertOpen(true);
         }

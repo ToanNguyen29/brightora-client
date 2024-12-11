@@ -160,9 +160,13 @@ const CourseLanding: React.FC = () => {
   };
 
   const handleGendescription = async () => {
+    console.log("handleGendescription");
     if (formValue.title) {
       await generateDescription(formValue.title).then((data) => {
-        setFormValue({ ...formValue, description: data.data.description });
+        setFormValue((prev) => ({
+          ...prev,
+          description: data.data.description,
+        }));
       });
     } else {
       setTitleAlertOpen(true);

@@ -20,11 +20,9 @@ function StartScreenQuiz() {
       }}
     >
       <Typography variant="h4" gutterBottom>
-        Welcome to The React Quiz!
+        Welcome to Quiz!
       </Typography>
-      <Typography variant="h5">
-        {numQuestions} questions to test your React mastery
-      </Typography>
+      <Typography variant="h5">{numQuestions} questions to test</Typography>
       <Button
         variant="contained"
         onClick={() => dispatch({ type: "start" })}

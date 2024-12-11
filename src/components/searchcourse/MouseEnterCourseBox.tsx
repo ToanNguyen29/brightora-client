@@ -20,7 +20,7 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
-  const displayedObjectivesRef = useRef<string[]>([]);
+  const [displayedObjectives, setDisplayedObjectives] = useState<string[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -28,6 +28,7 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
       await getCourse(id, userInfo._id)
         .then((data) => {
           if (data.status <= 305) {
+            console.log("MouseEnter", data.data);
             setIsCart(data.data.relation.in_cart);
             setIsEnroll(data.data.relation.is_enroll);
             setInWishList(data.data.relation.in_wishlist);
@@ -35,7 +36,8 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
               data.data.goals.learningObjectives.length > 3
                 ? data.data.goals.learningObjectives.slice(0, 3)
                 : data.data.goals.learningObjectives;
-            displayedObjectivesRef.current = objectives;
+            setDisplayedObjectives(objectives);
+            console.log("displayedObjectivesRef", objectives);
           } else {
             console.log(data);
           }
@@ -82,25 +84,23 @@ const MouseEnterCourseBox: React.FC<MouseEnterCourseBoxProps> = ({ id }) => {
 
       {/* List of items */}
       <Box sx={{ mb: 2 }}>
-        {displayedObjectivesRef.current.map(
-          (objective: string, index: number) => (
-            <Typography
-              key={index}
-              variant="body2"
-              sx={{
-                color: textColor,
-                mb: 0.5,
-                fontSize: "0.9rem",
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-              }}
-            >
-              - {objective}
-            </Typography>
-          )
-        )}
+        {displayedObjectives?.map((objective: string, index: number) => (
+          <Typography
+            key={index}
+            variant="body2"
+            sx={{
+              color: textColor,
+              mb: 0.5,
+              fontSize: "0.9rem",
+              display: "-webkit-box",
+              overflow: "hidden",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2,
+            }}
+          >
+            - {objective}
+          </Typography>
+        ))}
       </Box>
       <ActionButtons
         id={id}

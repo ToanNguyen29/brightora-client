@@ -10,9 +10,11 @@ interface RichTextBoxProps {
   handleTextChange: (text: string) => void;
 }
 
-const ForwardedReactQuill = React.forwardRef<ReactQuill, any>((props, ref) => (
-  <ReactQuill ref={ref} {...props} />
-));
+// ForwardRef for ReactQuill
+const ForwardedReactQuill = React.forwardRef<
+  ReactQuill,
+  ReactQuill.ReactQuillProps
+>((props, ref) => <ReactQuill ref={ref} {...props} />);
 
 const RichTextBox: React.FC<RichTextBoxProps> = ({
   text,
@@ -22,13 +24,13 @@ const RichTextBox: React.FC<RichTextBoxProps> = ({
   const reactQuillRef = useRef<ReactQuill>(null);
 
   useEffect(() => {
-    if (text && !value) setValue(markdownToHtml(text || ""));
-  }, [text, value]);
+    // Update value when text changes
+    setValue(markdownToHtml(text || ""));
+  }, [text]);
 
   const onChange = (content: string) => {
     setValue(content);
-    const markdown = htmlToMarkdown(content).trim();
-    handleTextChange(markdown);
+    handleTextChange(htmlToMarkdown(content).trim());
   };
 
   return (

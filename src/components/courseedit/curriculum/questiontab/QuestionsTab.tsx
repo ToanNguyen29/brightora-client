@@ -34,7 +34,8 @@ const QuestionsTab: React.FC<QuestionsTabProps> = ({ id, questions }) => {
   }, [questions]);
 
   const handleDelete = async (index: number) => {
-    if (index) {
+    console.log("index", index);
+    if (index !== undefined) {
       console.log("index", index);
       const updatedData = data?.filter((_, idx) => idx !== index);
       setData(updatedData);

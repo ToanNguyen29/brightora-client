@@ -12,6 +12,7 @@ const Logo: React.FC<LogoProps> = ({ mode }) => {
         src={`/bt_logo2.png`}
         alt="Logo"
         style={{
+          display: "flex",
           width: 150,
           height: "80%",
           color: mode === "dark" ? "black" : "white",
