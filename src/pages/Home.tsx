@@ -25,7 +25,7 @@ const Home: React.FC = () => {
       <ImageSlider images={images} />
       <CourseSection />
       <GoalSection />
-      <ViewingSection />
+      {/* <ViewingSection /> */}
       <TopCategories />
     </Box>
   );

@@ -16,6 +16,7 @@ export interface User {
   role: string;
   disable: boolean;
   date_change_pass?: string;
+  payment?: IPaymentUser;
   password_reset_token?: string;
   password_reset_expires?: string;
 }

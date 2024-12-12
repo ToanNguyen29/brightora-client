@@ -17,7 +17,8 @@ const tabPaths = [
   "/user/edit-profile/",
   "/user/edit-photo/",
   "/user/edit-account/",
-  "/user/close-account/",
+  // "/user/close-account/",
+  "/user/payment-account/",
 ];
 
 export default function VerticalTabs() {
@@ -116,11 +117,11 @@ export default function VerticalTabs() {
             {...a11yProps(4)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
           /> */}
-          {/* <Tab
-            label={t("payment_methods")}
+          <Tab
+            label={t("payment_account")}
             {...a11yProps(5)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
+          />
           {/* <Tab
             label={t("privacy")}
             {...a11yProps(6)}
@@ -136,11 +137,11 @@ export default function VerticalTabs() {
             {...a11yProps(8)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
           /> */}
-          <Tab
+          {/* <Tab
             label={t("close_account")}
             {...a11yProps(9)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
-          />
+          /> */}
         </Tabs>
       </Box>
       <Box

@@ -289,5 +289,7 @@
   "search_your_courses": "Search your courses",
   "updated_recently": "Updated recently",
   "are_you_sure_you_want_to_delete_this_lesson": "Are you sure you want to delete this lesson?",
-  "update_description": "Update description"
+  "update_description": "Update description",
+  "payment_account": "Payment account",
+  "payment_account_subtitle": "Manage payment account for instructor"
 }

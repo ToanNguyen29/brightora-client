@@ -12,9 +12,11 @@ import { useThemeContext } from "../../theme/ThemeContext";
 import { updateMe } from "../../services/UserServices";
 import { IPaymentUser } from "../../models/User";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const SignToInstructor: React.FC = () => {
   const token = localStorage.getItem("token");
+  const { fetchMe } = useAuth();
   const { t } = useTranslation();
   const { mode } = useThemeContext();
 
@@ -74,6 +76,7 @@ const SignToInstructor: React.FC = () => {
       };
       await updateMe(token, { role: "Instructor", payment }).then((data) => {
         if (data.status <= 305) {
+          fetchMe();
           navigate("/instructor/course");
         } else {
           if (Array.isArray(data.data.detail)) {

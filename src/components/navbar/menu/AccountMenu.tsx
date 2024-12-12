@@ -68,13 +68,13 @@ const AccountMenu: React.FC = () => {
       const res = await logOut(token);
 
       if (res.status <= 304) {
-        console.log("logged out");
         setIsLoadingAuth(true);
         setIsAuthenticated(false);
         setUserInfo({});
         window.location.href = "/";
       } else {
         // alert(`Error: ${res.detail}}`);
+        console.log(res.data);
       }
     } catch (error) {
       console.log(error);

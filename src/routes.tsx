@@ -11,6 +11,7 @@ import { QuizProvider } from "./context/QuizContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 
+const PaymentAccount = React.lazy(() => import("./pages/user/PaymentAccount"));
 const UserAccountPage = React.lazy(() => import("./pages/UserAccountPage"));
 const Quiz = React.lazy(() => import("./components/quiz/Quiz"));
 const LearningPage = React.lazy(() => import("./pages/LearningPage"));
@@ -43,7 +44,7 @@ const VerticalTabs = React.lazy(() => import("./pages/VerticalTabs"));
 const EditProfilePage = React.lazy(() => import("./pages/user/EditProfile"));
 const EditPhotoPage = React.lazy(() => import("./pages/user/EditPhoto"));
 const EditAccountPage = React.lazy(() => import("./pages/user/EditAccount"));
-const CloseAccountPage = React.lazy(() => import("./pages/user/CloseAccount"));
+// const CloseAccountPage = React.lazy(() => import("./pages/user/CloseAccount"));
 const LoginPage = React.lazy(() => import("./pages/auth/Login"));
 const SignUpPage = React.lazy(() => import("./pages/auth/SignUp"));
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
@@ -138,7 +139,7 @@ const AppRoutes: React.FC = () => {
                   <Route path="edit-profile" element={<EditProfilePage />} />
                   <Route path="edit-photo" element={<EditPhotoPage />} />
                   <Route path="edit-account" element={<EditAccountPage />} />
-                  <Route path="close-account" element={<CloseAccountPage />} />
+                  <Route path="payment-account" element={<PaymentAccount />} />
                 </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />

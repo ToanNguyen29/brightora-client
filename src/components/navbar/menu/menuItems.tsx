@@ -2,7 +2,7 @@ import {
   School,
   CardMembership,
   Favorite,
-  Dashboard,
+  // Dashboard,
   Message,
   Settings,
   History,
@@ -10,6 +10,8 @@ import {
   Edit,
   Logout,
 } from "@mui/icons-material";
+
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 
 interface MenuItemType {
   icon?: React.ReactNode;
@@ -51,6 +53,11 @@ export const menuItems: MenuItemType[] = [
     icon: <Settings fontSize="small" />,
     textKey: "account_settings",
     url: "/user/edit-account/",
+  },
+  {
+    icon: <AccountBalanceIcon fontSize="small" />,
+    textKey: "payment_account",
+    url: "/user/payment-account",
   },
   {
     icon: <History fontSize="small" />,
