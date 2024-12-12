@@ -7,33 +7,50 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import LoadingPage from "./pages/LoadingPage";
-import UserAccountPage from "./pages/UserAccountPage";
-import Quiz from "./components/quiz/Quiz";
 import { QuizProvider } from "./context/QuizContext";
-import LearningPage from "./pages/LearningPage";
-import LessonComponent from "./components/learning/LessonComponent";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
-import CheckoutPage from "./pages/CheckoutPage";
-import ChatPage from "./pages/ChatPage";
-import WishList from "./components/mylearning/WishList";
-import PublicProfilePage from "./pages/user/PublicProfile";
-import CourseMessages from "./components/courseedit/CourseMessages";
-import PaymentStatistics from "./pages/CourseStats";
-import CoursePage from "./pages/CoursePage";
-import QAndAPage from "./pages/QAndAPage";
-import PurchaseHistory from "./components/mylearning/PurchaseHistory";
-import InstructorReviewPage from "./pages/InstructorReviewPage";
-import BankingInfoPage from "./components/instructor/SignToInstructor";
-import SearchPage from "./pages/SearchPage";
 
+const UserAccountPage = React.lazy(() => import("./pages/UserAccountPage"));
+const Quiz = React.lazy(() => import("./components/quiz/Quiz"));
+const LearningPage = React.lazy(() => import("./pages/LearningPage"));
+const LessonComponent = React.lazy(
+  () => import("./components/learning/LessonComponent")
+);
+const CheckoutPage = React.lazy(() => import("./pages/CheckoutPage"));
+const ChatPage = React.lazy(() => import("./pages/ChatPage"));
+const WishList = React.lazy(() => import("./components/mylearning/WishList"));
+const PublicProfilePage = React.lazy(
+  () => import("./pages/user/PublicProfile")
+);
+const CourseMessages = React.lazy(
+  () => import("./components/courseedit/CourseMessages")
+);
+const PaymentStatistics = React.lazy(() => import("./pages/CourseStats"));
+const CoursePage = React.lazy(() => import("./pages/CoursePage"));
+const QAndAPage = React.lazy(() => import("./pages/QAndAPage"));
+const PurchaseHistory = React.lazy(
+  () => import("./components/mylearning/PurchaseHistory")
+);
+const InstructorReviewPage = React.lazy(
+  () => import("./pages/InstructorReviewPage")
+);
+const BankingInfoPage = React.lazy(
+  () => import("./components/instructor/SignToInstructor")
+);
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
+const VerticalTabs = React.lazy(() => import("./pages/VerticalTabs"));
+const EditProfilePage = React.lazy(() => import("./pages/user/EditProfile"));
+const EditPhotoPage = React.lazy(() => import("./pages/user/EditPhoto"));
+const EditAccountPage = React.lazy(() => import("./pages/user/EditAccount"));
+const CloseAccountPage = React.lazy(() => import("./pages/user/CloseAccount"));
+const LoginPage = React.lazy(() => import("./pages/auth/Login"));
+const SignUpPage = React.lazy(() => import("./pages/auth/SignUp"));
 const MyLearningPage = React.lazy(() => import("./pages/MyLearningPage"));
 const CourseEnrollmentList = React.lazy(
   () => import("./components/mylearning/CourseEnrollmentList")
 );
-
 const CartPage = React.lazy(() => import("./pages/Cart"));
-const CourseTypePage = React.lazy(() => import("./pages/CourseTypePage"));
 const ForgotPassWordPage = React.lazy(
   () => import("./pages/auth/ForgotPassword")
 );
@@ -61,16 +78,9 @@ const CoursePricing = React.lazy(
 const Home = React.lazy(() => import("./pages/Home"));
 const About = React.lazy(() => import("./pages/About"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
-const VerticalTabs = React.lazy(() => import("./pages/VerticalTabs"));
-const EditProfilePage = React.lazy(() => import("./pages/user/EditProfile"));
-const EditPhotoPage = React.lazy(() => import("./pages/user/EditPhoto"));
-const EditAccountPage = React.lazy(() => import("./pages/user/EditAccount"));
-const CloseAccountPage = React.lazy(() => import("./pages/user/CloseAccount"));
-const LoginPage = React.lazy(() => import("./pages/auth/Login"));
 const LayoutFullWidth = React.lazy(
   () => import("./components/LayoutFullWidth")
 );
-const SignUpPage = React.lazy(() => import("./pages/auth/SignUp"));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -158,8 +168,6 @@ const AppRoutes: React.FC = () => {
                   />
                 </Route>
 
-                <Route path="/course_type/:type" element={<CourseTypePage />} />
-
                 <Route
                   path="/my-course"
                   element={
@@ -186,9 +194,11 @@ const AppRoutes: React.FC = () => {
                   element={<ResetPassWordPage />}
                 />
                 <Route path="/course/:courseId" element={<CoursePage />} />
+                <Route
+                  path="/sign-to-instructor"
+                  element={<BankingInfoPage />}
+                />
               </Route>
-
-              <Route path="/sign-to-instructor" element={<BankingInfoPage />} />
 
               <Route path="/instructor" element={<InstructorLayout />}>
                 <Route path="course" element={<InstructorCoursePage />} />
@@ -205,9 +215,14 @@ const AppRoutes: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+
               <Route
                 path="/instructor/course/:id/manage"
-                element={<CourseEditLayout />}
+                element={
+                  <ProtectedRoute>
+                    <CourseEditLayout />
+                  </ProtectedRoute>
+                }
               >
                 <Route path="goals" element={<Goals />} />
                 <Route path="film" element={<div></div>} />

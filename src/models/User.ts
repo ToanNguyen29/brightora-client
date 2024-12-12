@@ -20,6 +20,10 @@ export interface User {
   password_reset_expires?: string;
 }
 
+export interface IPaymentUser {
+  card_number: string;
+  expiry_date: string;
+}
 // INPUT TYPE
 export interface UserProfile {
   first_name: string;
@@ -33,6 +37,8 @@ export interface UserProfile {
   twitter_link?: string;
   linkedin_link?: string;
   youtube_link?: string;
+  payment?: IPaymentUser;
+  role?: string;
 }
 
 // CRUD Users RESPONSE

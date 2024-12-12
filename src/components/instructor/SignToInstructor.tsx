@@ -8,19 +8,48 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { useThemeContext } from "../../theme/ThemeContext";
+import { updateMe } from "../../services/UserServices";
+import { IPaymentUser } from "../../models/User";
+import { useNavigate } from "react-router-dom";
 
 const SignToInstructor: React.FC = () => {
+  const token = localStorage.getItem("token");
   const { t } = useTranslation();
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { mode } = useThemeContext();
 
-  const validateInput = () => {
-    if (!cardNumber || cardNumber.length !== 16) {
+  const backgroundColor = mode === "dark" ? "#000000" : "#ffffff";
+  const textColor = mode === "dark" ? "#ffffff" : "#000000";
+
+  const [formData, setFormData] = useState({
+    cardNumber: "",
+    expiryDate: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const formatCardNumber = (value: string) => {
+    return value
+      .replace(/[^0-9]/g, "")
+      .replace(/(.{4})/g, "$1 ")
+      .trim();
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    if (field === "cardNumber") {
+      value = formatCardNumber(value);
+    }
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const validateInput = (): string | null => {
+    const { cardNumber, expiryDate } = formData;
+
+    if (!cardNumber || cardNumber.length !== 19) {
       return t("Invalid card number");
     }
+
     if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
       return t("Invalid expiry date. Format should be MM/YY");
     }
@@ -34,78 +63,122 @@ const SignToInstructor: React.FC = () => {
       setError(validationError);
       return;
     }
+
     setError(null);
-    setSuccess(null);
     setLoading(true);
 
-    // try {
-    //   await updateU;
-    //   if (response.success) {
-    //     setSuccess(t("Your role has been updated to Instructor successfully!"));
-    //   } else {
-    //     setError(t("Failed to update your role. Please try again."));
-    //   }
-    // } catch (err) {
-    //   setError(t("An error occurred. Please try again."));
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const payment: IPaymentUser = {
+        card_number: formData.cardNumber,
+        expiry_date: formData.expiryDate,
+      };
+      await updateMe(token, { role: "Instructor", payment }).then((data) => {
+        if (data.status <= 305) {
+          navigate("/instructor/course");
+        } else {
+          if (Array.isArray(data.data.detail)) {
+            setError(data.data.detail[0].msg);
+          } else {
+            setError(data.data.detail);
+          }
+        }
+      });
+    } catch (err) {
+      setError(t("An error occurred. Please try again."));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Box
       sx={{
-        maxWidth: 800,
-        margin: "auto",
-        mt: 15,
-        padding: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-        backgroundColor: "#ffffff",
+        minHeight: "90vh",
       }}
     >
-      <Typography variant="h5" fontWeight="bold" textAlign="center" mb={3}>
-        {t("Sign to Instructor")}
-      </Typography>
-      <Typography
-        variant="subtitle2"
-        fontWeight="bold"
-        textAlign="center"
-        mb={3}
+      <Box
+        sx={{
+          maxWidth: 600,
+          margin: "auto",
+          mt: 10,
+          p: 4,
+          boxShadow: 3,
+          borderRadius: 2,
+          backgroundColor: backgroundColor,
+        }}
       >
-        You must to provide Card information to become an instructor
-      </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      {success && <Alert severity="success">{success}</Alert>}
-      <Box sx={{ mt: 3 }}>
-        <TextField
-          fullWidth
-          label={t("Card Number")}
-          value={cardNumber}
-          onChange={(e) => setCardNumber(e.target.value)}
-          inputProps={{ maxLength: 16 }}
-          placeholder="1234 5678 9012 3456"
-          margin="normal"
-        />
-        <TextField
-          fullWidth
-          label={t("Expiry Date")}
-          value={expiryDate}
-          onChange={(e) => setExpiryDate(e.target.value)}
-          placeholder="MM/YY"
-          margin="normal"
-        />
+        <Typography variant="h4" fontWeight="bold" textAlign="center" mb={2}>
+          {t("Sign to Instructor")}
+        </Typography>
+        <Typography
+          variant="body1"
+          textAlign="center"
+          color="text.secondary"
+          mb={3}
+        >
+          {t("You must provide card information to become an instructor")}
+        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+
+        <Box component="form" noValidate>
+          <TextField
+            fullWidth
+            label={t("Card Number")}
+            name="cardNumber"
+            value={formData.cardNumber}
+            onChange={(e) => handleInputChange("cardNumber", e.target.value)}
+            inputProps={{ maxLength: 19 }}
+            placeholder="1234 5678 9012 3456"
+            margin="normal"
+          />
+
+          <TextField
+            fullWidth
+            label={t("Expiry Date")}
+            name="expiryDate"
+            value={formData.expiryDate}
+            onChange={(e) => handleInputChange("expiryDate", e.target.value)}
+            placeholder="MM/YY"
+            margin="normal"
+          />
+        </Box>
+
+        <Button
+          // fullWidth
+          variant="outlined"
+          sx={{
+            mt: 3,
+            p: 1,
+            fontWeight: "bold",
+            boxShadow: 3,
+            borderRadius: 2,
+            width: "30%",
+            display: "flex",
+            mx: "auto",
+            textTransform: "none",
+            color: backgroundColor,
+            backgroundColor: textColor,
+            borderColor: textColor,
+            "&:hover": {
+              color: textColor,
+              backgroundColor: backgroundColor,
+            },
+          }}
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <CircularProgress size={24} color="inherit" />
+          ) : (
+            t("submit")
+          )}
+        </Button>
       </Box>
-      <Button
-        fullWidth
-        variant="contained"
-        color="primary"
-        sx={{ mt: 3, fontWeight: "bold", textTransform: "none" }}
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        {loading ? <CircularProgress size={24} /> : t("Sign to Instructor")}
-      </Button>
     </Box>
   );
 };

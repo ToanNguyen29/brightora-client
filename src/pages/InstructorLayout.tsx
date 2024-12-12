@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,7 @@ import {
   Description as ResourceIcon,
 } from "@mui/icons-material";
 import ReviewsIcon from "@mui/icons-material/Reviews";
+import { useAuth } from "../context/AuthContext";
 
 function a11yProps(index: number) {
   return {
@@ -30,9 +31,10 @@ const InstructorLayout: React.FC = () => {
   const { t } = useTranslation();
   const { mode } = useThemeContext();
 
-  // Define background and text colors based on the mode
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
+
+  const { userInfo } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,14 +55,18 @@ const InstructorLayout: React.FC = () => {
     alignItems: "center",
     flexDirection: "row",
     fontSize: 20,
-    color: textColor, // Apply text color
+    color: textColor,
   };
 
   const labelBoxStyles = {
     visibility: isHovered ? "visible" : "hidden",
     whiteSpace: "nowrap",
-    color: textColor, // Apply text color
+    color: textColor,
   };
+
+  useEffect(() => {
+    if (userInfo.role && userInfo.role !== "Instructor") navigate("/");
+  }, [userInfo.role, navigate]);
 
   return (
     <Box
