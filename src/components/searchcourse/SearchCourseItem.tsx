@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, CardMedia, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useNavigate } from "react-router-dom";
@@ -79,23 +79,23 @@ const SearchCourseItem: React.FC<SearchCourseItemProps> = ({
         <Box
           sx={{
             mr: 1.5,
-            display: "flex",
+            flex: 1.5,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <img
-            src={thumbnail}
+          <CardMedia
+            component="img"
+            image={thumbnail}
             alt={title}
-            style={{
+            sx={{
               aspectRatio: "16/9",
-              width: "100%",
-              height: "auto",
               objectFit: "cover",
-              borderRadius: "8px",
+              position: "relative",
             }}
           />
         </Box>
+
         <Box sx={{ flex: 3, textAlign: "left", ml: 3 }}>
           <Typography
             variant="body1"

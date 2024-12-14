@@ -13,7 +13,7 @@ import CourseRating from "../../course/header/CourseRating";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteItemFromWishlistMe } from "../../../services/WishListService";
 import { useTranslation } from "react-i18next";
-import PriceSection from "../../course/rightbox/PriceSection";
+// import PriceSection from "../../course/rightbox/PriceSection";
 
 interface CourseProps {
   course: ICourseCard;

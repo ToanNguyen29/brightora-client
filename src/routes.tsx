@@ -10,6 +10,7 @@ import LoadingPage from "./pages/LoadingPage";
 import { QuizProvider } from "./context/QuizContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
+import CourseTypePage from "./pages/CourseTypePage";
 
 const PaymentAccount = React.lazy(() => import("./pages/user/PaymentAccount"));
 const UserAccountPage = React.lazy(() => import("./pages/UserAccountPage"));
@@ -195,6 +196,7 @@ const AppRoutes: React.FC = () => {
                   element={<ResetPassWordPage />}
                 />
                 <Route path="/course/:courseId" element={<CoursePage />} />
+                <Route path="/course_type/:type" element={<CourseTypePage />} />
                 <Route
                   path="/sign-to-instructor"
                   element={<BankingInfoPage />}
