@@ -54,7 +54,7 @@ const MyLearningPage: React.FC = () => {
         sx={{
           borderColor: "divider",
           width: "100%",
-          px: "25%",
+          px: "20%",
           backgroundColor: mode === "dark" ? "white" : "black",
         }}
       >
@@ -102,7 +102,7 @@ const MyLearningPage: React.FC = () => {
           p: 3,
           margin: "10px",
           borderRadius: "8px",
-          px: "25%",
+          px: "20%",
         }}
       >
         <Outlet />

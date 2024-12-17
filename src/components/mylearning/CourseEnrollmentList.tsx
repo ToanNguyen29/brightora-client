@@ -30,7 +30,6 @@ const CourseEnrollmentList: React.FC = () => {
     indexOfLastCourse
   );
 
-  // Hàm xử lý khi thay đổi trang
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     page: number
@@ -123,7 +122,7 @@ const CourseEnrollmentList: React.FC = () => {
               }}
               onClick={() => navigate("/")} // Điều hướng đến trang chủ
             >
-              Browse Now
+              {t("browse_now")}
             </Button>
           </Box>
         ) : (

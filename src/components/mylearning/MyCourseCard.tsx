@@ -49,7 +49,7 @@ const MyCourseCard: React.FC<CourseProps> = ({ course }) => {
           display: "flex",
           width: "100%",
           flexDirection: "column",
-          position: "relative", // Đặt relative để nút Rate căn chỉnh dựa trên Card
+          position: "relative",
           cursor: "pointer",
           boxShadow: "none",
           border: "none",
@@ -79,7 +79,6 @@ const MyCourseCard: React.FC<CourseProps> = ({ course }) => {
             position: "absolute",
             top: 8,
             right: 8,
-            // zIndex: 1,
             color: textColor,
             borderColor: textColor,
             backgroundColor: backgroundColor,

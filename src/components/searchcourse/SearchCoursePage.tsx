@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Pagination, Button } from "@mui/material";
+import { Box, Typography, Pagination } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
 
@@ -103,7 +103,7 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
               color="textSecondary"
               sx={{ marginBottom: "20px", textAlign: "center", mt: 7 }}
             >
-              No courses found.
+              {t("no_courses_found")}.
             </Typography>
           ) : (
             courses.map((item) => (
