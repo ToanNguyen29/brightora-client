@@ -292,5 +292,6 @@
   "update_description": "Update description",
   "payment_account": "Payment account",
   "payment_account_subtitle": "Manage payment account for instructor",
-  "browse_now": "Browse now"
+  "browse_now": "Browse now",
+  "your_progress": "Your progress"
 }

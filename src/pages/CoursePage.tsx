@@ -58,7 +58,7 @@ const CoursePage = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "90vh",
+        // minHeight: "90vh",
         px: "20%",
         width: "100%",
         height: "100%",

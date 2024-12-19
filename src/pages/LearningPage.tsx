@@ -30,12 +30,13 @@ import LoadingPage from "./LoadingPage";
 import QuesAndAns from "../components/learning/QuesAndAns";
 import ListItemLesson from "../components/learning/ListItemLesson";
 import { getEnrollByCourse, updateScheduler } from "../services/Enrollment";
+import ProgressEnrollment from "../components/learning/ProgressEnrollment";
 
 const LearningPage: React.FC = () => {
   const { userInfo } = useAuth();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { courseId, lessonId, exerciseId } = useParams();
-  const [erollId, setErollId] = useState<string>();
+  const [enrollId, setEnrollId] = useState<string>();
   const { mode } = useThemeContext();
   const { t } = useTranslation();
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
@@ -49,13 +50,25 @@ const LearningPage: React.FC = () => {
   const [scheduler, setScheduler] = useState<Scheduler[]>([]);
   const token = localStorage.getItem("token");
 
+  const total =
+    sections?.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.lessons.length,
+      0
+    ) || 1;
+
+  const completed =
+    scheduler.reduce(
+      (accumulator, currentValue) =>
+        accumulator + (currentValue.is_done ? 1 : 0),
+      0
+    ) || 0;
+
   useEffect(() => {
     if (!courseId || !userInfo._id) return;
     const fetchCourse = async () => {
       try {
         await getCourse(courseId, userInfo._id)
           .then((data) => {
-            console.log("course In learning", data.data);
             if (data.status <= 305) {
               setIsLoading(true);
               setCourse(data.data);
@@ -78,12 +91,8 @@ const LearningPage: React.FC = () => {
     const fetchSectionByCourse = async () => {
       await getSectionByCourseId(courseId)
         .then((data) => {
-          console.log("Hi", data);
           if (data.status <= 305) {
-            console.log("section In learning", data.data);
             setSections(data.data);
-          } else {
-            console.log();
           }
         })
         .catch((err) => {
@@ -99,11 +108,9 @@ const LearningPage: React.FC = () => {
       await getEnrollByCourse(courseId, token)
         .then((data) => {
           if (data.status <= 305) {
-            console.log("setScheduler ", data.data);
+            console.log("Toan Nguyen Enroll", data);
             setScheduler(data.data.schedule);
-            setErollId(data.data._id);
-          } else {
-            console.log();
+            setEnrollId(data.data._id);
           }
         })
         .catch((err) => {
@@ -114,7 +121,6 @@ const LearningPage: React.FC = () => {
   }, [courseId, token]);
 
   useEffect(() => {
-    console.log("navigate course", course);
     if (!isLoading && course?.relation && course.relation.is_enroll === false)
       navigate(`/course/${courseId}`);
   }, [course, navigate, courseId, isLoading]);
@@ -135,7 +141,6 @@ const LearningPage: React.FC = () => {
     id: string,
     type: string
   ) => {
-    console.log("typeeeeeeeeee", type);
     setSelectedLesson(id);
     if (type === "lesson") navigate(`lesson/${id}`, { replace: true });
     else if (type === "excercise")
@@ -143,35 +148,35 @@ const LearningPage: React.FC = () => {
   };
 
   const handleUpdateScheduler = (updatedScheduler: Scheduler) => {
-    console.log("Updating schedule: ", updatedScheduler);
-
     setScheduler((prev) => {
       const exists = prev.find((x) => x.id === updatedScheduler.id);
       if (exists) {
-        // Update the existing scheduler in the state
         return prev.map((x) =>
           x.id === updatedScheduler.id ? updatedScheduler : x
         );
       } else {
-        // If not found, add it to the list
         return [...prev, updatedScheduler];
       }
     });
   };
   useEffect(() => {
-    if (erollId && scheduler.length > 0) {
-      updateScheduler(token, erollId, scheduler);
+    if (enrollId && scheduler.length > 0) {
+      updateScheduler(token, enrollId, scheduler);
     }
-  }, [scheduler, erollId, token]);
+  }, [scheduler, enrollId, token]);
 
   if (isLoading) return <LoadingPage />;
-  // maxWidth = "xl";
+
   return (
     <Box>
       <Box
         display="flex"
-        flexDirection="column"
-        sx={{ backgroundColor: textColor, border: backgroundColor }}
+        sx={{
+          px: 5,
+          backgroundColor: textColor,
+          border: backgroundColor,
+          justifyContent: "space-between",
+        }}
       >
         <Typography
           variant="h6"
@@ -181,6 +186,7 @@ const LearningPage: React.FC = () => {
         >
           {course?.title}
         </Typography>
+        <ProgressEnrollment completed={completed} total={total} />
       </Box>
 
       <Box sx={{}}>

@@ -66,7 +66,7 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
       sx={{
         display: "flex",
         width: "100%",
-        minHeight: "90vh",
+        // minHeight: "90vh",
         backgroundColor,
         color: textColor,
       }}

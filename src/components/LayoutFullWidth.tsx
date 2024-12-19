@@ -5,9 +5,11 @@ import Footer from "./Footer";
 
 const LayoutFullWidth: React.FC = () => {
   return (
-    <div>
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
       <Navbar />
-      <div style={{ width: "100%" }}>
+      <div style={{ flex: 1, width: "100%" }}>
         <Outlet />
       </div>
       <Footer />

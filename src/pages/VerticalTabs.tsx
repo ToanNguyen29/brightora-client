@@ -47,7 +47,6 @@ export default function VerticalTabs() {
         pr: 20,
         pl: 20,
         mb: 5,
-        // pb: 20,
         borderColor: mode === "dark" ? "white" : "black",
         backgroundColor: "transparent",
         maxWidth: "100%",
@@ -112,36 +111,11 @@ export default function VerticalTabs() {
             {...a11yProps(3)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
           />
-          {/* <Tab
-            label={t("subscriptions")}
-            {...a11yProps(4)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
           <Tab
             label={t("payment_account")}
             {...a11yProps(5)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
           />
-          {/* <Tab
-            label={t("privacy")}
-            {...a11yProps(6)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
-          {/* <Tab
-            label={t("notifications")}
-            {...a11yProps(7)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
-          {/* <Tab
-            label={t("api_clients")}
-            {...a11yProps(8)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
-          {/* <Tab
-            label={t("close_account")}
-            {...a11yProps(9)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          /> */}
         </Tabs>
       </Box>
       <Box
