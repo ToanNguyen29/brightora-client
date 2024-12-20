@@ -31,7 +31,7 @@ const SearchPage: React.FC = () => {
         sx={{
           display: "flex",
           width: "80%",
-          // minHeight: "90vh",
+          minHeight: "90vh",
           mt: 10,
           mx: "10%",
         }}

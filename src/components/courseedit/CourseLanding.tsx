@@ -130,7 +130,6 @@ const CourseLanding: React.FC = () => {
           }
         }
 
-        // Upload video
         if (video) {
           const name = Date.now();
           const s3_key2 = `promotional/${name}.mp4`;

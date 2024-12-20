@@ -54,11 +54,11 @@ export const menuItems: MenuItemType[] = [
     textKey: "account_settings",
     url: "/user/edit-account/",
   },
-  {
-    icon: <AccountBalanceIcon fontSize="small" />,
-    textKey: "payment_account",
-    url: "/user/payment-account",
-  },
+  // {
+  //   icon: <AccountBalanceIcon fontSize="small" />,
+  //   textKey: "payment_account",
+  //   url: "/user/payment-account",
+  // },
   {
     icon: <History fontSize="small" />,
     textKey: "purchase_history",

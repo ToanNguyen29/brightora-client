@@ -111,11 +111,13 @@ export default function VerticalTabs() {
             {...a11yProps(3)}
             sx={{ alignItems: "flex-start", fontSize: 15 }}
           />
-          <Tab
-            label={t("payment_account")}
-            {...a11yProps(5)}
-            sx={{ alignItems: "flex-start", fontSize: 15 }}
-          />
+          {userInfo.role === "Instructor" && (
+            <Tab
+              label={t("payment_account")}
+              {...a11yProps(5)}
+              sx={{ alignItems: "flex-start", fontSize: 15 }}
+            />
+          )}
         </Tabs>
       </Box>
       <Box
