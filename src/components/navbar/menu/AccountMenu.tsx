@@ -73,7 +73,6 @@ const AccountMenu: React.FC = () => {
         setUserInfo({});
         window.location.href = "/";
       } else {
-        // alert(`Error: ${res.detail}}`);
         console.log(res.data);
       }
     } catch (error) {

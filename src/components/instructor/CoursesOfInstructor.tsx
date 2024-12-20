@@ -9,16 +9,13 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Avatar,
   IconButton,
   TextField,
-  TablePagination,
   CardMedia,
   Button,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import {
-  getCoursesByOwner,
   getCoursesOfInstructor,
   updateCourse,
 } from "../../services/CourseService";
@@ -44,18 +41,22 @@ type Course = {
 
 interface CourseOfInstructorProps {
   status?: string;
+  query?: string;
 }
 
-const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
+const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
+  status,
+  query = "",
+}) => {
   const { t } = useTranslation();
   const { mode } = useThemeContext();
-
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
   const { userInfo } = useAuth();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
+  const [filterCourses, setFilterCourses] = useState<Course[]>([]);
   const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
 
@@ -67,7 +68,6 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
     const formData: IUpdateCourse = {
       discount_percentage: discountPercentage,
     };
-
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
         setCourses((prevCourses) =>
@@ -85,7 +85,6 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
   useEffect(() => {
     const fetchCoursesMe = async () => {
       if (!userInfo._id) return;
-      console.log(status);
       await getCoursesOfInstructor(userInfo._id, 1, 100, status).then(
         (data) => {
           if (data.status <= 305) {
@@ -97,9 +96,19 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
     fetchCoursesMe();
   }, [status, userInfo._id]);
 
+  useEffect(() => {
+    const lowerCaseQuery = query.toLowerCase();
+    const filtered = courses.filter(
+      (course) =>
+        course.title.toLowerCase().includes(lowerCaseQuery) ||
+        course.subtitle.toLowerCase().includes(lowerCaseQuery)
+    );
+    setFilterCourses(filtered);
+  }, [query, courses]);
+
   return (
     <Box sx={{ padding: 1 }}>
-      {courses.length === 0 ? (
+      {filterCourses.length === 0 ? (
         <Box
           sx={{
             textAlign: "center",
@@ -109,7 +118,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
           }}
         >
           <Typography variant="body1" sx={{ mt: 1, mb: 3, color: textColor }}>
-            {`No ${status} courses found`}
+            {`No ${status || ""} courses found`}
           </Typography>
           <Button
             variant="outlined"
@@ -170,7 +179,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({ status }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {courses.map((course) => (
+              {filterCourses.map((course) => (
                 <TableRow
                   key={course._id}
                   sx={{

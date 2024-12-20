@@ -19,6 +19,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ReactMarkdown from "react-markdown";
 import { useThemeContext } from "../../theme/ThemeContext";
 import EditIcon from "@mui/icons-material/Edit";
+import { useAuth } from "../../context/AuthContext";
 
 interface IQAndA {
   _id: string;
@@ -38,7 +39,7 @@ interface QAItemProps {
 
 const QAItem: React.FC<QAItemProps> = ({ qAndA, onReplySubmit }) => {
   const { mode } = useThemeContext();
-
+  const { userInfo } = useAuth();
   const [showFull, setShowFull] = useState(false); // Show more/less state
   const [reply, setReply] = useState<string>(""); // Reply content
   const [isReplying, setIsReplying] = useState(false); // Reply state
@@ -129,7 +130,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA, onReplySubmit }) => {
           >
             <Box display="flex" alignItems="center" mb={1}>
               <Avatar
-                src={qAndA.instructor?.photo} // Fixed instructor photo reference
+                src={userInfo?.photo}
                 alt="Instructor"
                 sx={{
                   width: 36,
@@ -140,7 +141,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA, onReplySubmit }) => {
                 }}
               />
               <Typography variant="subtitle1" fontWeight="bold">
-                Toan Nguyen
+                {`${userInfo.first_name} ${userInfo.last_name}`}
               </Typography>
             </Box>
             <ReactMarkdown>{qAndA.answer}</ReactMarkdown>
@@ -167,7 +168,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA, onReplySubmit }) => {
                 paddingTop={2}
               >
                 <Avatar
-                  src={qAndA.instructor?.photo} // Fixed instructor photo reference
+                  src={userInfo?.photo}
                   alt="Instructor"
                   sx={{
                     width: 36,
@@ -178,7 +179,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA, onReplySubmit }) => {
                   }}
                 />
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Toan Nguyen
+                  {`${userInfo.first_name} ${userInfo.last_name}`}
                 </Typography>
               </Box>
               <TextField

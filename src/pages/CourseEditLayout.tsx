@@ -76,7 +76,6 @@ export default function CourseEditLayout() {
     }
   };
 
-  // Combine all steps into a single array of tabs
   const allTabs = [
     { path: tabPaths[0], label: t("intended_learners") },
     { path: tabPaths[1], label: t("curriculum") },

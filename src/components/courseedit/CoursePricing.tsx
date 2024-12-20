@@ -6,10 +6,12 @@ import { useEffect, useState } from "react";
 import { IUpdateCourse } from "../../models/Course";
 import { getCourse, updateCourse } from "../../services/CourseService";
 import { useParams } from "react-router-dom";
+import AutoCloseAlert from "../reused/Alert";
 
 const CoursePricing: React.FC = () => {
   const [price, setPrice] = useState<number>(0);
   const token = localStorage.getItem("token");
+  const [alertOpen, setAlertOpen] = useState(false);
   const { t } = useTranslation();
   const { mode } = useThemeContext();
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
@@ -46,12 +48,17 @@ const CoursePricing: React.FC = () => {
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
         console.log("Price:", data);
+        setAlertOpen(true);
       });
     }
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(Number(event.target.value));
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
   };
 
   return (
@@ -67,6 +74,12 @@ const CoursePricing: React.FC = () => {
       }}
     >
       <Head title={"Pricing"} />
+      <AutoCloseAlert
+        severity="success"
+        message="Save change completed."
+        open={alertOpen}
+        onClose={handleCloseAlert}
+      />
       <Typography variant="h6" fontWeight={"bold"} ml="20px" mt={5}>
         {t("Set a price for your course")}
       </Typography>

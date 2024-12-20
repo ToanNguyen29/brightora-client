@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import ReactMarkdown from "react-markdown";
+import { IOwner } from "../../models/Course";
 
 interface IQAndA {
   _id: string;
@@ -24,9 +25,10 @@ interface IQAndA {
 
 interface QAItemProps {
   qAndA: IQAndA;
+  instructorInfo: IOwner | undefined;
 }
 
-const QAItem: React.FC<QAItemProps> = ({ qAndA }) => {
+const QAItem: React.FC<QAItemProps> = ({ qAndA, instructorInfo }) => {
   const MAX_LENGTH = 150;
 
   return (
@@ -34,7 +36,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA }) => {
       sx={{
         mb: 2,
         borderRadius: 3,
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         border: "2px solid", // Solid border
         borderColor: "grey.300", // Border color from the theme
         overflow: "hidden", // Ensures border-radius applies properly
@@ -71,7 +73,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA }) => {
         </ReactMarkdown>
 
         <Divider sx={{ my: 2 }} />
-        {/* Answer Section */}
+
         {qAndA.answer && (
           <Paper
             elevation={0}
@@ -85,7 +87,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA }) => {
           >
             <Box display="flex" alignItems="center" mb={1}>
               <Avatar
-                src={qAndA.instructor?.photo} // Fixed instructor photo reference
+                src={instructorInfo?.photo}
                 alt="Instructor"
                 sx={{
                   width: 36,
@@ -96,7 +98,7 @@ const QAItem: React.FC<QAItemProps> = ({ qAndA }) => {
                 }}
               />
               <Typography variant="subtitle1" fontWeight="bold">
-                Toan Nguyen
+                {`${instructorInfo?.first_name} ${instructorInfo?.last_name}`}
               </Typography>
             </Box>
             <ReactMarkdown>{qAndA.answer}</ReactMarkdown>

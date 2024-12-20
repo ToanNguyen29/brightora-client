@@ -6,10 +6,12 @@ import RichTextBox from "../reused/RichTextBoxComponent";
 import { useParams } from "react-router-dom";
 import { getCourse, updateMessagesCourse } from "../../services/CourseService";
 import Head from "./Head";
+import AutoCloseAlert from "../reused/Alert";
 
 const CourseMessages: React.FC = () => {
   const token = localStorage.getItem("token");
   const { id } = useParams<{ id: string }>();
+  const [alertOpen, setAlertOpen] = useState(false);
   const [welcomeMessage, setWelcomeMessage] = useState<string>("");
   const [congratulationMessage, setCongratulationMessage] =
     useState<string>("");
@@ -79,10 +81,15 @@ const CourseMessages: React.FC = () => {
         congratulationMessage
       ).then((data) => {
         console.log(data);
+        setAlertOpen(true);
       });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleCloseAlert = () => {
+    setAlertOpen(false);
   };
 
   return (
@@ -102,6 +109,12 @@ const CourseMessages: React.FC = () => {
         <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
           {t("congratulation_message")}
         </Typography>
+        <AutoCloseAlert
+          severity="success"
+          message="Save change completed."
+          open={alertOpen}
+          onClose={handleCloseAlert}
+        />
         <Box
           sx={{
             backgroundColor: "transparent",

@@ -43,8 +43,7 @@ const CourseLanding: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [alertOpen, setAlertOpen] = useState(false);
   const [titleAlertOpen, setTitleAlertOpen] = useState(false);
-
-  const [progress, setProgress] = useState(0);
+  const [progress1, setProgress1] = useState(0);
   const [progress2, setProgress2] = useState(0);
 
   const [img, setImg] = useState<File | string>();
@@ -101,40 +100,57 @@ const CourseLanding: React.FC = () => {
   };
 
   const handleSave = async () => {
-    console.log("Form values saved:", formValue);
-    console.log("try uploading", img);
-
     if (id) {
-      await updateCourse(token, id, formValue).then((data) => {
-        console.log(data);
-      });
+      try {
+        const tasks: Promise<any>[] = [];
 
-      if (img) {
-        if (typeof img == "string") {
-          console.log("img is string");
-          await updateCourseImage(token, id, img);
-        } else {
-          const name = Date.now();
-          const s3_key = `thumbnail/${name}.png`;
-          const url = `https://brightora.s3.amazonaws.com/thumbnail/${name}.png`;
-          UploadFile(s3_key, img, setProgress, async () => {
-            await updateCourseImage(token, id, url);
-          });
-        }
-      }
-      if (video) {
-        const name = Date.now();
-
-        const s3_key2 = `promotional/${name}.mp4`;
-        const url2 = `https://brightora.s3.amazonaws.com/promotional/${name}.mp4`;
-
-        UploadFile(s3_key2, video, setProgress2, async () => {
-          await updatePromotionalVideo(token, id, url2).then((data) => {
+        const updateCourseTask = updateCourse(token, id, formValue).then(
+          (data) => {
             console.log(data);
+          }
+        );
+        tasks.push(updateCourseTask);
+
+        if (img) {
+          if (typeof img === "string") {
+            const updateImageTask = await updateCourseImage(token, id, img);
+            tasks.push(updateImageTask);
+          } else {
+            const name = Date.now();
+            const s3_key = `thumbnail/${name}.png`;
+            const url = `https://brightora.s3.amazonaws.com/thumbnail/${name}.png`;
+
+            const uploadImageTask = new Promise<void>((resolve) => {
+              UploadFile(s3_key, img, setProgress1, async () => {
+                await updateCourseImage(token, id, url);
+                resolve();
+              });
+            });
+            tasks.push(uploadImageTask);
+          }
+        }
+
+        // Upload video
+        if (video) {
+          const name = Date.now();
+          const s3_key2 = `promotional/${name}.mp4`;
+          const url2 = `https://brightora.s3.amazonaws.com/promotional/${name}.mp4`;
+
+          const uploadVideoTask = new Promise<void>((resolve) => {
+            UploadFile(s3_key2, video, setProgress2, async () => {
+              await updatePromotionalVideo(token, id, url2).then((data) => {
+                console.log(data);
+              });
+              resolve();
+            });
           });
-        });
+          tasks.push(uploadVideoTask);
+        }
+
+        await Promise.all(tasks).then(() => setAlertOpen(true));
+      } catch (error) {
+        console.error("Error in handleSave:", error);
       }
-      setAlertOpen(true);
     }
   };
 
@@ -146,12 +162,10 @@ const CourseLanding: React.FC = () => {
   };
 
   const handleFileUpload = (name: string, file: File | string) => {
-    // console.log(`${name} uploaded:`, file);
     setImg(file);
   };
 
   const handleVideoUpload = (name: string, file: File) => {
-    // console.log(`${name} uploaded:`, file);
     setVideo(file);
   };
 
@@ -160,7 +174,6 @@ const CourseLanding: React.FC = () => {
   };
 
   const handleGendescription = async () => {
-    console.log("handleGendescription");
     if (formValue.title) {
       await generateDescription(formValue.title).then((data) => {
         setFormValue((prev) => ({

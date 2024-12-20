@@ -4,9 +4,11 @@ import { getQAndAByCourse } from "../../services/QuesAndAnsService";
 import { useAuth } from "../../context/AuthContext";
 import QAItem from "./QAItem";
 import MyQA from "./MyQA";
+import { IOwner } from "../../models/Course";
 
 interface QuesAndAnsProps {
   courseId: string | undefined;
+  instructorInfo: IOwner | undefined;
 }
 
 interface IQAndA {
@@ -21,7 +23,10 @@ interface IQAndA {
   };
 }
 
-const QuesAndAns: React.FC<QuesAndAnsProps> = ({ courseId }) => {
+const QuesAndAns: React.FC<QuesAndAnsProps> = ({
+  courseId,
+  instructorInfo,
+}) => {
   const { userInfo } = useAuth();
   const [qAndAList, setQAndAList] = useState<IQAndA[]>([]);
   const [userQA, setUserQA] = useState<IQAndA[]>([]);
@@ -62,10 +67,14 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({ courseId }) => {
 
   return (
     <Box p={3}>
-      <MyQA qAndA={userQA} courseId={courseId} />
+      <MyQA
+        qAndA={userQA}
+        courseId={courseId}
+        instructorInfo={instructorInfo}
+      />
       <Divider sx={{ my: 3 }}></Divider>
       {qAndAList.map((item) => (
-        <QAItem key={item._id} qAndA={item} />
+        <QAItem key={item._id} qAndA={item} instructorInfo={instructorInfo} />
       ))}
     </Box>
   );

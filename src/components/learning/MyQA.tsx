@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography } from "@mui/material";
 import QAItem from "./QAItem";
 import { createQuestion } from "../../services/QuesAndAnsService";
 import { useAuth } from "../../context/AuthContext";
+import { IOwner } from "../../models/Course";
 
 interface IQAndA {
   _id: string;
@@ -18,9 +19,10 @@ interface IQAndA {
 interface MyQAProps {
   qAndA: IQAndA[] | [];
   courseId: string | undefined;
+  instructorInfo: IOwner | undefined;
 }
 
-const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId }) => {
+const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId, instructorInfo }) => {
   const { userInfo } = useAuth();
 
   const [newQuestion, setNewQuestion] = useState<string>("");
@@ -118,7 +120,9 @@ const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId }) => {
       </Box>
       {listMyQa.length > 0 && <Typography>Your questions</Typography>}
       {listMyQa.length > 0 &&
-        listMyQa.map((item) => <QAItem key={item._id} qAndA={item} />)}
+        listMyQa.map((item) => (
+          <QAItem key={item._id} qAndA={item} instructorInfo={instructorInfo} />
+        ))}
     </Box>
   );
 };

@@ -20,8 +20,7 @@ const InstructorCoursePage = () => {
 
   const backgroundColor = mode === "dark" ? "#ffffff" : "#000000";
   const textColor = mode === "dark" ? "#000000" : "#ffffff";
-
-  // State for filter and menu handling
+  const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -80,7 +79,11 @@ const InstructorCoursePage = () => {
             variant="outlined"
             placeholder={t("search_your_courses")}
             size="small"
+            value={query}
             sx={{ width: "300px" }}
+            onChange={(e) => {
+              setQuery(e.target.value);
+            }}
             InputProps={{
               endAdornment: (
                 <IconButton>
@@ -89,7 +92,7 @@ const InstructorCoursePage = () => {
               ),
             }}
           />
-          {/* Filter Button */}
+
           <Button
             variant="outlined"
             onClick={handleMenuOpen}
@@ -122,7 +125,10 @@ const InstructorCoursePage = () => {
           </Menu>
         </Box>
       </Box>
-      <CourseOfInstructor status={filter !== "All" ? filter : undefined} />
+      <CourseOfInstructor
+        status={filter !== "All" ? filter : undefined}
+        query={query}
+      />
     </Box>
   );
 };

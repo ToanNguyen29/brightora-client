@@ -144,8 +144,8 @@
   "dragAndDropText": "Drag and drop your file here or click the button above",
   "acceptedVideoFormats": "Accepted formats: MP4, WebM, OGG",
   "acceptedImageFormats": "Accepted formats: SVG, PNG, JPG, GIF",
-  "video": "video",
-  "image": "image",
+  "video": "Video",
+  "image": "Image",
   "all_course": "All courses",
   "my_lists": "My lists",
   "archived": "Archived",
@@ -293,5 +293,8 @@
   "payment_account": "Payment account",
   "payment_account_subtitle": "Manage payment account for instructor",
   "browse_now": "Browse now",
-  "your_progress": "Your progress"
+  "your_progress": "Your progress",
+  "generate_image": "Generate image",
+  "upload_label": "Upload label",
+  "upload_promotional_video": "Upload promotional video"
 }

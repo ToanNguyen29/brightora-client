@@ -16,7 +16,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const SignToInstructor: React.FC = () => {
   const token = localStorage.getItem("token");
-  const { fetchMe } = useAuth();
+  const { setUserInfo } = useAuth();
   const { t } = useTranslation();
   const { mode } = useThemeContext();
 
@@ -75,8 +75,9 @@ const SignToInstructor: React.FC = () => {
         expiry_date: formData.expiryDate,
       };
       await updateMe(token, { role: "Instructor", payment }).then((data) => {
+        console.log("payment", data);
         if (data.status <= 305) {
-          fetchMe();
+          setUserInfo((prev) => ({ ...prev, role: "Instructor", payment }));
           navigate("/instructor/course");
         } else {
           if (Array.isArray(data.data.detail)) {
