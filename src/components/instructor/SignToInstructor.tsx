@@ -95,11 +95,7 @@ const SignToInstructor: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: "90vh",
-      }}
-    >
+    <Box sx={{}}>
       <Box
         sx={{
           maxWidth: 600,

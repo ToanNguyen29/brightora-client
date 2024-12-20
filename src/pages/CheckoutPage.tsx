@@ -25,7 +25,7 @@ const CheckoutPage: React.FC = () => {
   if (isDone) return <PaymentSuccess />;
 
   return (
-    <Box sx={{ width: "80%", mx: "auto", px: "10%", minHeight: "90vh" }}>
+    <Box sx={{ width: "80%", mx: "auto", px: "10%" }}>
       <Typography
         variant="h3"
         fontWeight={"bold"}

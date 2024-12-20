@@ -135,7 +135,7 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ height: "100%", display: "flex", minHeight: "90vh" }}>
+    <Box sx={{ height: "100%", display: "flex" }}>
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <ChatHeader />
         <Box sx={{ display: "flex", flexGrow: 1 }}>

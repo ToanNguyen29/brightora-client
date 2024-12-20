@@ -18,7 +18,6 @@ const NotFound: React.FC = () => {
         alignItems: "center",
         justifyContent: "flex-start",
         mt: 15,
-        minHeight: "90vh",
         textAlign: "center",
       }}
     >

@@ -49,7 +49,6 @@ const UserAccountPage = () => {
         backgroundColor: "transparent",
         maxWidth: "100%",
         height: "100%",
-        // minHeight: "90vh",
       }}
     >
       <Box

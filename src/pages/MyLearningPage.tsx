@@ -44,7 +44,6 @@ const MyLearningPage: React.FC = () => {
       sx={{
         width: "100%",
         display: "flex",
-        // minHeight: "90vh",
         flexDirection: "column",
         borderColor: backgroundColor,
         backgroundColor: "transparent",

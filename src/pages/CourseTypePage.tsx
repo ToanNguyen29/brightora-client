@@ -28,7 +28,6 @@ const CourseTypePage: React.FC = () => {
         gap: 5,
         px: "15%",
         mt: 5,
-        minHeight: "90vh",
       }}
     >
       <Typography
