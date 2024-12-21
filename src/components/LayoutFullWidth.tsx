@@ -9,7 +9,7 @@ const LayoutFullWidth: React.FC = () => {
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <Navbar />
-      <div style={{ flex: 1, width: "100%", marginBottom: 5 }}>
+      <div style={{ flex: 1, width: "100%", marginBottom: 10 }}>
         <Outlet />
       </div>
       <Footer />

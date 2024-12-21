@@ -24,7 +24,6 @@ const Footer: React.FC = () => {
       sx={{
         width: "100%",
         height: "100%",
-
         py: 4,
         px: { xs: 1, sm: 2 },
         backgroundColor,

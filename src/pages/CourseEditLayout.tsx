@@ -76,6 +76,10 @@ export default function CourseEditLayout() {
     }
   };
 
+  const handleBack = () => {
+    navigate("./../..", { replace: true });
+  };
+
   const allTabs = [
     { path: tabPaths[0], label: t("intended_learners") },
     { path: tabPaths[1], label: t("curriculum") },
@@ -99,7 +103,6 @@ export default function CourseEditLayout() {
           paddingTop: "20px",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           backgroundColor,
           mt: 3,
         }}
@@ -110,6 +113,22 @@ export default function CourseEditLayout() {
           open={alertOpen}
           onClose={() => setAlertOpen(false)}
         />
+
+        <Box
+          onClick={handleBack}
+          sx={{
+            fontSize: "25px",
+            mb: "45px",
+            color: textColor,
+            fontWeight: "bold",
+            cursor: "pointer",
+            ":hover": {
+              textDecoration: "underline",
+            },
+          }}
+        >
+          &lt; {t("back")}
+        </Box>
 
         <StepSection
           tabs={allTabs}
@@ -124,17 +143,53 @@ export default function CourseEditLayout() {
           sx={{
             fontSize: "16px",
             my: "45px",
-            backgroundColor: mode === "dark" ? "white" : "grey",
-            color: mode === "dark" ? "grey" : "white",
+            backgroundColor:
+              statusCourse === "Draft"
+                ? mode === "dark"
+                  ? "#ff9800"
+                  : "#ffc107" // Màu cam cho Draft
+                : statusCourse === "Pending"
+                ? mode === "dark"
+                  ? "#2196f3"
+                  : "#03a9f4" // Màu xanh dương cho Pending
+                : statusCourse === "Published"
+                ? mode === "dark"
+                  ? "#4caf50"
+                  : "#8bc34a" // Màu xanh lá cho Published
+                : mode === "dark"
+                ? "#f44336"
+                : "#e57373", // Màu đỏ cho Rejected
+            color: "white",
             padding: "10px 20px",
             fontWeight: "bold",
             ":hover": {
-              backgroundColor: mode === "dark" ? "white" : "grey",
+              backgroundColor:
+                statusCourse === "Draft"
+                  ? mode === "dark"
+                    ? "#ffb74d"
+                    : "#ffe082"
+                  : statusCourse === "Pending"
+                  ? mode === "dark"
+                    ? "#64b5f6"
+                    : "#4fc3f7"
+                  : statusCourse === "Published"
+                  ? mode === "dark"
+                    ? "#81c784"
+                    : "#aed581"
+                  : mode === "dark"
+                  ? "#ef9a9a"
+                  : "#ef5350",
             },
           }}
-          startIcon={statusCourse === "Draft" && <SendIcon />}
+          startIcon={statusCourse === "Draft" ? <SendIcon /> : undefined}
         >
-          {statusCourse === "Draft" ? t("send_for_review") : statusCourse}
+          {statusCourse === "Draft"
+            ? t("send_for_review")
+            : statusCourse === "Pending"
+            ? t("pending")
+            : statusCourse === "Published"
+            ? t("published")
+            : t("rejected")}
         </Button>
       </Box>
       <Box sx={{ p: 3, margin: "10px", borderRadius: "8px", flexGrow: 1 }}>
