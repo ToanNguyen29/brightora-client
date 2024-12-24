@@ -121,7 +121,7 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
       <Typography
         variant="h6"
         gutterBottom
-        sx={{ mx: "10%", fontWeight: "Bold" }}
+        sx={{ mx: "10%", fontWeight: "bold" }}
       >
         {t("your_review")}
       </Typography>

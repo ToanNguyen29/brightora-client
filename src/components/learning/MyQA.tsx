@@ -1,34 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Box, TextField, Button, Typography } from "@mui/material";
-import QAItem from "./QAItem";
+import { Box, TextField, Button } from "@mui/material";
+import QandAList from "./QandAList";
+import RichTextBox from "../reused/RichTextBoxComponent";
 import { createQuestion } from "../../services/QuesAndAnsService";
 import { useAuth } from "../../context/AuthContext";
+import { IQAndA } from "../../models/QaA";
 import { IOwner } from "../../models/Course";
-
-interface IQAndA {
-  _id: string;
-  question: string;
-  answer: string | null;
-  student: {
-    first_name: string;
-    last_name: string;
-    photo: string;
-  };
-}
 
 interface MyQAProps {
   qAndA: IQAndA[] | [];
+  setData: React.Dispatch<React.SetStateAction<IQAndA[]>>;
   courseId: string | undefined;
   instructorInfo: IOwner | undefined;
 }
 
-const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId, instructorInfo }) => {
+const MyQA: React.FC<MyQAProps> = ({
+  qAndA,
+  courseId,
+  instructorInfo,
+  setData,
+}) => {
   const { userInfo } = useAuth();
 
   const [newQuestion, setNewQuestion] = useState<string>("");
+  const [isEditing, setIsEditing] = useState(false);
   const [listMyQa, setlistMyQa] = useState<IQAndA[]>(qAndA);
 
   const token = localStorage.getItem("token");
+
   const handleAddQuestion = async () => {
     if (!newQuestion.trim()) {
       console.error("Question cannot be empty");
@@ -46,26 +45,42 @@ const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId, instructorInfo }) => {
     try {
       const data = await createQuestion(token, newQuestion, courseId);
       console.log(data);
+
       const newObject: IQAndA = {
         _id: data.data.qa_id,
+        course: courseId,
         question: newQuestion.trim(),
-        answer: null,
+        answer: [],
         student: {
+          _id: userInfo._id || "",
           first_name: userInfo?.first_name ?? "",
           last_name: userInfo?.last_name ?? "",
           photo: userInfo?.photo ?? "",
         },
       };
 
-      setlistMyQa((prev) => [...prev, newObject]); // Functional form for safe updates
-      setNewQuestion(""); // Clear the input field
+      console.log("newObject", newObject);
+
+      setlistMyQa((prev) => [...prev, newObject]);
+      setNewQuestion("");
+      setIsEditing(false);
     } catch (error) {
       console.error("Error adding question:", error);
     }
   };
+
   useEffect(() => {
-    setlistMyQa(qAndA); // Update the list of my questions whenever the qAndA prop changes
+    setlistMyQa(qAndA);
   }, [qAndA]);
+
+  const handleStartEditing = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEditing = () => {
+    setNewQuestion("");
+    setIsEditing(false);
+  };
 
   return (
     <Box
@@ -75,54 +90,83 @@ const MyQA: React.FC<MyQAProps> = ({ qAndA, courseId, instructorInfo }) => {
         gap: 2,
         padding: 2,
         backgroundColor: "white",
+        width: "80%",
         color: "black",
-        border: "1px solid black",
+        mx: "10%",
         borderRadius: 2,
         margin: "auto",
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          gap: 1,
-          alignItems: "center",
-        }}
-      >
-        <TextField
-          variant="outlined"
-          fullWidth
-          placeholder="Enter new question..."
-          value={newQuestion}
-          onChange={(e) => setNewQuestion(e.target.value)}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              handleAddQuestion();
-            }
-          }}
+      {isEditing ? (
+        <Box
           sx={{
-            backgroundColor: "white",
-          }}
-        />
-        <Button
-          variant="contained"
-          onClick={handleAddQuestion}
-          sx={{
-            backgroundColor: "black",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "grey",
-            },
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            width: "80%",
+            mx: "auto",
+            alignItems: "center",
           }}
         >
-          Send
-        </Button>
-      </Box>
-      {listMyQa.length > 0 && <Typography>Your questions</Typography>}
-      {listMyQa.length > 0 &&
-        listMyQa.map((item) => (
-          <QAItem key={item._id} qAndA={item} instructorInfo={instructorInfo} />
-        ))}
+          <RichTextBox text={newQuestion} handleTextChange={setNewQuestion} />
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "center",
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleAddQuestion}
+              sx={{
+                backgroundColor: "black",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "grey",
+                },
+              }}
+            >
+              Send
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={handleCancelEditing}
+              sx={{
+                borderColor: "grey",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "lightgrey",
+                },
+              }}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Box>
+      ) : (
+        <TextField
+          placeholder="Add your question"
+          value={newQuestion}
+          onClick={handleStartEditing}
+          fullWidth
+          sx={{
+            "& .MuiInputBase-root": {
+              borderRadius: 2,
+            },
+            width: "80%",
+            mx: "auto",
+          }}
+        />
+      )}
+
+      {listMyQa.length > 0 && (
+        <QandAList
+          data={listMyQa}
+          instructorInfo={instructorInfo?._id}
+          setData={setData}
+        />
+      )}
     </Box>
   );
 };

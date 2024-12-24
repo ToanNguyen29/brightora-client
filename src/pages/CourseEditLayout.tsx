@@ -147,18 +147,18 @@ export default function CourseEditLayout() {
               statusCourse === "Draft"
                 ? mode === "dark"
                   ? "#ff9800"
-                  : "#ffc107" // Màu cam cho Draft
+                  : "#ffc107" 
                 : statusCourse === "Pending"
                 ? mode === "dark"
                   ? "#2196f3"
-                  : "#03a9f4" // Màu xanh dương cho Pending
+                  : "#03a9f4" 
                 : statusCourse === "Published"
                 ? mode === "dark"
                   ? "#4caf50"
-                  : "#8bc34a" // Màu xanh lá cho Published
+                  : "#8bc34a" 
                 : mode === "dark"
                 ? "#f44336"
-                : "#e57373", // Màu đỏ cho Rejected
+                : "#e57373",
             color: "white",
             padding: "10px 20px",
             fontWeight: "bold",

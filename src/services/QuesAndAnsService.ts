@@ -57,3 +57,29 @@ export const getQAndAByCourse = async (
 
   return response;
 };
+
+export const createAnswer = async (
+  token: string | null,
+  qa_id: string,
+  content: string
+): Promise<AxiosResponse> => {
+  const response = await axios
+    .post(
+      `${import.meta.env.VITE_SERVER_URL}/api/v1/courses/qa/answer/`,
+      { qa_id, content },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+
+  return response;
+};

@@ -9,31 +9,24 @@ import {
 } from "@mui/material";
 import { getCoursesMe } from "../services/CourseService";
 import { getQAndAByCourse } from "../services/QuesAndAnsService";
-import { useTranslation } from "react-i18next";
-import { useThemeContext } from "../theme/ThemeContext";
-import QAItem from "../components/qanda/QAndAItem";
+// import { useTranslation } from "react-i18next";
+// import { useThemeContext } from "../theme/ThemeContext";
+
+import QandAList from "../components/learning/QandAList";
+import { IQAndA } from "../models/QaA";
+import { useAuth } from "../context/AuthContext";
 
 interface ICourseQA {
   _id: string;
   title: string;
 }
 
-interface IQAndA {
-  _id: string;
-  question: string;
-  answer: string | null;
-  student: {
-    first_name: string;
-    last_name: string;
-    photo: string;
-  };
-}
-
 const QAndAPage: React.FC = () => {
   const token = localStorage.getItem("token");
+  const { userInfo } = useAuth();
   const [courses, setCourses] = useState<ICourseQA[] | undefined>();
   const [currentCourseId, setCurrentCourseId] = useState<string>();
-  const [qAndAList, setQAndAList] = useState<IQAndA[] | undefined>();
+  const [qAndAList, setQAndAList] = useState<IQAndA[]>([]);
   const [filteredQAndAList, setFilteredQAndAList] = useState<
     IQAndA[] | undefined
   >();
@@ -45,7 +38,7 @@ const QAndAPage: React.FC = () => {
         if (data.status <= 305) {
           setCourses(data.data.data);
           if (data.data.data) {
-            setCurrentCourseId(data.data.data[0]._id); // Set the first course as the default
+            setCurrentCourseId(data.data.data[0]._id);
           }
         }
       });
@@ -70,13 +63,11 @@ const QAndAPage: React.FC = () => {
     if (filter === "all") {
       setFilteredQAndAList(qAndAList);
     } else if (filter === "answered") {
-      setFilteredQAndAList(qAndAList?.filter((q) => q.answer !== null));
+      setFilteredQAndAList(qAndAList?.filter((q) => q.answer.length !== 0));
     } else if (filter === "unanswered") {
-      setFilteredQAndAList(qAndAList?.filter((q) => q.answer === null));
+      setFilteredQAndAList(qAndAList?.filter((q) => q.answer.length === 0));
     }
   }, [filter, qAndAList]);
-
-  const handleReply = async (questionId: string) => {};
 
   return (
     <Box display="flex" sx={{ width: "100%" }}>
@@ -144,9 +135,11 @@ const QAndAPage: React.FC = () => {
           }}
         >
           {filteredQAndAList && filteredQAndAList.length > 0 ? (
-            filteredQAndAList.map((q) => (
-              <QAItem key={q._id} qAndA={q} onReplySubmit={handleReply} />
-            ))
+            <QandAList
+              data={filteredQAndAList}
+              instructorInfo={userInfo._id}
+              setData={setQAndAList}
+            />
           ) : (
             <Paper
               elevation={0}

@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { getQAndAByCourse } from "../../services/QuesAndAnsService";
 import { useAuth } from "../../context/AuthContext";
-import QAItem from "./QAItem";
 import MyQA from "./MyQA";
 import { IOwner } from "../../models/Course";
+import { IQAndA } from "../../models/QaA";
+import QandAList from "./QandAList";
 
 interface QuesAndAnsProps {
   courseId: string | undefined;
   instructorInfo: IOwner | undefined;
-}
-
-interface IQAndA {
-  _id: string;
-  question: string;
-  answer: string | null;
-  student: {
-    first_name: string;
-    last_name: string;
-    photo: string;
-    _id: string;
-  };
 }
 
 const QuesAndAns: React.FC<QuesAndAnsProps> = ({
@@ -39,23 +28,21 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
       try {
         const data = await getQAndAByCourse(token, courseId, 1, 10);
         if (data.status <= 305) {
-          console.log(data.data.data);
+          console.log("getQAndAByCourse", data.data.data);
           const qAndAItems: IQAndA[] = data.data.data;
 
-          // Filter for matching items based on userInfo._id
           const matches = qAndAItems.filter(
             (qa: IQAndA) => qa.student._id === userInfo._id
           );
 
           if (matches.length > 0) {
-            setUserQA(matches); // Set the matching list
+            setUserQA(matches);
           }
 
-          // Remove matched items from Q&A list
           const remainingQAndA = qAndAItems.filter(
             (qa: IQAndA) => qa.student._id !== userInfo._id
           );
-          setQAndAList(remainingQAndA); // Update Q&A list without matched items
+          setQAndAList(remainingQAndA);
         }
       } catch (error) {
         console.error("Failed to fetch Q&A:", error);
@@ -67,15 +54,28 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
 
   return (
     <Box p={3}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{ fontWeight: "bold", mx: "10%" }}
+      >
+        All questions of you ({userQA.length})
+      </Typography>
       <MyQA
         qAndA={userQA}
+        setData={setUserQA}
         courseId={courseId}
         instructorInfo={instructorInfo}
       />
       <Divider sx={{ my: 3 }}></Divider>
-      {qAndAList.map((item) => (
-        <QAItem key={item._id} qAndA={item} instructorInfo={instructorInfo} />
-      ))}
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{ fontWeight: "bold", mx: "10%" }}
+      >
+        All questions in this course ({qAndAList.length})
+      </Typography>
+      {/* <QandAList data={qAndAList} instructorInfo={instructorInfo?._id} /> */}
     </Box>
   );
 };
