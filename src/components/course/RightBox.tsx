@@ -103,13 +103,13 @@ const RightBox: React.FC<RightBoxProps> = ({
           textColor={textColor}
           backgroundColor={backgroundColor}
         />
-        <CouponSection
+        {/* <CouponSection
           coupon={coupon}
           onCouponChange={handleCouponChange}
           onUseCoupon={handleUseCoupon}
           textColor={textColor}
           backgroundColor={backgroundColor}
-        />
+        /> */}
       </Paper>
     </Box>
   );

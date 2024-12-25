@@ -24,9 +24,9 @@ const CourseDetails: React.FC<CourseDetailsProps> = ({
   return (
     <Box>
       <Divider sx={{ my: 2, borderColor: textColor }} />
-      <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
+      {/* <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
         {students.toLocaleString()} students enrolled
-      </Typography>
+      </Typography> */}
       <Typography fontSize="small" sx={{ mt: 1, color: textColor }}>
         Last Updated: {lastUpdated.slice(0, 10)}
       </Typography>
