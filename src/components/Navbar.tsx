@@ -24,6 +24,7 @@ const Navbar: React.FC = () => {
     <AppBar position="static">
       <Toolbar
         sx={{
+          with: "100%",
           p: 3,
           height: 70,
           backgroundColor: mode === "light" ? "white" : "black",

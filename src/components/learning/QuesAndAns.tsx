@@ -75,7 +75,26 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
       >
         All questions in this course ({qAndAList.length})
       </Typography>
-      {/* <QandAList data={qAndAList} instructorInfo={instructorInfo?._id} /> */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          padding: 2,
+          backgroundColor: "white",
+          width: "80%",
+          color: "black",
+          mx: "10%",
+          borderRadius: 2,
+          margin: "auto",
+        }}
+      >
+        <QandAList
+          data={qAndAList}
+          instructorInfo={instructorInfo?._id}
+          setData={setQAndAList}
+        />
+      </Box>
     </Box>
   );
 };

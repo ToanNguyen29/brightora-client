@@ -1,4 +1,3 @@
-// Reviews.tsx
 import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
@@ -7,6 +6,7 @@ import {
   Rating,
   TextField,
   Typography,
+  Pagination, // Import Pagination
 } from "@mui/material";
 import RatingStats from "../course/rating/RatingStats";
 import { useThemeContext } from "../../theme/ThemeContext";
@@ -37,67 +37,56 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
 
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(5);
+  const [totalPages, setTotalPages] = useState<number>(1); // Tổng số trang
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
 
+  // Fetch user's review
   useEffect(() => {
     if (!courseId) return;
     const fetchReviewMeOfCourse = async () => {
-      await getReviewMeOfCourse(token, courseId).then((data) => {
-        console.log(data);
-        if (data.status <= 305) {
-          setRating(data.data.data.rating);
-          setComment(data.data.data.comment);
-          setReviewId(data.data.data._id);
-          setIsRated(true);
-        }
-      });
+      const data = await getReviewMeOfCourse(token, courseId);
+      if (data.status <= 305) {
+        setRating(data.data.data.rating);
+        setComment(data.data.data.comment);
+        setReviewId(data.data.data._id);
+        setIsRated(true);
+      }
     };
     fetchReviewMeOfCourse();
   }, [token, courseId]);
 
-  useEffect(() => {
-    console.log("hello My", courseId);
-    if (!courseId) return;
-    const fetchReview = async () => {
-      try {
-        await getReviewByCourse(courseId, pageNumber, pageSize).then((data) => {
-          console.log("getReviewByCourseInstructor", data);
-          if (data.status <= 305) {
-            setReviews(data.data.data);
-          }
-        });
-      } catch (error) {}
-    };
-    fetchReview();
-  }, [courseId, pageNumber, pageSize]);
-
+  // Fetch all reviews
   const fetchReview = useCallback(async () => {
     if (!courseId) return;
     try {
-      await getReviewByCourse(courseId, pageNumber, pageSize).then((data) => {
-        console.log("getReviewByCourseInstructor", data);
-        if (data.status <= 305) {
-          setReviews(data.data.data);
-        }
-      });
-    } catch (error) {}
+      const data = await getReviewByCourse(courseId, pageNumber, pageSize);
+      if (data.status <= 305) {
+        setReviews(data.data.data); // Dữ liệu đánh giá
+        setTotalPages(Math.ceil(data.data.total_items / pageSize)); // Tính tổng số trang
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }, [courseId, pageNumber, pageSize]);
 
   useEffect(() => {
     fetchReview();
   }, [fetchReview]);
 
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPageNumber(value);
+  };
+
   const handleSubmitRating = async () => {
     if (!courseId) return;
     try {
-      await createReview(token, courseId, rating, comment).then((data) => {
-        console.log(data.data);
-        if (data.status <= 305) {
-          fetchReview();
-        }
-      });
+      await createReview(token, courseId, rating, comment);
+      fetchReview();
     } catch (error) {
       console.log(error);
     }
@@ -105,12 +94,8 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
 
   const handleUpdateRating = async () => {
     try {
-      await updateReview(token, reviewId, rating, comment).then((data) => {
-        console.log(data.data);
-        if (data.status <= 305) {
-          fetchReview();
-        }
-      });
+      await updateReview(token, reviewId, rating, comment);
+      fetchReview();
     } catch (error) {
       console.log(error);
     }
@@ -137,9 +122,7 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
         <Rating
           value={rating}
           precision={0.5}
-          onChange={(e, newValue) => {
-            setRating(newValue || 1);
-          }}
+          onChange={(e, newValue) => setRating(newValue || 1)}
           sx={{ mb: 2 }}
         />
         <TextField
@@ -160,10 +143,9 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => {
-            if (!isRated) handleSubmitRating();
-            else handleUpdateRating();
-          }}
+          onClick={() =>
+            isRated ? handleUpdateRating() : handleSubmitRating()
+          }
           sx={{
             width: "20%",
             borderColor: textColor,
@@ -185,8 +167,18 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
       </Typography>
       <RatingStats data={reviewStat} />
       {reviews?.map((review) => (
-        <ReviewItem review={review} />
+        <ReviewItem key={review._id} review={review} />
       ))}
+
+      {/* Pagination */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={pageNumber}
+          onChange={handlePageChange}
+          color="primary"
+        />
+      </Box>
     </Box>
   );
 };

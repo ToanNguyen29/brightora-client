@@ -28,6 +28,7 @@ const Footer: React.FC = () => {
         px: { xs: 1, sm: 2 },
         backgroundColor,
         color: textColor,
+        mt: 10,
       }}
     >
       <Box
