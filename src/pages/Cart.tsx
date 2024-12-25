@@ -30,7 +30,13 @@ const CartPage: React.FC = () => {
   };
 
   const totalPrice =
-    cart?.cart.reduce((sum, item) => sum + item.course.price, 0) || 0;
+    cart?.cart.reduce(
+      (sum, item) =>
+        sum +
+        item.course.price *
+          ((100 - (item.course.discount_percentage || 0)) / 100),
+      0
+    ) || 0;
 
   return (
     <Box sx={{ width: "80%", mx: "auto", px: "7%" }}>
@@ -103,6 +109,7 @@ const CartPage: React.FC = () => {
                 numberRating={item.course.review.total_reviews}
                 thumbnail={item.course.thumbnail}
                 owner_name={`${item.course.owner.first_name} ${item.course.owner.last_name}`}
+                discount_percentage={item.course.discount_percentage}
               />
             ))
           )}
@@ -131,7 +138,7 @@ const CartPage: React.FC = () => {
               variant="h3"
               sx={{ color: textColor, fontWeight: "bold", mb: 3 }}
             >
-              ${totalPrice.toFixed(3) || (0.0).toFixed(3)}
+              ${totalPrice.toFixed(2) || (0.0).toFixed(2)}
             </Typography>
 
             <Button

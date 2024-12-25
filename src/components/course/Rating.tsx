@@ -127,7 +127,7 @@ const Rating: React.FC<RatingProps> = ({ courseId, ratingStat }) => {
       <RatingModal
         open={open}
         onClose={handleClose}
-        ratings={reviewsOfCourse}
+        courseId={courseId}
         ratingStat={ratingStat}
         textColor={textColor}
         backgroundColor={backgroundColor}

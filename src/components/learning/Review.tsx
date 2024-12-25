@@ -62,6 +62,7 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
     if (!courseId) return;
     try {
       const data = await getReviewByCourse(courseId, pageNumber, pageSize);
+      console.log("getReviewByCourse", data);
       if (data.status <= 305) {
         setReviews(data.data.data); // Dữ liệu đánh giá
         setTotalPages(Math.ceil(data.data.total_items / pageSize)); // Tính tổng số trang
@@ -114,7 +115,7 @@ const Reviews: React.FC<ReviewsProps> = ({ reviewStat, courseId }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "70%",
+          width: "80%",
           alignItems: "center",
           mx: "auto",
         }}

@@ -41,7 +41,7 @@ export interface IReviewDetail {
   comment: string;
   created_at: string;
   updated_at: string;
-  owner: string;
+  owner: IOwner;
 }
 
 interface IRelation {
@@ -108,7 +108,7 @@ export interface IUpdateCourse {
   promotional_video?: string;
   price?: number;
   status?: string;
-  discount_percentage?: number;
+  discount_percentage?: number | null;
 }
 
 export interface CurriculumMap {

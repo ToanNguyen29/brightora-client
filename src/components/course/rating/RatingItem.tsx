@@ -7,6 +7,7 @@ import ActionButtons from "./ratingitem/ActionButtons";
 
 interface RatingItemProps {
   name: string;
+  photo?: string;
   rating: number;
   content: string;
   time: string;
@@ -18,6 +19,7 @@ interface RatingItemProps {
 
 const RatingItem: React.FC<RatingItemProps> = ({
   name,
+  photo,
   rating,
   content,
   time,
@@ -42,7 +44,9 @@ const RatingItem: React.FC<RatingItemProps> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Avatar sx={{ mr: 2, bgcolor: textColor }}>{name[0]}</Avatar>
+        <Avatar sx={{ mr: 2 }} src={photo || ""}>
+          {!photo && name.charAt(0)}
+        </Avatar>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Typography
             variant="subtitle1"

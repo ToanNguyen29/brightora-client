@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography, Pagination } from "@mui/material";
 import { getQAndAByCourse } from "../../services/QuesAndAnsService";
 import { useAuth } from "../../context/AuthContext";
 import MyQA from "./MyQA";
@@ -19,6 +19,8 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
   const { userInfo } = useAuth();
   const [qAndAList, setQAndAList] = useState<IQAndA[]>([]);
   const [userQA, setUserQA] = useState<IQAndA[]>([]);
+  const [page, setPage] = useState(1);
+  const [itemsPerPage] = useState(5);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -26,9 +28,8 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
 
     const fetchQAndA = async () => {
       try {
-        const data = await getQAndAByCourse(token, courseId, 1, 10);
+        const data = await getQAndAByCourse(token, courseId, 1, 100);
         if (data.status <= 305) {
-          console.log("getQAndAByCourse", data.data.data);
           const qAndAItems: IQAndA[] = data.data.data;
 
           const matches = qAndAItems.filter(
@@ -51,6 +52,17 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
 
     fetchQAndA();
   }, [courseId, token, userInfo._id]);
+
+  // Calculate the data to display based on the current page and items per page
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const currentQAndAList = qAndAList.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <Box p={3}>
@@ -90,9 +102,18 @@ const QuesAndAns: React.FC<QuesAndAnsProps> = ({
         }}
       >
         <QandAList
-          data={qAndAList}
+          data={currentQAndAList} // Pass the sliced data for the current page
           instructorInfo={instructorInfo?._id}
           setData={setQAndAList}
+        />
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+        <Pagination
+          count={Math.ceil(qAndAList.length / itemsPerPage)} // Total pages
+          page={page}
+          onChange={handlePageChange} // Handle page change
+          color="primary"
         />
       </Box>
     </Box>

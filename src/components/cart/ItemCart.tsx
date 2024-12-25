@@ -1,5 +1,4 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-// import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
@@ -19,6 +18,7 @@ interface CartProps {
   updated_at: string;
   numberRating: number;
   price: number;
+  discount_percentage?: number;
 }
 
 const CartItem: React.FC<CartProps> = ({
@@ -30,6 +30,7 @@ const CartItem: React.FC<CartProps> = ({
   rating,
   numberRating,
   price,
+  discount_percentage,
 }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
@@ -40,14 +41,11 @@ const CartItem: React.FC<CartProps> = ({
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
-  // maxHeight: "90%",
 
   const handleDeleteItem = async () => {
     try {
       await deleteItemFromCartMe(token, id).then(async (data) => {
-        console.log(data);
         if (data.status <= 305) {
-          console.log("ok");
           await fetchCartMe();
         }
       });
@@ -55,6 +53,11 @@ const CartItem: React.FC<CartProps> = ({
       console.log("Error", error);
     }
   };
+
+  // Calculate discounted price
+  const discountedPrice = discount_percentage
+    ? price - (price * discount_percentage) / 100
+    : price;
 
   return (
     <Box
@@ -106,7 +109,7 @@ const CartItem: React.FC<CartProps> = ({
         </Box>
         <Box sx={{ flex: 2, textAlign: "left" }}>
           <Typography
-            variant="h6"
+            variant="body1"
             sx={{
               color: textColor,
               fontWeight: "bold",
@@ -164,12 +167,35 @@ const CartItem: React.FC<CartProps> = ({
           textAlign: "center",
         }}
       >
-        <Typography
-          variant="subtitle1"
-          sx={{ color: textColor, fontWeight: "bold" }}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          {`$${price.toFixed(3)}`}
-        </Typography>
+          {discount_percentage && (
+            <Typography
+              variant="h5"
+              sx={{
+                color: textColor, // Make the discounted price stand out
+                fontWeight: "bold",
+              }}
+            >
+              {`$${discountedPrice.toFixed(2)}`}
+            </Typography>
+          )}
+          <Typography
+            variant={discount_percentage ? "subtitle1" : "h5"}
+            sx={{
+              color: discount_percentage ? "gray" : textColor,
+              fontWeight: "bold",
+              textDecoration: discount_percentage ? "line-through" : "none",
+            }}
+          >
+            {`$${price.toFixed(2)}`}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

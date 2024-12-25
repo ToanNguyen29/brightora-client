@@ -8,8 +8,6 @@ import {
   Rating,
 } from "@mui/material";
 
-import { useThemeContext } from "../../theme/ThemeContext";
-
 import { IReviewDetail } from "../../models/Course";
 
 interface ReviewItemProps {
@@ -21,13 +19,11 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
     <Card
       sx={{
         mb: 2,
-        borderRadius: 3,
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow
-        border: "2px solid", // Solid border
-        borderColor: "grey.300", // Border color from the theme
-        overflow: "hidden", // Ensures border-radius applies properly
+        borderRadius: 2,
+        borderColor: "grey.300",
+        overflow: "hidden",
         "&:hover": {
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)", // Elevated shadow on hover
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
         },
         backgroundColor: "background.paper",
       }}
@@ -35,11 +31,11 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
       <CardHeader
         avatar={
           <Avatar
-            alt={`Toan Nguyen`}
-            src="https://brightora.s3.amazonaws.com/userPhoto/1732967549831.png"
+            alt={`${review.owner.first_name} ${review.owner.last_name}`}
+            src={`${review.owner.photo}`}
           />
         }
-        title={`Toan Nguyen`}
+        title={`${review.owner.first_name} ${review.owner.last_name}`}
         subheader={`Rating: ${review.rating}`}
       />
       <CardContent>

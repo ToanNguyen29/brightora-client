@@ -23,7 +23,8 @@ const RatingList: React.FC<RatingListProps> = ({
       {ratings?.map((item, index) => (
         <Grid item xs={isGrid ? 6 : 12} key={index}>
           <RatingItem
-            name={"Toan Nguyen"}
+            name={`${item.owner.first_name} ${item.owner.last_name}`}
+            photo={item.owner.photo}
             rating={item.rating}
             content={item.comment}
             time={item.created_at}

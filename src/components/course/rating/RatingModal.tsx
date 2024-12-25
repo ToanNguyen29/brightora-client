@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Backdrop,
@@ -6,15 +6,17 @@ import {
   Box,
   Typography,
   LinearProgress,
+  Button,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import RatingList from "./RatingList"; // Không thay đổi props
 import { IReview, IReviewDetail } from "../../../models/Course";
+import { getReviewByCourse } from "../../../services/ReviewService";
 
 interface RatingModalProps {
   open: boolean;
   onClose: () => void;
-  ratings: IReviewDetail[] | undefined;
+  courseId: string;
   ratingStat: IReview | undefined;
   textColor: string;
   backgroundColor: string;
@@ -24,14 +26,44 @@ interface RatingModalProps {
 const RatingModal: React.FC<RatingModalProps> = ({
   open,
   onClose,
-  ratings,
+  courseId,
   ratingStat,
   textColor,
   backgroundColor,
   headerBackgroundColor,
 }) => {
   const { t } = useTranslation();
-  const stars = [5, 4, 3, 2, 1]; // Star rating levels in descending order
+  const stars = [5, 4, 3, 2, 1];
+  const page_size = 5;
+  const [page_number, setPageNumber] = useState(1);
+  const [reviewsOfCourse, setReviewOfCourse] = useState<IReviewDetail[]>([]);
+  const [totalReviews, setTotalReviews] = useState<number>(0);
+
+  useEffect(() => {
+    if (!courseId || !open) return;
+
+    const fetchReview = async () => {
+      try {
+        const data = await getReviewByCourse(courseId, page_number, page_size);
+        console.log("getReviewByCourse", data);
+        if (data.status <= 305) {
+          setReviewOfCourse((prevReviews) => [
+            ...prevReviews,
+            ...data.data.data,
+          ]);
+          setTotalReviews(data.data.total_items);
+        }
+      } catch (error) {
+        console.error("Failed to fetch reviews", error);
+      }
+    };
+
+    fetchReview();
+  }, [courseId, page_number, open]);
+
+  const handleShowMore = () => {
+    setPageNumber(page_number + 1);
+  };
 
   return (
     <Modal
@@ -57,7 +89,7 @@ const RatingModal: React.FC<RatingModalProps> = ({
             boxShadow: 24,
             p: 4,
             overflowY: "auto",
-            maxHeight: "90vh",
+            maxHeight: "70vh",
             display: "flex",
             flexDirection: "column",
           }}
@@ -89,20 +121,9 @@ const RatingModal: React.FC<RatingModalProps> = ({
           </Box>
 
           {/* Main Content */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 4,
-              alignItems: "flex-start",
-            }}
-          >
+          <Box sx={{ display: "flex", gap: 4, alignItems: "flex-start" }}>
             {/* Rating Stats */}
-            <Box
-              sx={{
-                flex: "1",
-                minWidth: "300px",
-              }}
-            >
+            <Box sx={{ flex: "1", minWidth: "300px" }}>
               {stars.map((star, index) => {
                 const starCount = ratingStat?.star[`${star}_star`] || 0;
                 const percentage = ratingStat?.total_reviews
@@ -151,14 +172,9 @@ const RatingModal: React.FC<RatingModalProps> = ({
               })}
             </Box>
 
-            {/* Rating List */}
-            <Box
-              sx={{
-                flex: "3",
-              }}
-            >
+            <Box sx={{ flex: "3" }}>
               <RatingList
-                ratings={ratings} // Không thay đổi props
+                ratings={reviewsOfCourse}
                 textColor={textColor}
                 backgroundColor={backgroundColor}
                 headerBackgroundColor={headerBackgroundColor}
@@ -166,6 +182,15 @@ const RatingModal: React.FC<RatingModalProps> = ({
               />
             </Box>
           </Box>
+
+          {/* Show More Button */}
+          {reviewsOfCourse.length < totalReviews && (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+              <Button variant="outlined" onClick={handleShowMore}>
+                {t("Show More")}
+              </Button>
+            </Box>
+          )}
         </Box>
       </Fade>
     </Modal>

@@ -65,11 +65,17 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
   };
 
   const handleUpdateDiscount = async (id: string) => {
+    if (discountPercentage < 0 || discountPercentage > 100) {
+      alert("Discount must be between 0 and 100.");
+      return;
+    }
     const formData: IUpdateCourse = {
-      discount_percentage: discountPercentage,
+      discount_percentage: discountPercentage !== 0 ? discountPercentage : 0,
     };
+    console.log("formData", formData);
     if (id) {
       await updateCourse(token, id, formData).then((data) => {
+        console.log("data", data);
         setCourses((prevCourses) =>
           prevCourses.map((course) =>
             course._id === id
@@ -77,6 +83,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
               : course
           )
         );
+        console.log("data", data);
         setEditingCourseId(null);
       });
     }
@@ -215,28 +222,43 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
                   <TableCell>${course.price.toFixed(2)}</TableCell>
                   <TableCell>
                     {editingCourseId === course._id ? (
-                      <TextField
-                        value={discountPercentage}
-                        onChange={(e) =>
-                          setDiscountPercentage(Number(e.target.value))
-                        }
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter")
-                            handleUpdateDiscount(course._id);
-                        }}
-                        autoFocus
-                        variant="standard"
-                        InputProps={{
-                          disableUnderline: true,
-                        }}
-                        sx={{
-                          "& .MuiInputBase-root": {
-                            fontSize: "1rem",
-                            border: "none",
-                            padding: 0,
-                          },
-                        }}
-                      />
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <TextField
+                          value={discountPercentage}
+                          onChange={(e) =>
+                            setDiscountPercentage(Number(e.target.value))
+                          }
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter")
+                              handleUpdateDiscount(course._id);
+                          }}
+                          autoFocus
+                          variant="standard"
+                          InputProps={{
+                            disableUnderline: true,
+                          }}
+                          sx={{
+                            "& .MuiInputBase-root": {
+                              fontSize: "1rem",
+                              border: "none",
+                              padding: 0,
+                              marginRight: 1,
+                            },
+                          }}
+                        />
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleUpdateDiscount(course._id)}
+                          sx={{
+                            fontWeight: "bold",
+                            height: "100%",
+                            color: backgroundColor,
+                            background: textColor,
+                          }}
+                        >
+                          {t("save")}
+                        </Button>
+                      </Box>
                     ) : (
                       <Typography
                         sx={{
@@ -248,7 +270,7 @@ const CourseOfInstructor: React.FC<CourseOfInstructorProps> = ({
                           setDiscountPercentage(course.discount_percentage);
                         }}
                       >
-                        {course.discount_percentage || 0}
+                        {course.discount_percentage || 0} %
                       </Typography>
                     )}
                   </TableCell>
