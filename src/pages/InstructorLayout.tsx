@@ -73,7 +73,7 @@ const InstructorLayout: React.FC = () => {
       sx={{
         display: "flex",
         borderColor: mode === "dark" ? "white" : "black",
-        backgroundColor: backgroundColor, // Apply background color
+        backgroundColor: backgroundColor,
       }}
     >
       <Box
@@ -84,7 +84,7 @@ const InstructorLayout: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           transition: "width 0.4s",
-          backgroundColor: backgroundColor, // Apply background color
+          backgroundColor: backgroundColor,
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

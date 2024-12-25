@@ -21,10 +21,7 @@ import {
   updateSectionLesson,
 } from "../../../services/SectionService";
 import AddIcon from "@mui/icons-material/Add";
-import {
-  createNewLesson,
-  updateLessonDescription,
-} from "../../../services/LessonService";
+import { createNewLesson } from "../../../services/LessonService";
 import ExcerciseForm from "./Exercise";
 import { createNewExercise } from "../../../services/ExerciseService";
 import DeleteIcon from "@mui/icons-material/Delete";

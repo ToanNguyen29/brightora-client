@@ -71,6 +71,7 @@ export default function CourseEditLayout() {
       await updateCourse(token, id, formData).then((data) => {
         if (data.data.succeed) {
           setAlertOpen(true);
+          setStatusCourse("Pending");
         }
       });
     }
@@ -147,15 +148,15 @@ export default function CourseEditLayout() {
               statusCourse === "Draft"
                 ? mode === "dark"
                   ? "#ff9800"
-                  : "#ffc107" 
+                  : "#ffc107"
                 : statusCourse === "Pending"
                 ? mode === "dark"
                   ? "#2196f3"
-                  : "#03a9f4" 
+                  : "#03a9f4"
                 : statusCourse === "Published"
                 ? mode === "dark"
                   ? "#4caf50"
-                  : "#8bc34a" 
+                  : "#8bc34a"
                 : mode === "dark"
                 ? "#f44336"
                 : "#e57373",

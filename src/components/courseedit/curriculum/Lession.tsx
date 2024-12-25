@@ -90,6 +90,7 @@ const LessonForm: React.FC<LessonProps> = ({ lesson, reloadData }) => {
           if (data.status <= 305) {
             if (data.data.succeed) {
               setAlertOpen(true);
+              setSelectedTab(0);
               reloadData();
             }
           }

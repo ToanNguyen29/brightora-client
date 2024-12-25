@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Typography, Pagination } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useThemeContext } from "../../theme/ThemeContext";
-
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SearchCourseItem from "./SearchCourseItem";
 import { ICourseInfoPage } from "../../models/Course";
 import { searchCourse } from "../../services/CourseService";
@@ -19,10 +18,9 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
   const { t } = useTranslation();
   const { userInfo } = useAuth();
   const { mode } = useThemeContext();
-  const navigate = useNavigate(); // Dùng để điều hướng về trang chủ
   const [courses, setCourses] = useState<ICourseInfoPage[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(5);
   const [totalItem, setTotalItem] = useState<number>(0);
   const [filter, setFilter] = useState(() =>
     defaultType ? `category=${defaultType}` : ""
@@ -41,7 +39,6 @@ const SearchCoursePage: React.FC<SearchCoursePageProps> = ({ defaultType }) => {
         await searchCourse(updateQuerySearch, pageNumber, pageSize).then(
           (data) => {
             if (data.status <= 305) {
-              console.log("Hello search:", data.data);
               setTotalItem(data.data.total_items);
               setCourses(data.data.data);
             }

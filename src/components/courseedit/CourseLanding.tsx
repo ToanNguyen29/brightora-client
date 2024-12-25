@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useThemeContext } from "../../theme/ThemeContext";
 import { useTranslation } from "react-i18next";
 import Head from "./Head";
@@ -45,6 +45,7 @@ const CourseLanding: React.FC = () => {
   const [titleAlertOpen, setTitleAlertOpen] = useState(false);
   const [progress1, setProgress1] = useState(0);
   const [progress2, setProgress2] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const [img, setImg] = useState<File | string>();
   const [video, setVideo] = useState<File>();
@@ -102,14 +103,16 @@ const CourseLanding: React.FC = () => {
   const handleSave = async () => {
     if (id) {
       try {
+        setLoading(true);
         const tasks: Promise<any>[] = [];
 
-        const updateCourseTask = updateCourse(token, id, formValue).then(
-          (data) => {
-            console.log(data);
-          }
-        );
-        tasks.push(updateCourseTask);
+        try {
+          await updateCourse(token, id, formValue).then((data) => {
+            console.log("Course updated:", data);
+          });
+        } catch (error) {
+          console.log(error);
+        }
 
         if (img) {
           if (typeof img === "string") {
@@ -149,6 +152,8 @@ const CourseLanding: React.FC = () => {
         await Promise.all(tasks).then(() => setAlertOpen(true));
       } catch (error) {
         console.error("Error in handleSave:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -184,6 +189,18 @@ const CourseLanding: React.FC = () => {
       setTitleAlertOpen(true);
     }
   };
+
+  if (loading)
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="60vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
 
   return (
     <Box

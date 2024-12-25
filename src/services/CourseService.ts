@@ -41,6 +41,7 @@ export const updateCourse = async (
   id: string,
   formData: IUpdateCourse
 ): Promise<AxiosResponse> => {
+  console.log("updateCourse", formData);
   const response = await axios
     .put(
       `${course_url}/${id}`,
