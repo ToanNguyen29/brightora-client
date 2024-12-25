@@ -12,6 +12,7 @@ interface CourseCard {
   rating: number;
   buying: number;
   price: number;
+  discount_percentage?: number;
 }
 
 const CourseCardPayment: React.FC<CourseCard> = ({
@@ -23,6 +24,7 @@ const CourseCardPayment: React.FC<CourseCard> = ({
   rating,
   buying,
   price,
+  discount_percentage,
 }) => {
   const { mode } = useThemeContext();
   const { t } = useTranslation();
@@ -30,6 +32,10 @@ const CourseCardPayment: React.FC<CourseCard> = ({
 
   const backgroundColor = mode === "light" ? "#ffffff" : "#000000";
   const textColor = mode === "light" ? "#000000" : "#ffffff";
+
+  const discountedPrice = discount_percentage
+    ? price - (price * discount_percentage) / 100
+    : price;
 
   return (
     <Box
@@ -118,11 +124,26 @@ const CourseCardPayment: React.FC<CourseCard> = ({
           textAlign: "center",
         }}
       >
+        {discount_percentage !== 0 && (
+          <Typography
+            variant="h5"
+            sx={{
+              color: textColor, // Make the discounted price stand out
+              fontWeight: "bold",
+            }}
+          >
+            {`$${discountedPrice.toFixed(2)}`}
+          </Typography>
+        )}
         <Typography
-          variant="subtitle1"
-          sx={{ color: textColor, fontWeight: "bold" }}
+          variant={discount_percentage ? "subtitle1" : "h5"}
+          sx={{
+            color: discount_percentage ? "gray" : textColor,
+            fontWeight: "bold",
+            textDecoration: discount_percentage ? "line-through" : "none",
+          }}
         >
-          {`$${price.toFixed(3)}`}
+          {`$${price.toFixed(2)}`}
         </Typography>
       </Box>
     </Box>

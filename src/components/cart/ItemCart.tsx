@@ -174,7 +174,7 @@ const CartItem: React.FC<CartProps> = ({
             alignItems: "center",
           }}
         >
-          {discount_percentage && (
+          {discount_percentage !== 0 && (
             <Typography
               variant="h5"
               sx={{

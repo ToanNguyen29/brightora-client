@@ -41,6 +41,7 @@ const CourseListPayment: React.FC<CourseListPaymentProps> = ({ courses }) => {
           buying={course.buying}
           thumbnail={course.thumbnail}
           owner_name={`${course.owner.first_name} ${course.owner.last_name}`}
+          discount_percentage={course.discount_percentage}
         />
       ))}
     </>
