@@ -22,6 +22,7 @@ const CourseTypePage: React.FC = () => {
   return (
     <Box
       sx={{
+        minHeight: "90vh",
         height: "100%",
         display: "flex",
         flexDirection: "column",

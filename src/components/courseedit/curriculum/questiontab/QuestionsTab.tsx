@@ -81,16 +81,29 @@ const QuestionsTab: React.FC<QuestionsTabProps> = ({ id, questions }) => {
     }
   };
 
+  const handleCancel = async () => {
+    setEditDocument(null);
+  };
+
   const handleAddAiQuestions = async (questions: MultipleChoiceQuestion[]) => {
     const updatedData = [...(data || []), ...questions];
-    await updateQuestions(token, id, updatedData);
-    setData(updatedData);
+    console.log("updatedDataupdatedDataupdatedDataupdatedData", updatedData);
+    await updateQuestions(token, id, updatedData).then((data) => {
+      console.log("dataaupdateQuestions", data);
+      if (data.status <= 305) {
+        setData(updatedData);
+      }
+    });
   };
 
   return (
     <Box>
       {editDocument ? (
-        <QuestionEditForm editDocument={editDocument} handleSave={handleSave} />
+        <QuestionEditForm
+          editDocument={editDocument}
+          handleSave={handleSave}
+          handleCancel={handleCancel}
+        />
       ) : (
         <>
           {data && (

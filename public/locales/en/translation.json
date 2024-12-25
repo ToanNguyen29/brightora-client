@@ -296,5 +296,7 @@
   "your_progress": "Your progress",
   "generate_image": "Generate image",
   "upload_label": "Upload label",
-  "upload_promotional_video": "Upload promotional video"
+  "upload_promotional_video": "Upload promotional video",
+  "generate_question": "Generate question",
+  "confirm_selection": "Confirm selection"
 }

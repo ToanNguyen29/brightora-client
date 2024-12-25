@@ -16,15 +16,19 @@ const TopCategories: React.FC = () => {
   const textColor = mode === "light" ? "black" : "white";
 
   const categories = [
-    { name: "programming", image: "/categories/marketing.jpg" },
-    { name: "data_science", image: "/categories/marketing.jpg" },
-    { name: "web_development", image: "/categories/marketing.jpg" },
-    { name: "cyber_security", image: "/categories/marketing.jpg" },
-    { name: "cloud_computing", image: "/categories/marketing.jpg" },
-    { name: "database_administration", image: "/categories/marketing.jpg" },
-    { name: "devops", image: "/categories/marketing.jpg" },
-    { name: "it_support", image: "/categories/marketing.jpg" },
+    { name: "programming", image: "/categories/programming.jpg" },
+    { name: "data_science", image: "/categories/datascience.jpg" },
+    { name: "web_development", image: "/categories/webdev.png" },
+    { name: "cyber_security", image: "/categories/cyber.jpg" },
+    { name: "cloud_computing", image: "/categories/cloudcomputing.jpg" },
+    { name: "database_administration", image: "/categories/database.jpg" },
+    { name: "devops", image: "/categories/devops.png" },
+    { name: "it_support", image: "/categories/itsupport.png" },
   ];
+
+  const handleOnClick = (category: string) => {
+    window.location.href = `/course_type/${t(category)}`;
+  };
 
   return (
     <Box sx={{ mx: "10%", my: "30px", flexDirection: "column" }}>
@@ -56,6 +60,7 @@ const TopCategories: React.FC = () => {
                   boxShadow: 6,
                 },
               }}
+              onClick={() => handleOnClick(category.name)}
             >
               <CardMedia
                 component="img"

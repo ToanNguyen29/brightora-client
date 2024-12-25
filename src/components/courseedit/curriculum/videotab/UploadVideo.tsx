@@ -48,14 +48,16 @@ const UploadVideo: React.FC<UploadVideoProps> = ({
     const s3_key = `lesson_video/${id}.mp4`;
 
     UploadFile(s3_key, file, setProgress, async () => {
-      await updateLessonVideo(token, id, url).then(async (data) => {
-        console.log(data);
-        await createTranscript(token, url).then((data) => {
-          console.log("Transcript created:", data);
-        });
-        reloadData();
+      await updateLessonVideo(token, id, url).then((data) => {
+        if (data.status <= 305) {
+          reloadData();
+          setSelectedTab(0);
+        }
       });
-      setSelectedTab(0);
+
+      await createTranscript(token, url).then((data) => {
+        console.log("Transcript created:", data);
+      });
     });
   };
 

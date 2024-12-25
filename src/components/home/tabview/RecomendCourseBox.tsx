@@ -2,17 +2,16 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import { useThemeContext } from "../../../theme/ThemeContext";
 import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
+
 interface RecomendCourseBoxProps {
   tabName: string;
 }
 
 const RecomendCourseBox: React.FC<RecomendCourseBoxProps> = ({ tabName }) => {
   const { mode } = useThemeContext();
-  const navigate = useNavigate();
 
   const handleOnclick = () => {
-    navigate(`/course_type/${tabName}`);
+    window.location.href = `/course_type/${tabName}`;
   };
 
   return (

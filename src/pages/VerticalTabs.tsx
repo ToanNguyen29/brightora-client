@@ -17,7 +17,6 @@ const tabPaths = [
   "/user/edit-profile/",
   "/user/edit-photo/",
   "/user/edit-account/",
-  // "/user/close-account/",
   "/user/payment-account/",
 ];
 
@@ -114,7 +113,7 @@ export default function VerticalTabs() {
           {userInfo.role === "Instructor" && (
             <Tab
               label={t("payment_account")}
-              {...a11yProps(5)}
+              {...a11yProps(4)}
               sx={{ alignItems: "flex-start", fontSize: 15 }}
             />
           )}

@@ -131,7 +131,7 @@ const AppRoutes: React.FC = () => {
                 >
                   <Route
                     index
-                    element={<Navigate replace to="public-profile" />}
+                    element={<Navigate replace to="edit-profile" />}
                   />
                   <Route
                     path="public-profile"
