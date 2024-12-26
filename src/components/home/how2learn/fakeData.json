@@ -1,8 +1,8 @@
 [
   {
-    "author": "Nguyễn Toàn",
-    "avatar": "https://brightora.s3.amazonaws.com/userPhoto/1733371587230.png",
-    "content": "The course Backend Master Class [Golang + Postgres + Kubernetes + gRPC] has helped me improve my backend development skills significantly",
+    "author": "Toàn Nguyễn",
+    "avatar": "https://brightora.s3.amazonaws.com/userPhoto/1735176397330.png",
+    "content": "This is a very complete course. I especially liked that not only the language was explained, but especially the things around it. So Postgres, Redis, Gin, gRPC, Docker, Kubernetes, AWS and CI/CD.",
     "video_links": "http://",
     "video_title": "Backend Master Class [Golang + Postgres + Kubernetes + gRPC]"
   },
@@ -18,6 +18,6 @@
     "avatar": "https://brightora.s3.amazonaws.com/userPhoto/1735098165496.png",
     "content": "The techniques I learned in this course have been crucial in advancing my career in digital marketing. Highly recommend!",
     "video_links": "http://",
-    "video_title": "Digital Marketing 101"
+    "video_title": "Fundamentals of Database Engineering"
   }
 ]
